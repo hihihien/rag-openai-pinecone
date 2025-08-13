@@ -28,6 +28,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 # Connect to Pinecone index
@@ -98,7 +99,11 @@ async def ask_question(req: QuestionRequest):
 
     return {"answer": answer}
 
-# Optional: test root route
+@app.options("/ask")
+async def preflight():
+    return {"message": "CORS preflight OK"}
+
+# test root route
 @app.get("/")
 def read_root():
     return {"message": "RAG Chatbot API is running"}
