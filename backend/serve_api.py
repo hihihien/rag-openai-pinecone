@@ -17,12 +17,14 @@ pinecone_index_name = os.getenv("PINECONE_INDEX")
 app = FastAPI()
 
 # Allow frontend access
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+origins=[
         "http://localhost:3000",
         "https://rag-openai-pinecone.vercel.app"
-    ],
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
