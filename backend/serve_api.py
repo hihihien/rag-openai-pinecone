@@ -19,7 +19,10 @@ app = FastAPI()
 # Allow frontend access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Change if deploying
+    allow_origins=[
+        "http://localhost:3000",
+        "https://rag-openai-pinecone.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
