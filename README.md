@@ -3,7 +3,7 @@
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/hihihien/rag-chatbot.git
+git clone https://github.com/hihihien/rag-openai-pinecon.git
 cd rag-chatbot
 ```
 
