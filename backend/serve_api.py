@@ -31,6 +31,10 @@ app.add_middleware(
     expose_headers=["*"]
 )
 
+@app.options("/ask")
+async def preflight():
+    return {"message": "CORS preflight OK"}
+
 # Connect to Pinecone index
 pc = Pinecone(api_key=pinecone_api_key)
 index = pc.Index(pinecone_index_name)
@@ -98,10 +102,6 @@ async def ask_question(req: QuestionRequest):
     answer = ask_openai(context, question)
 
     return {"answer": answer}
-
-@app.options("/ask")
-async def preflight():
-    return {"message": "CORS preflight OK"}
 
 # test root route
 @app.get("/")
