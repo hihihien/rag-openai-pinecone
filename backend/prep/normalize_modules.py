@@ -1,6 +1,6 @@
 """
 Normalize study program JSON/JS files into JSONL records for embedding.
-Each line = one module-offer with rich metadata + DE/EN text fields.
+Each line = one module with metadata + DE/EN text fields.
 """
 
 import json, json5, glob, re
@@ -13,7 +13,7 @@ BACKEND_DIR = HERE.parents[1]
 RAW_DIR = BACKEND_DIR / "data" / "MHB_Alle_Studiengaenge"
 OUT_DIR = BACKEND_DIR / "data" / "normalized"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-
+# Ensure output directory exists
 PROGRAM_PATTERNS = [
     str(RAW_DIR / "**" / "Studiengang_*.js"),
     str(RAW_DIR / "**" / "Studiengang_*.json"),
@@ -29,6 +29,7 @@ def find_program_files() -> list[Path]:
         files.extend(glob.glob(pat, recursive=True))
     return [Path(f) for f in files]
 
+# Helper to read program JSON/JS files
 def read_program_objs(path: Path):
     """Load .js/.json into one or more program dicts."""
     raw = path.read_text(encoding="utf-8").strip()
@@ -44,6 +45,7 @@ def read_program_objs(path: Path):
     else:
         raise ValueError(f"Unsupported top-level type in {path}: {type(data)}")
 
+# Helper to normalize season strings
 def norm_season(s: str):
     if not s: return None
     s = s.lower()
@@ -53,6 +55,7 @@ def norm_season(s: str):
     if "to_be_announced" in s: return "tba"
     return s
 
+# Helper to normalize language strings
 def norm_language(s: str):
     if not s: return None
     s = s.lower()
@@ -62,12 +65,14 @@ def norm_language(s: str):
     if "mixed" in s: return "mixed"
     return s
 
+# Helper to parse float values
 def parse_float(v):
     try:
         return float(v)
     except Exception:
         return None
 
+# Helper to join text parts
 def join(parts):
     return "\n".join([p for p in parts if p and str(p).strip()])
 
@@ -130,6 +135,7 @@ def build_record(program, offer):
         "total": mod.get("workloadTotal"),
     }
 
+    # Module metadata
     module_meta = {
         "moduleId": mod.get("id"),
         "moodleCourseId": mod.get("moodleCourseId"),
@@ -214,15 +220,15 @@ def main():
     print(f"[normalize] RAW_DIR: {RAW_DIR}")
     print(f"[normalize] OUT_DIR: {OUT_DIR}")
     print(f"[normalize] Found {len(files)} program file(s).")
-
+    # Ensure we have files to process
     if not files:
         print("No program files found. Double-check paths.")
         return
-
+    # Process each program file
     for f in files:
         programs = read_program_objs(f)
         print(f"[normalize] {f.name}: {len(programs)} program object(s)")
-
+        # Normalize each program object
         for program in programs:
             program["fileName"] = f.name
             abbr = program.get("abbreviation", f.stem)
