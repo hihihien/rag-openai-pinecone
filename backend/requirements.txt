@@ -13,3 +13,4 @@ pandas
 numpy
 python-dotenv
 PyMuPDF
+json5
