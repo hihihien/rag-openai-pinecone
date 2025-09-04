@@ -1,4 +1,3 @@
-# chunk_bmt_mhb.py
 # Extract full per-module chunks from BMT_MHB_PO2025_V1.0.pdf
 
 import fitz  # PyMuPDF
@@ -9,7 +8,7 @@ from pathlib import Path
 PDF_PATH = Path("backend/data/MHB_Alle_Studiengaenge/MHB_BMT_PO25/BMT_MHB_PO2025_V1.0.pdf")
 OUT_BASE = PDF_PATH.with_name("BMT_MHB_PO2025_chunks")
 
-MODULE_PATTERN = re.compile(r"^(BMT[\s\dF_\.]+)\s?[–-]\s?(.+)")  # Allow broader matches for submodules
+MODULE_PATTERN = re.compile(r"^(BMT[\s\dF_\.]+)\s?[–-]\s?(.+)")  # Allow broader matches for submodules by catching header section syntaxs
 
 print(f"[chunker] Reading: {PDF_PATH.name}")
 doc = fitz.open(str(PDF_PATH))
