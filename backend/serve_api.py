@@ -32,7 +32,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index(os.getenv("PINECONE_INDEX"))
 
-EMBED_MODEL = "text-embedding-3-small"
+EMBED_MODEL = "text-embedding-3-large"
 CHAT_MODEL = "gpt-4o-mini"
 TOP_K = 8
 SCORE_THRESHOLD = 0.58
