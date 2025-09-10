@@ -56,7 +56,7 @@ def convert_to_documents(records: List[dict]) -> List[Document]:
     return documents
 
 def embed_documents(docs: List[Document]) -> List[dict]:
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
     vectors = []
     for doc in tqdm(docs, desc="Embedding paragraphs"):
         vector = embeddings.embed_query(doc.page_content)
