@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set parameters for DAISY
-jsonl_path = "backend/data/MHB_Alle_Studiengaenge/MHB_BDAISY_PO21/DAISY_MHB_chunks.jsonl"
+jsonl_path = "backend/data/processed_pdf/DAISY_MHB_chunks.jsonl"
 namespace = "DAISY_pdf"
 index_name = os.getenv("PINECONE_INDEX")
 

@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import List, Dict   
 
 # Parameters
-input_path = "backend/data/MHB_Alle_Studiengaenge/MHB_BTB_PO25/BTB_MHB_PO2025_chunks.jsonl"
+input_path = "backend/data/processed_pdf/BTB_MHB_PO2025_chunks.jsonl"
 output_path = Path(input_path).with_name("BTB_MHB_PO2025_chunks_split.jsonl")
 max_chars = 8000
 limit = 12000

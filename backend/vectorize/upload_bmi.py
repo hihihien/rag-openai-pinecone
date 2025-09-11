@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set parameters for BMI
-jsonl_path = "backend/data/MHB_Alle_Studiengaenge/MHB_BMI_PO25/BMI_MHB_PO2025_chunks.jsonl"
+jsonl_path = "backend/data/processed_pdf/BMI_MHB_PO2025_chunks.jsonl"
 namespace = "BMI_pdf"
 index_name = os.getenv("PINECONE_INDEX")
 

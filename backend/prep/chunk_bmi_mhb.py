@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 
 PDF_PATH = Path("backend/data/MHB_Alle_Studiengaenge/MHB_BMI_PO25/BMI_MHB_PO2025_V1.0.pdf")
-OUT_BASE = PDF_PATH.with_name("BMI_MHB_PO2025_chunks")
+OUTPUT_PATH = Path("backend/data/processed")
+OUT_BASE = OUTPUT_PATH.with_name("BMI_MHB_PO2025_chunks")
 
 MODULE_PATTERN = re.compile(r"^(BMI[\s\dF_\.]+)\s?[–-]\s?(.+)")  
 

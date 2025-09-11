@@ -5,7 +5,8 @@ from pathlib import Path
 
 # === File paths ===
 PDF_PATH = Path("backend/data/MHB_Alle_Studiengaenge/MHB_BDAISY_PO21/PO21_796.pdf")
-OUT_BASE = PDF_PATH.with_name("PO21_796_paragraph_chunks")
+OUTPUT_PATH = Path("backend/data/processed")
+OUT_BASE = OUTPUT_PATH.with_name("PO21_796_paragraph_chunks")
 
 # === Patterns ===
 SECTION_PATTERN = re.compile(r"^(I{1,3})\.\s+.+")

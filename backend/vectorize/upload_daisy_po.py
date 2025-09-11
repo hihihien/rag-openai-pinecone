@@ -16,7 +16,7 @@ load_dotenv()
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 
 # Paths and constants
-jsonl_path = "backend/data/MHB_Alle_Studiengaenge/MHB_BDAISY_PO21/PO21_796_paragraph_chunks.jsonl"
+jsonl_path = "backend/data/processed_pdf/PO21_796_paragraph_chunks.jsonl"
 namespace = "DAISY_PO21_pdf"
 index_name = os.getenv("PINECONE_INDEX")
 

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set parameters for BMT
-jsonl_path = "backend/data/MHB_Alle_Studiengaenge/MHB_BMT_PO25/BMT_MHB_PO2025_chunks.jsonl"
+jsonl_path = "backend/data/processed_pdf/BMT_MHB_PO2025_chunks.jsonl"
 namespace = "BMT_pdf"
 index_name = os.getenv("PINECONE_INDEX")
 

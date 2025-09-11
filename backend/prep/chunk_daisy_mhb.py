@@ -5,7 +5,8 @@ from pathlib import Path
 
 # === Paths ===
 PDF_PATH = Path("backend/data/MHB_Alle_Studiengaenge/MHB_BDAISY_PO21/Modulhandbuch_DAISY_V6-3_final.pdf")
-OUT_PATH = PDF_PATH.with_name("DAISY_MHB_chunks.jsonl")
+OUTPUT_PATH = Path("backend/data/processed")
+OUT_PATH = OUTPUT_PATH.with_name("DAISY_MHB_chunks.jsonl")
 
 # === Patterns ===
 module_line_re = re.compile(r"^(D\d+(?:\.\d+)*|PF\s?\d+(?:\.\d+)*):?\s+(.+)")

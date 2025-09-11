@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set parameters for MMI
-jsonl_path = "backend/data/MHB_Alle_Studiengaenge/MHB_MMI_PO25/MMI_MHB_PO2025_chunks.jsonl"
+jsonl_path = "backend/data/processed_pdf/MMI_MHB_PO2025_chunks.jsonl"
 namespace = "MMI_pdf"
 index_name = os.getenv("PINECONE_INDEX")
 

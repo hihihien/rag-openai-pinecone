@@ -8,7 +8,8 @@ from pathlib import Path
 
 # File paths
 PDF_PATH = Path("backend/data/MHB_Alle_Studiengaenge/MHB_BTB_PO25/BTB_MHB_PO2025_V1.0.pdf")
-OUT_BASE = PDF_PATH.with_name("BTB_MHB_PO2025_chunks")
+OUTPUT_PATH = Path("backend/data/processed")
+OUT_BASE = OUTPUT_PATH.with_name("BTB_MHB_PO2025_chunks")
 
 # Patterns for HSD and RSH
 HSD_PATTERN = re.compile(r"^(BTB[\s\dF_\.W]+)\s?[–-]\s?(.+)$")  # e.g. BTB 10 - Mathematik 1
