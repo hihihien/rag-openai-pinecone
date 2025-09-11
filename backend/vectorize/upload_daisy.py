@@ -1,4 +1,4 @@
-from shared_uploader import process_and_upload
+from shared_uploader_daisy import process_and_upload
 import os
 from dotenv import load_dotenv
 
