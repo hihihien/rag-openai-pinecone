@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "daisyui";
+
+/* Tailwind CSS directives removed for direct browser compatibility */
+/* If using Tailwind, ensure your build process includes these directives */
 
 :root {
   --foreground-rgb: 0, 0, 0;

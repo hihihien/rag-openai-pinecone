@@ -33,7 +33,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
       <div className="w-full max-w-2xl space-y-4">
-        <h1 className="text-3xl font-bold text-center text-black">🎓 MMI RAG Chatbot</h1>
+        <h1 className="text-3xl font-bold text-center text-black">MMI RAG Chatbot</h1>
         <textarea
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
