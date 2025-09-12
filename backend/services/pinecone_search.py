@@ -9,7 +9,6 @@ load_dotenv()
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index(os.getenv("PINECONE_INDEX"))
 
-
 def build_filter(
     season: Optional[str] = None,
     exam_type: Optional[str] = None,
@@ -29,7 +28,6 @@ def build_filter(
             r["$lte"] = max_credits
         f["creditPointsNum"] = r
     return f or None
-
 
 def search_all_namespaces(
     vector: List[float],
