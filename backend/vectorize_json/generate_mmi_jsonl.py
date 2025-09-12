@@ -58,7 +58,7 @@ for m in modules:
 print(f"Prepared {len(formatted_records)} records for export")
 
 # ---------- Step 3: Save to .jsonl ----------
-output_path = Path("backend/data/processed/MMI_modules_for_upload.jsonl")
+output_path = Path("backend/data/processed_json/MMI_modules_for_upload.jsonl")
 output_path.parent.mkdir(parents=True, exist_ok=True)
 
 with open(output_path, "w", encoding="utf-8") as f:

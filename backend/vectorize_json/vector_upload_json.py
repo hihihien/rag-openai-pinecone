@@ -17,7 +17,7 @@ EMBED_MODEL = "text-embedding-3-large"
 BATCH = 100
 
 # Folder for exported .jsonl files (from generate_*.py scripts)
-PROCESSED_DIR = Path("backend/data/processed")
+PROCESSED_DIR = Path("backend/data/processed_json")
 
 # ========== Embedding Helper ==========
 def embed_batch(texts: List[str]) -> List[List[float]]:
@@ -73,7 +73,7 @@ def upload_file(path: Path):
 if __name__ == "__main__":
     jsonl_files = sorted(PROCESSED_DIR.glob("*.jsonl"))
     if not jsonl_files:
-        print("No files found in 'processed' folder.")
+        print("No files found in 'processed_json' folder.")
         exit(1)
 
     print(f"[scan] Found {len(jsonl_files)} processed .jsonl files")
