@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "daisyui";
+@tailwind base;
+@tailwind components; 
+@tailwind utilities;
 
 /* Tailwind CSS directives removed for direct browser compatibility */
 /* If using Tailwind, ensure your build process includes these directives */
