@@ -7,11 +7,11 @@ ID_TO_META: Dict[str, Dict[str, Any]] = {}
 AVAILABLE_NAMESPACES = []
 
 DATA_PATHS = [
-    Path(__file__).resolve().parent.parent / "data" / "processed_json",
-    Path(__file__).resolve().parent.parent / "data" / "processed_pdf"
+    Path(__file__).resolve().parent.parent / "data" / "processed_json"
 ]
 
 def load_text_store():
+    """Load JSONL files into in-memory dicts for fast lookup."""
     global AVAILABLE_NAMESPACES
     seen_namespaces = set()
 
@@ -33,23 +33,12 @@ def load_text_store():
                     ID_TO_TEXT[rid] = text
 
                     meta = rec.get("metadata") or {}
-                    if not meta:
-                        meta = {
-                            "studyProgramAbbrev": rec.get("studyProgramAbbrev"),
-                            "moduleNumber": rec.get("moduleNumber"),
-                            "moduleNameDe": rec.get("moduleNameDe"),
-                            "moduleNameEn": rec.get("moduleNameEn"),
-                            "examType": rec.get("examType"),
-                            "offeredInSeason": rec.get("offeredInSeason"),
-                            "creditPoints": rec.get("creditPoints"),
-                        }
-
                     ID_TO_META[rid] = {
-                        "studyProgramAbbrev": meta.get("studyProgramAbbrev"),
+                        "studyProgramAbbrev": meta.get("studyProgramAbbrev", namespace.split("_")[0]),
                         "moduleNumber": meta.get("moduleNumber"),
-                        "moduleNameDe": meta.get("moduleNameDe"),
-                        "moduleNameEn": meta.get("moduleNameEn"),
-                        "season": meta.get("offeredInSeasonNorm") or meta.get("offeredInSeason"),
+                        "moduleNameDe": meta.get("moduleNameDe") or meta.get("moduleName"),
+                        "moduleNameEn": meta.get("moduleNameEn", ""),
+                        "season": meta.get("offeredInSeason"),
                         "credits": meta.get("creditPoints"),
                         "examType": meta.get("examType"),
                     }
