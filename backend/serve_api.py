@@ -12,7 +12,6 @@ from services.prompt_utils import ask_openai
 # Load in-memory data
 load_text_store()
 
-# ========== FastAPI Setup ==========
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -24,9 +23,8 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {"message": "RAG Chatbot API is running"}
+    return {"message": "RAG Chatbot API is running", "namespaces": AVAILABLE_NAMESPACES}
 
-# ========== Request/Response Models ==========
 class QuestionRequest(BaseModel):
     question: str
     program: Optional[str] = None
@@ -40,7 +38,6 @@ class AnswerResponse(BaseModel):
     answer: str
     sources: List[SourceItem]
 
-# ========== Main Endpoints ==========
 @app.post("/ask", response_model=AnswerResponse)
 def ask(req: QuestionRequest):
     qvec = embed(req.question)
