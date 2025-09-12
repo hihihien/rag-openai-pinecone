@@ -48,7 +48,7 @@ def search_all_namespaces(
     for ns in AVAILABLE_NAMESPACES:
         res = index.query(
             vector=vector,
-            top_k=max(2, top_k // len(AVAILABLE_NAMESPACES)),
+            top_k=top_k,  # query fully in each namespace
             include_metadata=True,
             namespace=ns,
             filter=filter
