@@ -1,6 +1,6 @@
 from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
-from vector import retriever
+from backend.testing.vector_upload_test.vector import retriever
 
 model = OllamaLLM(model="llama3.2")
 
