@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -61,13 +62,17 @@ export default function HomePage() {
           {messages.map((m, i) => (
             <div
               key={i}
-              className={`p-3 rounded-lg max-w-[80%] ${
+              className={`p-3 rounded-lg max-w-[80%] whitespace-pre-wrap ${
                 m.role === 'user'
                   ? 'bg-blue-500 text-white self-end text-right'
                   : 'bg-gray-100 text-black self-start text-left'
               }`}
             >
-              {m.content}
+              {m.role === 'assistant' ? (
+                <ReactMarkdown>{m.content}</ReactMarkdown>
+              ) : (
+                m.content
+              )}
             </div>
           ))}
           {loading && (
