@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Dict, Optional, List
 
 from services.loader import load_text_store, AVAILABLE_NAMESPACES
 from services.embeddings import embed
@@ -27,6 +27,7 @@ def root():
 
 class QuestionRequest(BaseModel):
     question: str
+    history: Optional[List[Dict[str,str]]] = None
     program: Optional[str] = None
     season: Optional[str] = None
     examType: Optional[str] = None
@@ -54,7 +55,7 @@ def ask(req: QuestionRequest):
         msg = "Ich konnte dazu nichts im Modulhandbuch finden." if req.question.lower().startswith("wie") else "I couldn't find anything relevant in the module handbook."
         return AnswerResponse(answer=msg, sources=[])
 
-    answer = ask_openai(context, req.question)
+    answer = ask_openai(context, req.question, req.history or [])
     return AnswerResponse(answer=answer, sources=sources)
 
 @app.post("/ask-simple", response_model=AnswerResponse)
