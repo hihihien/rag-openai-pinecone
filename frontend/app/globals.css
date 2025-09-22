@@ -24,3 +24,15 @@ body {
     text-align: justify;
   }
 }
+
+.chat-bubble {
+  list-style-type: disc;
+  padding-left: 1.5rem; /* 6 */
+  margin-top: 0.5rem; /* 2 */
+  margin-bottom: 0.5rem; /* 2 */
+}
+
+.chat-bubble li {
+  margin-top: 0.25rem; /* 1 */
+  margin-bottom: 0.25rem; /* 1 */
+}
