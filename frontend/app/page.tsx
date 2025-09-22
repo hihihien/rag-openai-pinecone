@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Maximize2, Minimize2, Minus } from 'lucide-react';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -12,12 +14,20 @@ export default function HomePage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
-  const askQuestion = async () => {
-    if (!question.trim()) return;
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-    // add user message
-    const newMessages: Message[] = [...messages, { role: 'user', content: question }];
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const askQuestion = async (q?: string) => {
+    const query = q || question;
+    if (!query.trim()) return;
+
+    const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
     setQuestion('');
     setLoading(true);
@@ -26,20 +36,18 @@ export default function HomePage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          question,
-          history: messages.map(m => ({ 
-            role: m.role, 
-            content: m.content 
+        body: JSON.stringify({
+          question: query,
+          history: messages.map((m) => ({
+            role: m.role,
+            content: m.content,
           })),
         }),
       });
 
       const data = await res.json();
-
       const answer = data.answer || 'Keine Antwort erhalten.';
 
-      // add assistant message
       setMessages([...newMessages, { role: 'assistant', content: answer }]);
     } catch (err) {
       console.error(err);
@@ -52,54 +60,191 @@ export default function HomePage() {
     }
   };
 
+  // Suggested quick questions
+  const suggestions = [
+    'Welche Wahlmodule gibt es im Studiengang Medieninformatik?',
+    'Was sind die Voraussetzungen für das Modul Theoretische Informatik?',
+    'Welches Modul im Studiengang BMI ist für Webentwicklung?',
+    'An wen kann ich mich bei Fragen über Module in BDAISY wenden?',
+  ];
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-      <div className="w-full max-w-2xl flex flex-col space-y-4">
-        <h1 className="text-3xl font-bold text-center text-black">HSD Medienstudiengänge Chatbot</h1>
-
-        {/* Chat messages */}
-        <div className="flex-1 p-4 bg-white border rounded-lg overflow-y-auto max-h-[70vh] space-y-4">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={`p-3 rounded-lg max-w-[80%] whitespace-pre-wrap ${
-                m.role === 'user'
-                  ? 'bg-blue-500 text-white self-end text-right'
-                  : 'bg-gray-100 text-black self-start text-left'
-              }`}
-            >
-              {m.role === 'assistant' ? (
-                <ReactMarkdown>{m.content}</ReactMarkdown>
-              ) : (
-                m.content
-              )}
-            </div>
-          ))}
-          {loading && (
-            <div className="p-3 rounded-lg bg-gray-200 self-start text-left">
-              Antwort wird generiert...
-            </div>
-          )}
-        </div>
-
-        {/* Input box */}
-        <div className="flex space-x-2">
-          <textarea
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Stelle eine Frage zum Modulhandbuch..."
-            rows={2}
-            className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+    <main className="relative min-h-screen bg-gray-50" data-theme="cupcake">
+      {/* Floating Avatar / FAB Button */}
+      <div
+        className="fixed bottom-6 right-6 avatar cursor-pointer"
+        onClick={() => {
+          setIsOpen(!isOpen);
+          if (!isOpen && messages.length === 0) {
+            setMessages([
+              {
+                role: 'assistant',
+                content:
+                        'Hallo! 👋 Ich bin MeMo, dein KI-Assistent der Medienfachschaft der Hochschule Düsseldorf, unterstützt von OpenAI.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\nFür bessere Ergebnisse gib bitte in deiner Frage an:\n\n- Dein Studienprogramm\n- Den Namen des Moduls, zu dem du Informationen möchtest\n- Thematisch verwandte Inhalte aus einem Studienprogramm',
+                      },
+                  ]);
+          }
+        }}
+      >
+        <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+          <img
+            src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
+            alt="Chatbot Avatar"
           />
-          <button
-            onClick={askQuestion}
-            disabled={loading}
-            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50"
-          >
-            Senden
-          </button>
         </div>
       </div>
+
+      {/* Chat window */}
+      {isOpen && (
+        <div
+          className={`fixed bg-white border rounded-lg shadow-lg flex flex-col transition-all duration-300
+            ${
+              expanded
+                ? 'inset-10 w-auto h-auto max-w-[90vw] max-h-[85vh] m-auto'
+                : 'bottom-24 right-6 w-96 max-w-[90vw] sm:w-96 max-h-[70vh]'
+            }`}
+        >
+          {/* Header */}
+          <div className="p-3 border-b bg-primary text-white rounded-t-lg flex justify-between items-center">
+            {/* Left side: Avatar + Title */}
+            <div className="flex items-center gap-3">
+              <div className="avatar">
+                <div className="w-10 rounded-full ring ring-white ring-offset-2">
+                  <img
+                    src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
+                    alt="MeMo Avatar"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold">MeMo, Dein KI-Assistent</span>
+                <span className="text-xs font-light opacity-80">
+                  Powered by OpenAI API
+                </span>
+              </div>
+            </div>
+
+            {/* Right side: Icons */}
+            <div className="flex items-center gap-2">
+              <div
+                className="tooltip text-xs"
+                data-tip={expanded ? 'Minimieren' : 'Maximieren'}
+              >
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="btn btn-ghost btn-xs text-white"
+                  title={expanded ? 'Minimieren' : 'Maximieren'}
+                >
+                  {expanded ? (
+                    <Minimize2 className="w-4 h-4" />
+                  ) : (
+                    <Maximize2 className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+
+              <div className="tooltip text-xs" data-tip="Fenster schließen">
+                <button
+                  onClick={() => {
+                    if (expanded) {
+                      setExpanded(false);
+                    } else {
+                      setIsOpen(false);
+                    }
+                  }}
+                  className="btn btn-ghost btn-xs text-white"
+                  title="Fenster schließen"
+                >
+                  <Minus className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-4">
+            {messages.map((m, i) => (
+              <div key={i}>
+                <div
+                  className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}
+                >
+                  <div className="chat-image avatar">
+                    <div className="w-8 rounded-full">
+                      <img
+                        alt={m.role === 'user' ? 'User' : 'Assistant'}
+                        src={
+                          m.role === 'user'
+                            ? 'https://img.daisyui.com/images/profile/demo/kenobee@192.webp'
+                            : 'https://img.daisyui.com/images/profile/demo/yellingcat@192.webp'
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`chat-bubble max-w-[80%] ${
+                      m.role === 'assistant'
+                        ? 'chat-bubble-primary'
+                        : 'chat-bubble-secondary'
+                    }`}
+                  >
+                    {m.role === 'assistant' ? (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+                    ) : (
+                      m.content
+                    )}
+                  </div>
+                </div>
+
+                {/* Suggestions only after the greeting message */}
+                {i === 0 && m.role === 'assistant' && (
+                  <div className="chat chat-end mt-2">
+                    <div className="flex flex-wrap gap-2">
+                      {suggestions.map((s, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => askQuestion(s)}
+                          className="btn btn-sm btn-secondary"
+                          title="Beispielfrage auswählen"
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {loading && (
+              <div className="chat chat-start">
+                <div className="chat-bubble chat-bubble-primary">
+                  <span className="loading loading-dots loading-sm"></span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div className="p-3 border-t flex space-x-2">
+            <input
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
+              placeholder="Stelle eine Frage..."
+              className="flex-1 input input-bordered bg-gray-50 text-gray-700 placeholder-gray-400"
+            />
+            <button
+              onClick={() => askQuestion()}
+              disabled={loading}
+              className="btn btn-primary"
+              title="Frage senden"
+            >
+              Senden
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
