@@ -3,7 +3,7 @@ from typing import Dict, Any, Optional, List
 from dotenv import load_dotenv
 from pinecone import Pinecone
 
-from services.loader import AVAILABLE_NAMESPACES
+from backend.services.loader import AVAILABLE_NAMESPACES
 
 load_dotenv()
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))

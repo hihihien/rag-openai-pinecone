@@ -1,6 +1,6 @@
 import openai
 from typing import List, Dict
-from services.embeddings import detect_lang
+from backend.services.embeddings import detect_lang
 
 CHAT_MODEL = "gpt-4o-mini"
 

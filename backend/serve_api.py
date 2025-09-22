@@ -3,11 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Optional, List
 
-from services.loader import load_text_store, AVAILABLE_NAMESPACES
-from services.embeddings import embed
-from services.pinecone_search import build_filter, search_all_namespaces
-from services.context_builder import build_context, SourceItem
-from services.prompt_utils import ask_openai
+from backend.services.logger import save_log
+from backend.services.loader import load_text_store, AVAILABLE_NAMESPACES
+from backend.services.embeddings import embed
+from backend.services.pinecone_search import build_filter, search_all_namespaces
+from backend.services.context_builder import build_context, SourceItem
+from backend.services.prompt_utils import ask_openai
 
 # Load in-memory data
 load_text_store()
@@ -53,10 +54,16 @@ def ask(req: QuestionRequest):
 
     if not context:
         msg = "Ich konnte dazu nichts im Modulhandbuch finden." if req.question.lower().startswith("wie") else "I couldn't find anything relevant in the module handbook."
+        save_log(req.question, msg, [])  # log even failed searches
         return AnswerResponse(answer=msg, sources=[])
 
     answer = ask_openai(context, req.question, req.history or [])
-    return AnswerResponse(answer=answer, sources=sources)
+    resp = AnswerResponse(answer=answer, sources=sources)
+
+    # Save log
+    save_log(req.question, resp.answer, resp.sources)
+
+    return resp
 
 @app.post("/ask-simple", response_model=AnswerResponse)
 def ask_simple(question: str = Body(..., media_type="text/plain")):
