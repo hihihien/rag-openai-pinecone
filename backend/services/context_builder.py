@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from backend.services.loader import ID_TO_TEXT, ID_TO_META
+from services.loader import ID_TO_TEXT, ID_TO_META
 from pydantic import BaseModel
 
 # lowered threshold to include weaker matches

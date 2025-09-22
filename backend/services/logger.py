@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from typing import List
-from backend.services.context_builder import SourceItem
+from services.context_builder import SourceItem
 
 # where logs are stored
 LOG_FILE = Path(__file__).resolve().parent.parent / "logs" / "chat_log.jsonl"

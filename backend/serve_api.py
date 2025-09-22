@@ -3,12 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Optional, List
 
-from backend.services.logger import save_log
-from backend.services.loader import load_text_store, AVAILABLE_NAMESPACES
-from backend.services.embeddings import embed
-from backend.services.pinecone_search import build_filter, search_all_namespaces
-from backend.services.context_builder import build_context, SourceItem
-from backend.services.prompt_utils import ask_openai
+from services.logger import save_log
+from services.loader import load_text_store, AVAILABLE_NAMESPACES
+from services.embeddings import embed
+from services.pinecone_search import build_filter, search_all_namespaces
+from services.context_builder import build_context, SourceItem
+from services.prompt_utils import ask_openai
 
 # Load in-memory data
 load_text_store()
