@@ -79,7 +79,7 @@ export default function HomePage() {
               {
                 role: 'assistant',
                 content:
-                        'Hallo! 👋 Ich bin MeMo, dein KI-Assistent der **Medienfachschaft der Hochschule Düsseldorf**, unterstützt von OpenAI API.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\nFür bessere Ergebnisse gib bitte in deiner Frage an:\n\n- **Dein Studienprogramm**\n- **Namen des Moduls**, zu dem du Informationen möchtest\n- **Thematisch Inhalte** aus einem Studienprogramm',
+                        'Hallo! 👋 Ich bin **MeMo**, dein KI-Assistent der **Medienfachschaft der Hochschule Düsseldorf**, unterstützt von OpenAI API.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\n**Für bessere Ergebnisse gib bitte in deiner Frage an:**\n\n- **Dein Studienprogramm**\n- **Namen des Moduls**, zu dem du Informationen möchtest\n- **Thematisch Inhalte** aus einem Studienprogramm',
                       },
                   ]);
           }
@@ -190,7 +190,7 @@ export default function HomePage() {
                         alt={m.role === 'user' ? 'User' : 'Assistant'}
                         src={
                           m.role === 'user'
-                            ? 'https://img.daisyui.com/images/profile/demo/kenobee@192.webp'
+                            ? 'https://tse1.mm.bing.net/th/id/OIP.5a2N8G0kJUgetvDzyi23kwAAAA?rs=1&pid=ImgDetMain&o=7&rm=3'
                             : 'https://img.daisyui.com/images/profile/demo/yellingcat@192.webp'
                         }
                       />
