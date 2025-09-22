@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Maximize2, Minimize2, Minus } from 'lucide-react';
+import { Maximize2, Minimize2, Minus, NotebookPen } from 'lucide-react';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -68,7 +68,7 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="relative min-h-screen bg-gray-50" data-theme="cupcake">
+    <main className="relative min-h-screen bg-gray-50" data-theme="caramellatte">
       {/* Floating Avatar / FAB Button */}
       <div
         className="fixed bottom-6 right-6 avatar cursor-pointer"
@@ -79,13 +79,13 @@ export default function HomePage() {
               {
                 role: 'assistant',
                 content:
-                        'Hallo! 👋 Ich bin MeMo, dein KI-Assistent der Medienfachschaft der Hochschule Düsseldorf, unterstützt von OpenAI.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\nFür bessere Ergebnisse gib bitte in deiner Frage an:\n\n- Dein Studienprogramm\n- Den Namen des Moduls, zu dem du Informationen möchtest\n- Thematisch verwandte Inhalte aus einem Studienprogramm',
+                        'Hallo! 👋 Ich bin MeMo, dein KI-Assistent der **Medienfachschaft der Hochschule Düsseldorf**, unterstützt von OpenAI API.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\nFür bessere Ergebnisse gib bitte in deiner Frage an:\n\n- **Dein Studienprogramm**\n- **Namen des Moduls**, zu dem du Informationen möchtest\n- **Thematisch Inhalte** aus einem Studienprogramm',
                       },
                   ]);
           }
         }}
       >
-        <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+        <div className="w-12 rounded-full ring-3 ring-neutral ring-offset-base-100 ring-offset-2">
           <img
             src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
             alt="Chatbot Avatar"
@@ -104,11 +104,11 @@ export default function HomePage() {
             }`}
         >
           {/* Header */}
-          <div className="p-3 border-b bg-primary text-white rounded-t-lg flex justify-between items-center">
+          <div className="p-3 border-b bg-neutral text-white rounded-t-lg flex justify-between items-center">
             {/* Left side: Avatar + Title */}
             <div className="flex items-center gap-3">
               <div className="avatar">
-                <div className="w-10 rounded-full ring ring-white ring-offset-2">
+                <div className="w-10 rounded-full">
                   <img
                     src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
                     alt="MeMo Avatar"
@@ -116,15 +116,32 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="font-bold">MeMo, Dein KI-Assistent</span>
+                <span className="font-bold text-xs">MeMo, Dein KI-Assistent</span>
                 <span className="text-xs font-light opacity-80">
-                  Powered by OpenAI API
+                  Für Studieninhalte der HSD Medienfachschaft
                 </span>
               </div>
             </div>
 
             {/* Right side: Icons */}
             <div className="flex items-center gap-2">
+              <div className="tooltip text-xs" data-tip="neues Chat starten">
+                <button
+                  onClick={() => {
+                    setMessages([
+                      {
+                        role: 'user',
+                        content: 'Ich möchte ein neues Chat starten.',
+                      },
+                    ]);
+                  }}
+                  className="btn btn-ghost btn-xs text-white"
+                  title="neues Chat starten"
+                >
+                  <NotebookPen className="w-4 h-4" />
+                </button>
+              </div>
+
               <div
                 className="tooltip text-xs"
                 data-tip={expanded ? 'Minimieren' : 'Maximieren'}
@@ -182,12 +199,29 @@ export default function HomePage() {
                   <div
                     className={`chat-bubble max-w-[80%] ${
                       m.role === 'assistant'
-                        ? 'chat-bubble-primary'
+                        ? 'chat-bubble-neutral'
                         : 'chat-bubble-secondary'
                     }`}
                   >
                     {m.role === 'assistant' ? (
-                      <ReactMarkdown>{m.content}</ReactMarkdown>
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          ul: ({ node, ...props }) => (
+                            <ul className="list-disc list-inside space-y-1" {...props} />
+                          ),
+                          ol: ({ node, ...props }) => (
+                            <ol className="list-decimal list-inside space-y-1" {...props} />
+                          ),
+                          li: ({ node, ...props }) => <li className="ml-2" {...props} />,
+                          strong: ({ node, ...props }) => (
+                            <strong className="font-bold" {...props} />
+                          ),
+                          p: ({ node, ...props }) => <p className="mb-2" {...props} />,
+                        }}
+                      > 
+                        {m.content}
+                      </ReactMarkdown>
                     ) : (
                       m.content
                     )}
@@ -216,7 +250,7 @@ export default function HomePage() {
 
             {loading && (
               <div className="chat chat-start">
-                <div className="chat-bubble chat-bubble-primary">
+                <div className="chat-bubble chat-bubble-neutral">
                   <span className="loading loading-dots loading-sm"></span>
                 </div>
               </div>
@@ -236,7 +270,7 @@ export default function HomePage() {
             <button
               onClick={() => askQuestion()}
               disabled={loading}
-              className="btn btn-primary"
+              className="btn btn-neutral"
               title="Frage senden"
             >
               Senden
