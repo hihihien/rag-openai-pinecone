@@ -6,22 +6,12 @@
 /* If using Tailwind, ensure your build process includes these directives */
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 0, 0, 0; /* white */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-align: justify;
+    --foreground-rgb: 255, 255, 255; /* black */
   }
 }
 

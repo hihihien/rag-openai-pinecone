@@ -62,10 +62,9 @@ export default function HomePage() {
 
   // Suggested quick questions
   const suggestions = [
-    'Welche Wahlmodule gibt es im Studiengang Medieninformatik?',
-    'Was sind die Voraussetzungen für das Modul Theoretische Informatik?',
-    'Welches Modul im Studiengang BMI ist für Webentwicklung?',
-    'An wen kann ich mich bei Fragen über Module in BDAISY wenden?',
+    'Was sind die Voraussetzungen für das Modul Datenbank System 1?',
+    'Welches Modul im Studiengang BMI ist relevant für Webentwicklung?',
+    'An wen kann ich mich bei Fragen über Bachelorarbeiten in BDAISY wenden?',
   ];
 
   return (
@@ -162,7 +161,7 @@ export default function HomePage() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4">
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
             {messages.map((m, i) => (
               <div key={i}>
                 <div
@@ -188,7 +187,7 @@ export default function HomePage() {
                     }`}
                   >
                     {m.role === 'assistant' ? (
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+                      <ReactMarkdown>{m.content}</ReactMarkdown>
                     ) : (
                       m.content
                     )}
@@ -198,12 +197,12 @@ export default function HomePage() {
                 {/* Suggestions only after the greeting message */}
                 {i === 0 && m.role === 'assistant' && (
                   <div className="chat chat-end mt-2">
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 max-w-full">
                       {suggestions.map((s, idx) => (
                         <button
                           key={idx}
                           onClick={() => askQuestion(s)}
-                          className="btn btn-sm btn-secondary"
+                          className="chat-bubble chat-bubble-secondary text-xs cursor-pointer hover:opacity-80 transition"
                           title="Beispielfrage auswählen"
                         >
                           {s}
