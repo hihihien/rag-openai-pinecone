@@ -62,7 +62,7 @@ export default function HomePage() {
 
   // Suggested quick questions
   const suggestions = [
-    'Was sind die Voraussetzungen für das Modul Datenbank System 1?',
+    'Was sind die Voraussetzungen für das Modul Datenbanksysteme?',
     'Welches Modul im Studiengang BMI ist relevant für Webentwicklung?',
     'An wen kann ich mich bei Fragen über Bachelorarbeiten in BDAISY wenden?',
   ];
