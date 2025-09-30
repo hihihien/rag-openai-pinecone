@@ -1,37 +1,50 @@
 import os
 import json
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List
 
 from dotenv import load_dotenv
 from pinecone import Pinecone
 import openai
 
-# ========== Config ==========
+# === CONFIG ===
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index(os.getenv("PINECONE_INDEX"))
 
 EMBED_MODEL = "text-embedding-3-large"
-BATCH = 100
+BATCH_SIZE = 100
+MERGED_DIR = Path("backend/data/merged")
 
-# Folder for exported .jsonl files (from generate_*.py scripts)
-PROCESSED_DIR = Path("backend/data/processed_json")
-
-# ========== Embedding Helper ==========
+# === Embedding helper ===
 def embed_batch(texts: List[str]) -> List[List[float]]:
-    res = openai.embeddings.create(model=EMBED_MODEL, input=texts)
-    return [d.embedding for d in res.data]
+    response = openai.embeddings.create(model=EMBED_MODEL, input=texts)
+    return [r.embedding for r in response.data]
 
-# ========== Upload Logic ==========
+def sanitize_metadata(metadata: dict) -> dict:
+    """Ensure all Pinecone metadata values are valid types."""
+    clean = {}
+    for k, v in metadata.items():
+        if v is None:
+            clean[k] = "no data"
+        elif isinstance(v, (str, int, float, bool)):
+            clean[k] = v
+        elif isinstance(v, list) and all(isinstance(i, str) for i in v):
+            clean[k] = v
+        else:
+            clean[k] = str(v)  # fallback: convert to string
+    return clean
+
+# === Upload logic ===
 def upload_file(path: Path):
-    print(f"[upload] File: {path.name}")
-    total = 0
+    print(f"[upload] Processing file: {path.name}")
+    namespace = path.stem.split("_")[0]  # e.g., "BMI" from "BMI_merged.jsonl"
+
+    batch_ids, batch_texts, batch_meta = [], [], []
+    total_uploaded = 0
 
     with path.open("r", encoding="utf-8") as f:
-        batch_ids, batch_texts, batch_meta = [], [], []
-
         for line in f:
             rec = json.loads(line)
             text = rec.get("text", "").strip()
@@ -39,44 +52,47 @@ def upload_file(path: Path):
                 continue
 
             rid = rec.get("id") or f"auto-{hash(text)}"
-            namespace = rid.split("__")[0] if "__" in rid else "default"
-            meta_raw = rec.get("metadata") or {}
-            meta = {k: v for k, v in meta_raw.items() if v is not None}
+            raw_metadata = rec.get("metadata", {}) or {}
+            metadata = sanitize_metadata(raw_metadata)
 
             batch_ids.append(rid)
             batch_texts.append(text)
-            batch_meta.append(meta)
+            batch_meta.append(metadata)
 
-            if len(batch_ids) >= BATCH:
+            if len(batch_ids) >= BATCH_SIZE:
                 vectors = [
-                    {"id": batch_ids[i], "values": embed, "metadata": batch_meta[i]}
-                    for i, embed in enumerate(embed_batch(batch_texts))
+                    {"id": batch_ids[i], "values": vec, "metadata": batch_meta[i]}
+                    for i, vec in enumerate(embed_batch(batch_texts))
                 ]
                 index.upsert(vectors=vectors, namespace=namespace)
-                print(f"  upserted {len(vectors)}")
-                total += len(vectors)
+                print(f"  • Upserted {len(vectors)} vectors to namespace '{namespace}'")
+                total_uploaded += len(vectors)
                 batch_ids, batch_texts, batch_meta = [], [], []
 
         # Final flush
         if batch_ids:
             vectors = [
-                {"id": batch_ids[i], "values": embed, "metadata": batch_meta[i]}
-                for i, embed in enumerate(embed_batch(batch_texts))
+                {"id": batch_ids[i], "values": vec, "metadata": batch_meta[i]}
+                for i, vec in enumerate(embed_batch(batch_texts))
             ]
             index.upsert(vectors=vectors, namespace=namespace)
-            print(f"  upserted {len(vectors)}")
-            total += len(vectors)
+            print(f"  • Upserted {len(vectors)} vectors to namespace '{namespace}'")
+            total_uploaded += len(vectors)
 
-    print(f"{path.name}: {total} vectors uploaded\n")
+    print(f"[✓] {path.name}: Uploaded {total_uploaded} vectors.\n")
 
-# ========== Main ==========
+# === Main script ===
 if __name__ == "__main__":
-    jsonl_files = sorted(PROCESSED_DIR.glob("*.jsonl"))
-    if not jsonl_files:
-        print("No files found in 'processed_json' folder.")
+    merged_files = sorted(MERGED_DIR.glob("*.jsonl"))
+    if not merged_files:
+        print("No merged files found in 'data/merged/'.")
         exit(1)
 
-    print(f"[scan] Found {len(jsonl_files)} processed .jsonl files")
-    for file in jsonl_files:
+    print(f"[•] Found {len(merged_files)} merged files:")
+    for file in merged_files:
+        print(f"  - {file.name}")
+
+    for file in merged_files:
         upload_file(file)
-    print(" All JSON module files uploaded to Pinecone.")
+
+    print("[✓] All merged modules uploaded to Pinecone.")
