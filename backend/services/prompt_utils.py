@@ -31,9 +31,13 @@ def ask_openai(context: str, question: str, history: List[Dict[str, str]]) -> st
     messages.append({"role": "user", "content": user_prompt})
 
     #ask OpenAI
-    response = openai.chat.completions.create(
-        model=CHAT_MODEL,
-        messages=messages,
-        temperature=0.2
-    )   
-    return response.choices[0].message.content
+    try:
+        response = openai.chat.completions.create(
+            model=CHAT_MODEL,
+            messages=messages,
+            temperature=0.2
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"[OpenAI Error] {e}")
+        return "Fehler beim Generieren der Antwort. Bitte versuche es später erneut."

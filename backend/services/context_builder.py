@@ -18,6 +18,9 @@ class SourceItem(BaseModel):
     credits: str = ""
     examType: str = ""
     score: float = 0.0
+    sourceFile: str = ""
+    pdfPageStart: int = 0
+    pdfPageEnd: int = 0
 
 def build_context(matches) -> Tuple[str, List[SourceItem]]:
     used, parts, sources = {}, [], []
@@ -35,19 +38,22 @@ def build_context(matches) -> Tuple[str, List[SourceItem]]:
         if not full:
             continue
 
-        header = f"[{meta.get('studyProgramAbbrev')}] {mod} • {meta.get('moduleNameDe') or meta.get('moduleNameEn')}"
+        header = f"[{meta.get('studyProgramAbbrev')}] {mod} • {meta.get('moduleNameDe') or meta.get('moduleNameEn') or meta.get('moduleName')}"
         parts.append(f"{header}\n{'-'*len(header)}\n{full}")
 
         sources.append(SourceItem(
             id=rid,
             moduleNumber=mod,
             moduleNameDe=meta.get("moduleNameDe", ""),
-            moduleNameEn=meta.get("moduleNameEn", ""),
+            moduleNameEn=meta.get("moduleNameEn") or meta.get("moduleName", ""),
             studyProgramAbbrev=meta.get("studyProgramAbbrev", ""),
             season=meta.get("season", ""),
             credits=meta.get("credits", ""),
             examType=meta.get("examType", ""),
-            score=m.score
+            score=m.score,
+            sourceFile=meta.get("source_file", ""),
+            pdfPageStart=meta.get("pdf_page_start", 0),
+            pdfPageEnd=meta.get("pdf_page_end", 0)
         ))
 
         if len(parts) >= MAX_CONTEXT_CHUNKS:
