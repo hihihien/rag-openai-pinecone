@@ -8,7 +8,7 @@ PDF_PATH = BASE_DIR / "processed_pdf" / "BMI_MHB_PO2025_chunks.jsonl"
 OUT_PATH = Path(__file__).resolve().parent / "BMI_merged.jsonl"
 
 # links for BMI
-FACH_URL = "https://medien.hs-duesseldorf.de/bmi"
+STUDIENGANG_URL = "https://medien.hs-duesseldorf.de/bmi"
 PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/BMI_MHB_PO2025_V1.0.pdf"
 
 # === LOAD JSON MODULE DATA ===
@@ -57,7 +57,7 @@ for json_id, json_rec in json_lookup.items():
         "pdf_page_start": pdf_meta.get("pdf_page_start", 0),
         "pdf_page_end": pdf_meta.get("pdf_page_end", 0),
         "studyProgramAbbrev": pdf_meta.get("studyProgramAbbrev", meta.get("studyProgramAbbrev", "BMI")),
-        "fachschaft_url": FACH_URL,
+        "studyProgram_Url": STUDIENGANG_URL,
         "pdf_url": PDF_URL
     })
 
@@ -91,7 +91,7 @@ for pdf_id, pdf_rec in pdf_lookup.items():
             "source_file": pdf_meta.get("source_file", "no data"),
             "pdf_page_start": pdf_meta.get("pdf_page_start", 0),
             "pdf_page_end": pdf_meta.get("pdf_page_end", 0),
-            "fachschaft_url": FACH_URL,
+            "studyProgram_Url": STUDIENGANG_URL,
             "pdf_url": PDF_URL
         }
     }

@@ -48,7 +48,7 @@ def load_text_store():
                         "source_file": meta.get("source_file", ""),
                         "pdf_page_start": meta.get("pdf_page_start", 0),
                         "pdf_page_end": meta.get("pdf_page_end", 0),
-                        "fachschaft_url": meta.get("fachschaft_url", ""),
+                        "studyProgram_Url": meta.get("studyProgram_Url", ""),
                         "pdf_url": meta.get("pdf_url", "")
                     }
 

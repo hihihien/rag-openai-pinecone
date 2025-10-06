@@ -7,7 +7,7 @@ JSON_PATH = BASE_DIR / "processed_json" / "BMT.jsonl"
 PDF_PATH = BASE_DIR / "processed_pdf" / "BMT_MHB_PO2025_chunks.jsonl"
 OUT_PATH = Path(__file__).resolve().parent / "BMT_merged.jsonl"
 
-FACH_URL = "https://medien.hs-duesseldorf.de/bmt"
+STUDIENGANG_URL = "https://medien.hs-duesseldorf.de/bmt"
 PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/BMT_MHB_PO2025_V1.0.pdf"
 
 # === LOAD JSON MODULE DATA ===
@@ -56,7 +56,7 @@ for json_id, json_rec in json_lookup.items():
         "pdf_page_start": pdf_meta.get("pdf_page_start", 0),
         "pdf_page_end": pdf_meta.get("pdf_page_end", 0),
         "studyProgramAbbrev": pdf_meta.get("studyProgramAbbrev", meta.get("studyProgramAbbrev", "BMT")),
-        "fachschaft_url": FACH_URL,
+        "studyProgram_Url": STUDIENGANG_URL,
         "pdf_url": PDF_URL
     })
 
@@ -90,7 +90,7 @@ for pdf_id, pdf_rec in pdf_lookup.items():
             "source_file": pdf_meta.get("source_file", "no data"),
             "pdf_page_start": pdf_meta.get("pdf_page_start", 0),
             "pdf_page_end": pdf_meta.get("pdf_page_end", 0),
-            "fachschaft_url": FACH_URL,
+            "studyProgram_Url": STUDIENGANG_URL,
             "pdf_url": PDF_URL
         }
     }

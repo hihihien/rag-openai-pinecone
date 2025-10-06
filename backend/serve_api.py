@@ -70,11 +70,11 @@ def ask(req: QuestionRequest):
     seen_links = set()
     for src in sources[:3]:  # include top 3 sources max
         if src.pdfUrl and src.pdfUrl not in seen_links:
-            footer_lines.append(f" - 📄 PDF-Link: {src.pdfUrl} (Seite {src.pdfPageStart}–{src.pdfPageEnd})")
+            footer_lines.append(f" - 📄 PDF Seite: {src.pdfUrl} (Seite {src.pdfPageStart}–{src.pdfPageEnd})")
             seen_links.add(src.pdfUrl)
-        if src.fachschaftUrl and src.fachschaftUrl not in seen_links:
-            footer_lines.append(f" - 🌐 Fachschaft: {src.fachschaftUrl}")
-            seen_links.add(src.fachschaftUrl)
+        if src.studyProgramUrl and src.studyProgramUrl not in seen_links:
+            footer_lines.append(f" - 🌐 Studiengangsseite: {src.studyProgramUrl}")
+            seen_links.add(src.studyProgramUrl)
     footer = "\n".join(footer_lines)
     final_answer = answer.strip() + "\n\n" + footer
     save_log(req.question, final_answer, sources)
