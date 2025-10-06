@@ -79,7 +79,7 @@ export default function HomePage() {
               {
                 role: 'assistant',
                 content:
-                        'Hallo! 👋 Ich bin **MeMo**, dein KI-Assistent der **Medienfachschaft der Hochschule Düsseldorf**, unterstützt von OpenAI API.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\n**Für bessere Ergebnisse gib bitte in deiner Frage an:**\n\n- **Dein Studienprogramm**\n- **Namen des Moduls**, zu dem du Informationen möchtest\n- **Thematisch Inhalte** aus einem Studienprogramm',
+                        'Hallo! 👋 Ich bin **MeDi**, dein KI-Assistent der **Medienfachschaft der Hochschule Düsseldorf**, unterstützt von OpenAI API.\n\nFrag mich alles rund um deinen Studieninhalt!\n\n\n\n**Für bessere Ergebnisse gib bitte in deiner Frage an:**\n\n- **Dein Studienprogramm**\n- **Namen des Moduls**, zu dem du Informationen möchtest\n- **Thematisch Inhalte** aus einem Studienprogramm',
                       },
                   ]);
           }
@@ -204,24 +204,35 @@ export default function HomePage() {
                     }`}
                   >
                     {m.role === 'assistant' ? (
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          ul: ({ node, ...props }) => (
-                            <ul className="list-disc list-inside space-y-1" {...props} />
-                          ),
-                          ol: ({ node, ...props }) => (
-                            <ol className="list-decimal list-inside space-y-1" {...props} />
-                          ),
-                          li: ({ node, ...props }) => <li className="ml-2" {...props} />,
-                          strong: ({ node, ...props }) => (
-                            <strong className="font-bold" {...props} />
-                          ),
-                          p: ({ node, ...props }) => <p className="mb-2" {...props} />,
-                        }}
-                      > 
-                        {m.content}
-                      </ReactMarkdown>
+                      <div>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            a: ({ node, ...props }) => (
+                              <a
+                                {...props}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-white-600 underline hover:text-gray-800"
+                              />
+                            ),
+                            ul: ({ node, ...props }) => (
+                              <ul className="list-disc list-inside space-y-1" {...props} />
+                            ),
+                            ol: ({ node, ...props }) => (
+                              <ol className="list-decimal list-inside space-y-1" {...props} />
+                            ),
+                            li: ({ node, ...props }) => <li className="ml-2" {...props} />,
+                            strong: ({ node, ...props }) => (
+                              <strong className="font-bold" {...props} />
+                            ),
+                            p: ({ node, ...props }) => <p className="mb-2" {...props} />,
+                          }}
+                        >
+                          {m.content}
+                        </ReactMarkdown>
+
+                      </div>
                     ) : (
                       m.content
                     )}

@@ -21,6 +21,8 @@ class SourceItem(BaseModel):
     sourceFile: str = ""
     pdfPageStart: int = 0
     pdfPageEnd: int = 0
+    fachschaftUrl: str = ""
+    pdfUrl: str = ""
 
 def build_context(matches) -> Tuple[str, List[SourceItem]]:
     used, parts, sources = {}, [], []
@@ -53,7 +55,9 @@ def build_context(matches) -> Tuple[str, List[SourceItem]]:
             score=m.score,
             sourceFile=meta.get("source_file", ""),
             pdfPageStart=meta.get("pdf_page_start", 0),
-            pdfPageEnd=meta.get("pdf_page_end", 0)
+            pdfPageEnd=meta.get("pdf_page_end", 0),
+            fachschaftUrl=meta.get("fachschaft_url", ""),
+            pdfUrl=meta.get("pdf_url", "")
         ))
 
         if len(parts) >= MAX_CONTEXT_CHUNKS:

@@ -1,11 +1,14 @@
 import json
 from pathlib import Path
 
-# === CONFIG (relative to current script location) ===
-BASE_DIR = Path(__file__).resolve().parent.parent  # this goes to backend/data/
+# === CONFIG ===
+BASE_DIR = Path(__file__).resolve().parent.parent  # backend/data
 JSON_PATH = BASE_DIR / "processed_json" / "BMT.jsonl"
 PDF_PATH = BASE_DIR / "processed_pdf" / "BMT_MHB_PO2025_chunks.jsonl"
-OUT_PATH = Path(__file__).resolve().parent / "BMT_merged.jsonl"  # save to current folder
+OUT_PATH = Path(__file__).resolve().parent / "BMT_merged.jsonl"
+
+FACH_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/bmt_en.aspx"
+PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/BMT_MHB_PO2025_V1.0.pdf"
 
 # === LOAD JSON MODULE DATA ===
 with JSON_PATH.open("r", encoding="utf-8") as f:
@@ -34,7 +37,7 @@ for json_id, json_rec in json_lookup.items():
 
     meta = merged.get("metadata", {}).copy()
 
-    # Fallback logic for module names
+    # === Fallback for module names
     module_name_en = meta.get("moduleName", None)
     module_name_de = pdf_meta.get("module_name", None)
 
@@ -45,12 +48,17 @@ for json_id, json_rec in json_lookup.items():
     elif not module_name_en and not module_name_de:
         module_name_en = module_name_de = "no data"
 
-    meta["moduleName"] = module_name_en
-    meta["moduleNameDe"] = module_name_de
-    meta["source_file"] = pdf_meta.get("source_file", "no data")
-    meta["pdf_page_start"] = pdf_meta.get("pdf_page_start", "no data")
-    meta["pdf_page_end"] = pdf_meta.get("pdf_page_end", "no data")
-    meta["studyProgramAbbrev"] = pdf_meta.get("studyProgramAbbrev", meta.get("studyProgramAbbrev", "no data"))
+    # === Metadata enrichment
+    meta.update({
+        "moduleName": module_name_en,
+        "moduleNameDe": module_name_de,
+        "source_file": pdf_meta.get("source_file", "no data"),
+        "pdf_page_start": pdf_meta.get("pdf_page_start", 0),
+        "pdf_page_end": pdf_meta.get("pdf_page_end", 0),
+        "studyProgramAbbrev": pdf_meta.get("studyProgramAbbrev", meta.get("studyProgramAbbrev", "BMT")),
+        "fachschaft_url": FACH_URL,
+        "pdf_url": PDF_URL
+    })
 
     merged["metadata"] = meta
     merged_records.append(merged)
@@ -58,14 +66,14 @@ for json_id, json_rec in json_lookup.items():
 # === Step 2: Include unmatched PDF-only records
 for pdf_id, pdf_rec in pdf_lookup.items():
     if pdf_id in json_lookup:
-        continue  # already merged
+        continue
 
     pdf_meta = pdf_rec.get("metadata", {})
     module_name_de = pdf_meta.get("module_name", None)
     module_name_en = module_name_de if module_name_de else "no data"
 
     merged = {
-        "id": pdf_id,  # ✅ keep original ID
+        "id": pdf_id,
         "text": pdf_rec["text"].strip(),
         "metadata": {
             "moduleNumber": pdf_id,
@@ -78,10 +86,12 @@ for pdf_id, pdf_rec in pdf_lookup.items():
             "heldInLanguage": "no data",
             "reviserName": "no data",
             "reviserEmail": "no data",
-            "studyProgramAbbrev": pdf_meta.get("studyProgramAbbrev", "no data"),
+            "studyProgramAbbrev": pdf_meta.get("studyProgramAbbrev", "BMT"),
             "source_file": pdf_meta.get("source_file", "no data"),
-            "pdf_page_start": pdf_meta.get("pdf_page_start", "no data"),
-            "pdf_page_end": pdf_meta.get("pdf_page_end", "no data")
+            "pdf_page_start": pdf_meta.get("pdf_page_start", 0),
+            "pdf_page_end": pdf_meta.get("pdf_page_end", 0),
+            "fachschaft_url": FACH_URL,
+            "pdf_url": PDF_URL
         }
     }
     merged_records.append(merged)
@@ -92,4 +102,4 @@ with OUT_PATH.open("w", encoding="utf-8") as f:
     for rec in merged_records:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
-print(f"[✓] Merged {len(merged_records)} records → {OUT_PATH}")
+print(f"[✓] Merged {len(merged_records)} BMT records → {OUT_PATH}")
