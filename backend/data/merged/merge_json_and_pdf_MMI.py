@@ -7,7 +7,7 @@ JSON_PATH = BASE_DIR / "processed_json" / "MMI.jsonl"
 PDF_PATH = BASE_DIR / "processed_pdf" / "MMI_MHB_PO2025_chunks.jsonl"
 OUT_PATH = Path(__file__).resolve().parent / "MMI_merged.jsonl"
 
-FACH_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/mmi/Seiten/mmi_en.aspx"
+FACH_URL = "https://medien.hs-duesseldorf.de/mmi"
 PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/MMI_MHB_PO2025_V1.0.pdf"
 
 # === LOAD JSON MODULE DATA ===

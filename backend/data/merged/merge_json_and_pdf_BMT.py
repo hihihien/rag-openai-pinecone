@@ -7,7 +7,7 @@ JSON_PATH = BASE_DIR / "processed_json" / "BMT.jsonl"
 PDF_PATH = BASE_DIR / "processed_pdf" / "BMT_MHB_PO2025_chunks.jsonl"
 OUT_PATH = Path(__file__).resolve().parent / "BMT_merged.jsonl"
 
-FACH_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/bmt_en.aspx"
+FACH_URL = "https://medien.hs-duesseldorf.de/bmt"
 PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/BMT_MHB_PO2025_V1.0.pdf"
 
 # === LOAD JSON MODULE DATA ===

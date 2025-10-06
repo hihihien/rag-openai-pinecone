@@ -7,7 +7,7 @@ JSON_PATH = BASE_DIR / "processed_json" / "BTB.jsonl"
 PDF_PATH = BASE_DIR / "processed_pdf" / "BTB_MHB_PO2025_chunks.jsonl"
 OUT_PATH = Path(__file__).resolve().parent / "BTB_merged.jsonl"
 
-FACH_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/Seiten/btub_en.aspx"
+FACH_URL = "https://medien.hs-duesseldorf.de/btub"
 PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/BTB_MHB_PO2025_V1.0.pdf"
 
 # === LOAD JSON MODULE DATA ===
