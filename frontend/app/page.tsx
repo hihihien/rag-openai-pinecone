@@ -190,7 +190,7 @@ export default function HomePage() {
                         alt={m.role === 'user' ? 'User' : 'Assistant'}
                         src={
                           m.role === 'user'
-                            ? '/user.png'
+                            ? '/user.jpg'
                             : '/chatbot.png'
                         }
                       />
