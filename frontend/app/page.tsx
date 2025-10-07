@@ -68,7 +68,7 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="relative min-h-screen bg-gray-50" data-theme="caramellatte">
+    <main className="relative min-h-screen bg-gray-50" data-theme="HSD">
       {/* Floating Avatar / FAB Button */}
       <div
         className="fixed bottom-6 right-6 avatar cursor-pointer"
@@ -85,9 +85,9 @@ export default function HomePage() {
           }
         }}
       >
-        <div className="w-12 rounded-full ring-3 ring-neutral ring-offset-base-100 ring-offset-2">
+        <div className="w-12 rounded-full ring-2 ring-neutral ring-offset-base-100 ring-offset-2">
           <img
-            src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
+            src="/chatbot.png"
             alt="Chatbot Avatar"
           />
         </div>
@@ -110,13 +110,13 @@ export default function HomePage() {
               <div className="avatar">
                 <div className="w-10 rounded-full">
                   <img
-                    src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
-                    alt="MeMo Avatar"
+                    src="/chatbot.png"
+                    alt="MeDi Avatar"
                   />
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-xs">MeMo, Dein KI-Assistent</span>
+                <span className="font-bold text-xs">MeDi, Dein KI-Assistent</span>
                 <span className="text-xs font-light opacity-80">
                   Für Studieninhalte der HSD Medienfachschaft
                 </span>
@@ -190,8 +190,8 @@ export default function HomePage() {
                         alt={m.role === 'user' ? 'User' : 'Assistant'}
                         src={
                           m.role === 'user'
-                            ? 'https://tse1.mm.bing.net/th/id/OIP.5a2N8G0kJUgetvDzyi23kwAAAA?rs=1&pid=ImgDetMain&o=7&rm=3'
-                            : 'https://img.daisyui.com/images/profile/demo/yellingcat@192.webp'
+                            ? '/user.png'
+                            : '/chatbot.png'
                         }
                       />
                     </div>
