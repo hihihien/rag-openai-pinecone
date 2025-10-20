@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:hsd": "cross-env NEXT_CONFIG=next.config.hsd.mjs next build",
     "start": "next start",
+    "export": "next export",
     "lint": "next lint"
   },
   "dependencies": {
@@ -20,6 +22,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^10.1.0",
     "daisyui": "^5.1.13",
     "eslint": "^8",
     "next": "^15.5.3",

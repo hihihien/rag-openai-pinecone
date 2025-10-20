@@ -1,36 +1,59 @@
 'use client';
 
 import { chatbotContexts } from '../utils/chatbotContext';
-
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Maximize2, Minimize2, Minus, NotebookPen } from 'lucide-react';
 
-
+// Fallback detection from referrer if no postMessage received
+function detectProgramFromReferrer(): string {
+  if (typeof document === 'undefined') return 'default';
+  try {
+    const ref = document.referrer.toLowerCase();
+    if (ref.includes('/btb')) return 'BTB';
+    if (ref.includes('/bmt')) return 'BMT';
+    if (ref.includes('/mmi')) return 'MMI';
+    if (ref.includes('/bdaisy')) return 'BDAISY';
+    if (ref.includes('/bcsim')) return 'BCSIM';
+    if (ref.includes('/mar')) return 'MAR';
+    if (ref.includes('/bmi')) return 'BMI';
+    return 'default';
+  } catch {
+    return 'default';
+  }
+}
 
 type Message = {
   role: 'user' | 'assistant';
   content: string;
 };
 
-type ChatbotProps = {
-  program?: string; // e.g., "MMI", "BMI", "default"
-};
-
-export default function Chatbot({ program = 'default' }: ChatbotProps) {
-  const { greeting, suggestions } = chatbotContexts[program] || chatbotContexts['default'];
+export default function Chatbot() {
+  const [program, setProgram] = useState(detectProgramFromReferrer());
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // Set initial greeting
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
+    setMessages([{ role: 'assistant', content: greeting }]);
+  }, [program]);
+
+  // Listen for program context from parent window
+  useEffect(() => {
+    const listener = (event: MessageEvent) => {
+      if (event.data?.program) {
+        const normalized = event.data.program.toUpperCase();
+        if (chatbotContexts[normalized]) {
+          setProgram(normalized);
+        }
+      }
+    };
+    window.addEventListener('message', listener);
+    return () => window.removeEventListener('message', listener);
+  }, []);
 
   const askQuestion = async (q?: string) => {
     const query = q || question;
@@ -66,164 +89,101 @@ export default function Chatbot({ program = 'default' }: ChatbotProps) {
     }
   };
 
+  const { greeting, suggestions } = chatbotContexts[program] || chatbotContexts['default'];
+
   return (
-    <main className="relative" data-theme="HSD">
-      {/* FAB Avatar */}
-      <div
-        className="fixed bottom-6 right-6 avatar cursor-pointer"
-        onClick={() => {
-          setIsOpen(!isOpen);
-          if (!isOpen && messages.length === 0) {
-            setMessages([
-              {
-                role: 'assistant',
-                content: greeting,
-              },
-            ]);
-          }
-        }}
-      >
-        <div className="w-12 rounded-full ring-2 ring-neutral ring-offset-base-100 ring-offset-2">
-          <img src="/chatbot.png" alt="Chatbot Avatar" />
+    <div className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm" data-theme="HSD-Medien">
+      {/* Header */}
+      <div className="p-4 sm:p-4 border-b bg-neutral text-white flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className="avatar">
+          <div className="w-10 rounded-full">
+            <img src="/chatbot.png" alt="MeDi Avatar" />
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
+          <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
       </div>
 
-      {/* Chat window */}
-      {isOpen && (
-        <div
-          className={`fixed bg-white border rounded-lg shadow-lg flex flex-col transition-all duration-300
-            ${
-              expanded
-                ? 'inset-10 w-auto h-auto max-w-[90vw] max-h-[85vh] m-auto'
-                : 'bottom-24 right-6 w-96 max-w-[90vw] sm:w-96 max-h-[70vh]'
-            }`}
-        >
-          {/* Header */}
-          <div className="p-3 border-b bg-neutral text-white rounded-t-lg flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="avatar">
-                <div className="w-10 rounded-full">
-                  <img src="/chatbot.png" alt="MeDi Avatar" />
+      {/* Messages */}
+      <div className="flex-1 min-h-[300px] p-4 overflow-y-auto space-y-4 text-sm">
+        {messages.map((m, i) => (
+          <div key={i}>
+            <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
+              <div className="chat-image avatar">
+                <div className="w-8 sm:w-10 rounded-full">
+                  <img
+                    alt={m.role === 'user' ? 'User' : 'Assistant'}
+                    src={m.role === 'user' ? '/user.jpg' : '/chatbot.png'}
+                  />
                 </div>
               </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-xs">MeDi, Dein KI-Assistent</span>
-                <span className="text-xs font-light opacity-80">
-                  Fachbereich Medien – HSD
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() =>
-                  setMessages([{ role: 'user', content: 'Ich möchte ein neues Chat starten.' }])
-                }
-                className="btn btn-ghost btn-xs text-white"
-                title="Neues Chat starten"
+              <div
+                className={`chat-bubble max-w-[90%]  md:max-w-[75%] text-sm ${
+                  m.role === 'assistant'
+                    ? 'chat-bubble-neutral'
+                    : 'chat-bubble-secondary'
+                }`}
               >
-                <NotebookPen className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="btn btn-ghost btn-xs text-white"
-                title={expanded ? 'Minimieren' : 'Maximieren'}
-              >
-                {expanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-              </button>
-              <button
-                onClick={() => {
-                  if (expanded) setExpanded(false);
-                  else setIsOpen(false);
-                }}
-                className="btn btn-ghost btn-xs text-white"
-                title="Schließen"
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Chat Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
-            {messages.map((m, i) => (
-              <div key={i}>
-                <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
-                  <div className="chat-image avatar">
-                    <div className="w-8 rounded-full">
-                      <img
-                        alt={m.role === 'user' ? 'User' : 'Assistant'}
-                        src={m.role === 'user' ? '/user.jpg' : '/chatbot.png'}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className={`chat-bubble max-w-[80%] ${
-                      m.role === 'assistant'
-                        ? 'chat-bubble-neutral'
-                        : 'chat-bubble-secondary'
-                    }`}
-                  >
-                    {m.role === 'assistant' ? (
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {m.content}
-                      </ReactMarkdown>
-                    ) : (
-                      m.content
-                    )}
-                  </div>
-                </div>
-
-                {/* Suggested questions */}
-                {i === 0 && m.role === 'assistant' && (
-                  <div className="chat chat-end mt-2">
-                    <div className="flex flex-wrap gap-2 max-w-full">
-                      {suggestions.map((s, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => askQuestion(s)}
-                          className="chat-bubble chat-bubble-secondary text-xs cursor-pointer hover:opacity-80 transition"
-                          title="Beispielfrage auswählen"
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                {m.role === 'assistant' ? (
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {m.content}
+                  </ReactMarkdown>
+                ) : (
+                  m.content
                 )}
               </div>
-            ))}
-            {loading && (
-              <div className="chat chat-start">
-                <div className="chat-bubble chat-bubble-neutral">
-                  <span className="loading loading-dots loading-sm"></span>
+            </div>
+
+            {/* Suggested questions after greeting */}
+            {i === 0 && m.role === 'assistant' && (
+              <div className="chat chat-end mt-2">
+                <div className="flex flex-wrap gap-2 max-w-full">
+                  {suggestions.map((s, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => askQuestion(s)}
+                      className="chat-bubble chat-bubble-secondary text-xs cursor-pointer hover:opacity-80 transition"
+                      title="Beispielfrage auswählen"
+                    >
+                      {s}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
+        ))}
+        {loading && (
+          <div className="chat chat-start">
+            <div className="chat-bubble chat-bubble-neutral">
+              <span className="loading loading-dots loading-sm"></span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
 
-          {/* Input */}
-          <div className="p-3 border-t flex space-x-2">
-            <input
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
-              placeholder="Stelle eine Frage..."
-              className="flex-1 input input-bordered bg-gray-50 text-gray-700 placeholder-gray-400"
-            />
-            <button
-              onClick={() => askQuestion()}
-              disabled={loading}
-              className="btn btn-neutral"
-              title="Frage senden"
-            >
-              Senden
-            </button>
-          </div>
-        </div>
-      )}
-    </main>
+      {/* Input */}
+      <div className="p-3 border-t flex flex-col sm:flex-row gap-2">
+        <input
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
+          placeholder="Stelle eine Frage..."
+          className="w-full input input-bordered text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
+          
+        />
+        <button
+          onClick={() => askQuestion()}
+          disabled={loading}
+          className="btn btn-neutral w-full sm:w-auto text-sm"
+          title="Frage senden"
+        >
+          Senden
+        </button>
+      </div>
+    </div>
   );
 }
-
-
