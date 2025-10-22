@@ -1,1 +1,206 @@
-#homepage FBM
+[{
+  "id": "",
+  "text": "Zur Studienorientierung bietet der Fachbereich Medien verschiedene Themen und Anlaufstellen an. Interessierte können sich über den Girls' Day und den Tag der offenen Tür, Austauschprogramme, Beratungsangebote vor und im Studium sowie Erstsemesterinfos informieren. Weitere Informationen finden Sie auf den verlinkten Seiten.",
+  "metadata": {
+    "category": "fbm_general",
+    "section": "studienorientierung",
+    "links": [
+      {
+        "text": "Girls' Day & Tag der offenen Tür",
+        "url": "https://medien.hs-duesseldorf.de/studium/studio5"
+      },
+      {
+        "text": "Austauschstudierende",
+        "url": "https://medien.hs-duesseldorf.de/incomings"
+      },
+      {
+        "text": "Beratung vor dem Studium",
+        "url": "https://medien.hs-duesseldorf.de/studium/beratung-vor-dem-studium"
+      },
+      {
+        "text": "Beratung im Studium",
+        "url": "https://medien.hs-duesseldorf.de/studium/beratung-im-studium"
+      },
+      {
+        "text": "Erstsemesterinfos",
+        "url": "https://medien.hs-duesseldorf.de/studium/erstsemesterinfos"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+},
+{
+  "id": "",
+  "text": "Der Fachbereich Medien bietet fünf Bachelorstudiengänge und zwei Masterstudiengänge an. Interessierte können sich über die einzelnen Programme auf den jeweiligen Seiten informieren.",
+  "metadata": {
+    "category": "fbm_study_programs",
+    "section": "studienangebot",
+    "links": [
+      {
+        "text": "B. Eng. Ton und Bild",
+        "url": "https://medien.hs-duesseldorf.de/btub"
+      },
+      {
+        "text": "B. Eng. Medientechnik",
+        "url": "https://medien.hs-duesseldorf.de/bmt"
+      },
+      {
+        "text": "B. A. CSIM (ab WS 27/28)",
+        "url": "https://medien.hs-duesseldorf.de/bcsim"
+      },
+      {
+        "text": "B. Sc. Medieninformatik",
+        "url": "https://medien.hs-duesseldorf.de/bmi"
+      },
+      {
+        "text": "B. Sc. DAISY (ZDD)",
+        "url": "https://medien.hs-duesseldorf.de/bdaisy"
+      },
+      {
+        "text": "M. Sc. Medieninformatik",
+        "url": "https://medien.hs-duesseldorf.de/mmi"
+      },
+      {
+        "text": "M. Sc. Applied Research (ab WS 27/28)",
+        "url": "https://medien.hs-duesseldorf.de/mar"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+},
+{
+  "id": "",
+  "text": "Unter den digitalen Angeboten des Fachbereichs Medien finden Studierende wichtige Online-Dienste wie die Lernplattform Moodle, den Stundenplan sowie Informationen zu Semester- und Prüfungsterminen. Weitere Details sind auf den verlinkten Seiten zu finden.",
+  "metadata": {
+    "category": "fbm_general",
+    "section": "digitale_angebote",
+    "links": [
+      {
+        "text": "HSD-Moodle (Login)",
+        "url": "https://mdl.hs-duesseldorf.de/course/index.php?categoryid=248"
+      },
+      {
+        "text": "Stundenplan",
+        "url": "https://medien.hs-duesseldorf.de/studium/vorlesungsverzeichnis"
+      },
+      {
+        "text": "Semester- und Prüfungstermine",
+        "url": "https://medien.hs-duesseldorf.de/service/termine"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+},
+{
+  "id": "",
+  "text": "Der Fachbereich Medien stellt verschiedene Services und Gremien zur Verfügung. Dazu gehören das Dekanat, das Studienbüro Medien, der Fachbereichsrat, die Fachschaft sowie der Zugang zum OSSC-Portal. Über die verlinkten Seiten erhalten Studierende und Mitarbeitende weiterführende Informationen.",
+  "metadata": {
+    "category": "fbm_general",
+    "section": "services_und_gremien",
+    "links": [
+      {
+        "text": "Dekanat Medien",
+        "url": "https://medien.hs-duesseldorf.de/gremien/dekanat"
+      },
+      {
+        "text": "Studienbüro Medien (PA)",
+        "url": "https://medien.hs-duesseldorf.de/studium/pruefungen/Seiten/default.aspx"
+      },
+      {
+        "text": "OSSC (Login)",
+        "url": "https://ossc.hs-duesseldorf.de/"
+      },
+      {
+        "text": "Fachbereichsrat Medien",
+        "url": "https://medien.hs-duesseldorf.de/gremien/fachbereichsrat"
+      },
+      {
+        "text": "Fachschaft Medien",
+        "url": "https://medien.hs-duesseldorf.de/gremien/fachschaft"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+},
+{
+  "id": "",
+  "text": "Willkommen im Fachbereich Medien der Hochschule Düsseldorf. Der Fachbereich bietet ein vielseitiges und praxisnahes Studium auf dem modernen Campus. Studierende profitieren von persönlicher Betreuung in Vorlesungen, Seminaren, Praktika und Projekten und arbeiten gemeinsam an technischen, informatischen und kreativen Aufgaben. Das Studienangebot umfasst die Bachelorstudiengänge Medieninformatik (BMI), Medientechnik (BMT), Ton und Bild (BTB, in Kooperation mit der Robert-Schumann-Hochschule für Musik) sowie Data Science, AI und Intelligente Systeme (BDAISY). Zusätzlich befindet sich der Bachelor Creative, Synthetic and Interactive Media (BCSIM) in Vorbereitung. Vertiefte Kenntnisse können in den Masterstudiengängen Medieninformatik (MMI) und Applied Research in Digital Media Technologies (MAR) erworben werden.",
+  "metadata": {
+    "category": "fbm_general",
+    "section": "willkommen",
+    "links": [
+      {
+        "text": "B. Eng. Ton und Bild",
+        "url": "https://medien.hs-duesseldorf.de/btub"
+      },
+      {
+        "text": "B. Eng. Medientechnik",
+        "url": "https://medien.hs-duesseldorf.de/bmt"
+      },
+      {
+        "text": "B. A. CSIM (ab WS 27/28)",
+        "url": "https://medien.hs-duesseldorf.de/bcsim"
+      },
+      {
+        "text": "B. Sc. Medieninformatik",
+        "url": "https://medien.hs-duesseldorf.de/bmi"
+      },
+      {
+        "text": "B. Sc. DAISY (ZDD)",
+        "url": "https://medien.hs-duesseldorf.de/bdaisy"
+      },
+      {
+        "text": "M. Sc. Medieninformatik",
+        "url": "https://medien.hs-duesseldorf.de/mmi"
+      },
+      {
+        "text": "M. Sc. Applied Research (ab WS 27/28)",
+        "url": "https://medien.hs-duesseldorf.de/mar"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+},
+{
+  "id": "",
+  "text": "Auf den Webseiten des Fachbereichs Medien finden Interessierte detaillierte Informationen zu Studieninhalten, Abläufen und Angeboten. Dort sind auch Kontaktmöglichkeiten zu Professorinnen, Professoren und Lehrenden verfügbar. Eingeschriebene Studierende erhalten weiterführende Materialien und Modulbeschreibungen über das HSD-Moodle. Für Erstsemester gibt es spezielle Informationsseiten zur Orientierung. Nutzen Sie die digitalen Plattformen, um sich umfassend über das Studium zu informieren und bestens vorbereitet zu starten.",
+  "metadata": {
+    "category": "fbm_general",
+    "section": "online_informationen",
+    "links": [
+      {
+        "text": "Webseiten des Fachbereichs Medien",
+        "url": "https://medien.hs-duesseldorf.de/studium/uebersicht"
+      },
+      {
+        "text": "HSD-Moodle",
+        "url": "https://mdl.hs-duesseldorf.de/"
+      },
+      {
+        "text": "Erstsemesterinfos",
+        "url": "https://medien.hs-duesseldorf.de/studium/erstsemesterinfos"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+},
+{
+  "id": "",
+  "text": "Für Erstsemester bietet der Fachbereich Medien hilfreiche Informationsangebote. Auf der Erstsemester-Webseite finden neue Studierende wichtige Hinweise zum Studienstart, während der Mathe-Vorkurs eine gute Vorbereitung auf technische und mathematische Inhalte bietet.",
+  "metadata": {
+    "category": "fbm_general",
+    "section": "erstsemester_informationen",
+    "links": [
+      {
+        "text": "Erstsemester-Webseite",
+        "url": "https://medien.hs-duesseldorf.de/studium/erstsemesterinfos"
+      },
+      {
+        "text": "Mathe-Vorkurs",
+        "url": "https://medien.hs-duesseldorf.de/personen/mazzone/Seiten/default.aspx"
+      }
+    ],
+    "source": "https://medien.hs-duesseldorf.de/"
+  }
+}
+]
