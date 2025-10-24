@@ -14,5 +14,3 @@ numpy
 python-dotenv
 PyMuPDF
 json5
-beautifulsoup4s
-requests

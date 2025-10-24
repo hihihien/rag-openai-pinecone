@@ -1,3 +1,4 @@
+#this was used for the merged jsonl files which were created from JS + PDF data
 import os
 import json
 from pathlib import Path
