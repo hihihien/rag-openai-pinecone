@@ -5,7 +5,7 @@ type ChatbotContext = {
 
 export const chatbotContexts: Record<string, ChatbotContext> = {
   default: {
-    greeting: `👋 Hallo! Ich bin **MeDi**, dein KI-Assistent der **Fachschaft Medien** an der Hochschule Düsseldorf.
+    greeting: `👋 Hallo! Ich bin **MeDi**, dein KI-Assistent der **Fachbereich Medien** an der Hochschule Düsseldorf.
 
 Frag mich alles rund ums Studium, Studiengänge, Bewerbungen oder Module.`,
     suggestions: [

@@ -4,8 +4,9 @@ import { chatbotContexts } from '../utils/chatbotContext';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { X } from 'lucide-react';
 
-// Fallback detection from referrer if no postMessage received
+// Detect program from referrer
 function detectProgramFromReferrer(): string {
   if (typeof document === 'undefined') return 'default';
   try {
@@ -35,13 +36,11 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Set initial greeting
   useEffect(() => {
     const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
     setMessages([{ role: 'assistant', content: greeting }]);
   }, [program]);
 
-  // Listen for program context from parent window
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (event.data?.program) {
@@ -76,7 +75,6 @@ export default function Chatbot() {
 
       const data = await res.json();
       const answer = data.answer || 'Keine Antwort erhalten.';
-
       setMessages([...newMessages, { role: 'assistant', content: answer }]);
     } catch (err) {
       console.error(err);
@@ -92,14 +90,20 @@ export default function Chatbot() {
   const { greeting, suggestions } = chatbotContexts[program] || chatbotContexts['default'];
 
   return (
-    <div
-      className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm"
-      data-theme="HSD-Medien"
-    >
-      {/* Header (no avatar) */}
-      <div className="p-4 sm:p-4 border-b bg-neutral text-white flex flex-col gap-1">
-        <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
-        <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
+    <div className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm" data-theme="HSD-Medien">
+      {/* Header with Close Icon */}
+      <div className="p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
+        <div className="flex flex-col">
+          <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
+          <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
+        </div>
+        <button
+          onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
+          className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+          title="Chat schließen"
+        >
+          <X size={20} className="text-white" />
+        </button>
       </div>
 
       {/* Messages */}
@@ -108,7 +112,7 @@ export default function Chatbot() {
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
               <div
-                className={`chat-bubble max-w-[90%] md:max-w-[75%] text-sm ${
+                className={`chat-bubble ${
                   m.role === 'assistant'
                     ? 'chat-bubble-neutral'
                     : 'chat-bubble-secondary'
@@ -125,24 +129,25 @@ export default function Chatbot() {
             </div>
 
             {/* Suggested questions after greeting */}
+            {/* Suggested questions after greeting */}
             {i === 0 && m.role === 'assistant' && (
-              <div className="chat chat-end mt-2">
-                <div className="flex flex-wrap gap-2 max-w-full">
-                  {suggestions.map((s, idx) => (
+              <div className="space-y-2 mt-2">
+                {suggestions.map((s, idx) => (
+                  <div className="chat chat-end" key={idx}>
                     <button
-                      key={idx}
                       onClick={() => askQuestion(s)}
                       className="chat-bubble chat-bubble-secondary text-xs cursor-pointer hover:opacity-80 transition"
                       title="Beispielfrage auswählen"
                     >
                       {s}
                     </button>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
         ))}
+
         {loading && (
           <div className="chat chat-start">
             <div className="chat-bubble chat-bubble-neutral">
