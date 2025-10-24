@@ -92,18 +92,14 @@ export default function Chatbot() {
   const { greeting, suggestions } = chatbotContexts[program] || chatbotContexts['default'];
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm" data-theme="HSD-Medien">
-      {/* Header */}
-      <div className="p-4 sm:p-4 border-b bg-neutral text-white flex flex-wrap items-center gap-3 sm:gap-4">
-        <div className="avatar">
-          <div className="w-10 rounded-full">
-            <img src="/chatbot.png" alt="MeDi Avatar" />
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
-          <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
-        </div>
+    <div
+      className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm"
+      data-theme="HSD-Medien"
+    >
+      {/* Header (no avatar) */}
+      <div className="p-4 sm:p-4 border-b bg-neutral text-white flex flex-col gap-1">
+        <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
+        <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
       </div>
 
       {/* Messages */}
@@ -111,16 +107,8 @@ export default function Chatbot() {
         {messages.map((m, i) => (
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
-              <div className="chat-image avatar">
-                <div className="w-8 sm:w-10 rounded-full">
-                  <img
-                    alt={m.role === 'user' ? 'User' : 'Assistant'}
-                    src={m.role === 'user' ? '/user.jpg' : '/chatbot.png'}
-                  />
-                </div>
-              </div>
               <div
-                className={`chat-bubble max-w-[90%]  md:max-w-[75%] text-sm ${
+                className={`chat-bubble max-w-[90%] md:max-w-[75%] text-sm ${
                   m.role === 'assistant'
                     ? 'chat-bubble-neutral'
                     : 'chat-bubble-secondary'
@@ -173,7 +161,6 @@ export default function Chatbot() {
           onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
           placeholder="Stelle eine Frage..."
           className="w-full input input-bordered text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
-          
         />
         <button
           onClick={() => askQuestion()}
