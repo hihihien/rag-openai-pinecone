@@ -8,7 +8,7 @@ PDF_PATH = BASE_DIR / "processed_pdf" / "BDAISY_MHB_chunks_normalized.jsonl"
 OUT_PATH = Path(__file__).resolve().parent / "BDAISY_merged.jsonl"
 
 # Links for BDAISY
-STUDIENGANG_URL = "https://medien.hs-duesseldorf.de/daisy"
+STUDIENGANG_URL = "https://medien.hs-duesseldorf.de/bdaisy"
 PDF_URL = "https://medien.hs-duesseldorf.de/studium/studiengaenge/Documents/Modulhandb%C3%BCcher/Modulhandbuch_DAISY_V6-3_final.pdf"
 
 # === LOAD JSON MODULE DATA ===
