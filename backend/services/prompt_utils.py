@@ -6,31 +6,39 @@ CHAT_MODEL = "gpt-4o-mini"
 
 def ask_openai(context: str, question: str, history: List[Dict[str, str]]) -> str:
     lang = detect_lang(question)
-    
-    #build system prompt
+
+    # Build system prompt with richer role description
     system_msg = {
-        "de": "Du bist ein akademischer Assistent. Antworte nur mit dem gegebenen Kontext. Wenn du nichts findest, sage es deutlich.",
-        "en": "You are an academic assistant. Only use the context. If you can't find anything, say so."
+        "de": (
+            "Du bist ein akademischer Assistent für den Fachbereich Medien der Hochschule Düsseldorf. "
+            "Verwende den gegebenen Kontext, der sowohl aus Modulhandbüchern als auch von offiziellen Studiengangsseiten stammen kann. "
+            "Beantworte die Fragen sachlich und präzise. "
+            "Wenn im Kontext keine passende Information enthalten ist, sage ehrlich, dass du keine Antwort hast."
+        ),
+        "en": (
+            "You are an academic assistant for the Faculty of Media at the University of Applied Sciences Düsseldorf. "
+            "Use the provided context, which may include information from both module handbooks and official study program websites. "
+            "Answer factually and precisely. "
+            "If the context does not contain the relevant information, state that clearly."
+        ),
     }
 
-    # convert history to messages
+    # Convert conversation history into messages (keep only recent turns)
     messages = [{"role": "system", "content": system_msg[lang]}]
-
-    #sliding cutoff history to keep only last 3 turns (Q&A pairs)
     MAX_TURNS = 3
     if history:
-        trimmed_history = history[-(MAX_TURNS * 2):] # each turn has 2 messages (user and assistant)
+        trimmed_history = history[-(MAX_TURNS * 2):]  # last 3 turns (Q&A)
         for h in trimmed_history:
             messages.append({"role": h["role"], "content": h["content"]})
 
-    # add current question with context
+    # Combine context and question into the user prompt
     user_prompt = (
         f"Kontext:\n{context}\n\nFrage: {question}" if lang == "de"
         else f"Context:\n{context}\n\nQuestion: {question}"
     )
     messages.append({"role": "user", "content": user_prompt})
 
-    #ask OpenAI
+    # Call OpenAI
     try:
         response = openai.chat.completions.create(
             model=CHAT_MODEL,
@@ -39,5 +47,9 @@ def ask_openai(context: str, question: str, history: List[Dict[str, str]]) -> st
         )
         return response.choices[0].message.content
     except Exception as e:
-        print(f"[OpenAI Error] {e}")
-        return "Fehler beim Generieren der Antwort. Bitte versuche es später erneut."
+        print(f"OpenAI error: {e}")
+        return (
+            "Fehler beim Generieren der Antwort. Bitte versuche es später erneut."
+            if lang == "de"
+            else "An error occurred while generating the response. Please try again later."
+        )

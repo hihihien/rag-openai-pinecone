@@ -15,6 +15,7 @@ def build_filter(
     min_credits: Optional[float] = None,
     max_credits: Optional[float] = None
 ) -> Optional[Dict[str, Any]]:
+    """Builds a Pinecone metadata filter dictionary."""
     f = {}
     if season:
         f["season"] = {"$eq": season}
@@ -29,30 +30,45 @@ def build_filter(
         f["creditPointsNum"] = r
     return f or None
 
+
 def search_all_namespaces(
     vector: List[float],
     top_k: int,
     filter: Optional[Dict[str, Any]] = None,
-    program: Optional[str] = None
+    program: Optional[str] = None,
+    namespaces: Optional[List[str]] = None
 ):
-    if program:
-        return index.query(
-            vector=vector,
-            top_k=top_k,
-            include_metadata=True,
-            namespace=program,
-            filter=filter
-        ).matches
+    """
+    Query Pinecone across one, several, or all namespaces.
+    Optionally applies a small score bias toward the current program.
+    """
 
     all_matches = []
-    for ns in AVAILABLE_NAMESPACES:
-        res = index.query(
-            vector=vector,
-            top_k=top_k,  # query fully in each namespace
-            include_metadata=True,
-            namespace=ns,
-            filter=filter
-        )
-        all_matches.extend(res.matches)
 
+    # Determine which namespaces to use
+    if namespaces:
+        target_namespaces = namespaces
+    elif program:
+        target_namespaces = [program]
+    else:
+        target_namespaces = AVAILABLE_NAMESPACES
+
+    for ns in target_namespaces:
+        try:
+            res = index.query(
+                vector=vector,
+                top_k=top_k,
+                include_metadata=True,
+                namespace=ns,
+                filter=filter
+            )
+            for m in res.matches:
+                # Apply slight bias for current program
+                if program and ns.startswith(program):
+                    m.score *= 1.05
+                all_matches.append(m)
+        except Exception as e:
+            print(f"Search failed in {ns}: {e}")
+
+    # Sort by score and return top_k
     return sorted(all_matches, key=lambda m: m.score or 0, reverse=True)[:top_k]
