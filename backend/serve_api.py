@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
 
-from services.loader import load_text_store, AVAILABLE_NAMESPACES
+from services.loader import load_text_store, AVAILABLE_NAMESPACES, ID_TO_META
 from services.embeddings import embed
 from services.pinecone_search import build_filter, search_all_namespaces
 from services.context_builder import build_context, SourceItem
@@ -90,18 +90,35 @@ def ask(req: QuestionRequest):
     answer = ask_openai(context, req.question, req.history or [])
 
     # Build footer with references
-    footer_lines = ["Referenzen:"]
+    footer_lines = ["**Referenzen:**"]
     seen_links = set()
-    for src in sources[:3]:
+
+    for src in sources[:5]:
+        # --- PDF references (from JSONL) ---
         if src.pdfUrl and src.pdfUrl not in seen_links:
-            footer_lines.append(f" - PDF Seite: {src.pdfUrl} (Seite {src.pdfPageStart}–{src.pdfPageEnd})")
+            label = f"PDF Modulhandbuch {src.studyProgramAbbrev or ''}".strip()
+            footer_lines.append(f"- [{label} (Seite {src.pdfPageStart}–{src.pdfPageEnd})]({src.pdfUrl})")
             seen_links.add(src.pdfUrl)
+
+        # --- Study program URL (from JSONL) ---
         if src.studyProgramUrl and src.studyProgramUrl not in seen_links:
-            footer_lines.append(f" - Studiengangsseite: {src.studyProgramUrl}")
+            label = f"{src.studyProgramAbbrev or 'Studiengang'} Seite"
+            footer_lines.append(f"- [{label}]({src.studyProgramUrl})")
             seen_links.add(src.studyProgramUrl)
-        if hasattr(src, "source") and src.source and src.source not in seen_links:
-            footer_lines.append(f" - Quelle: {src.source}")
+
+        # --- Web links (from _WEB metadata now stored in SourceItem.links) ---
+        if src.links:
+            for link in src.links:
+                link_label = link.get("text", "Quelle")
+                link_url = link.get("url", src.source)
+                if link_url not in seen_links:
+                    footer_lines.append(f"- [{link_label} Seite]({link_url})")
+                    seen_links.add(link_url)
+        elif src.source and src.source not in seen_links:
+            label = f"{src.studyProgramAbbrev or 'FBM'} Quelle"
+            footer_lines.append(f"- [{label}]({src.source})")
             seen_links.add(src.source)
+
     footer = "\n".join(footer_lines)
 
     final_answer = answer.strip() + "\n\n" + footer
