@@ -90,7 +90,7 @@ export default function Chatbot() {
   const { greeting, suggestions } = chatbotContexts[program] || chatbotContexts['default'];
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm" data-theme="HSD-Medien">
+    <div className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm text-shadow-sm" data-theme="HSD-Medien">
       {/* Header with Close Icon */}
       <div className="p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
@@ -119,7 +119,19 @@ export default function Chatbot() {
                 }`}
               >
                 {m.role === 'assistant' ? (
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      a: ({ node, ...props }) => (
+                        <a
+                          {...props}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white hover:text-cyan-200 hover:underline italic transition-colors duration-150 text-shadow-lg"
+                        />
+                      ),
+                    }}
+                  >
                     {m.content}
                   </ReactMarkdown>
                 ) : (
