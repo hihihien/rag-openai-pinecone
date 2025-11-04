@@ -182,7 +182,12 @@
       "studyProgramAbbrev": "BMI",
       "category": "program_contact",
       "section": "Beratung & Kontakt",
-      "links": [],
+      "links": [
+        {
+          "text": "BMI Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmi"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/bmi"
     }
   },
@@ -209,7 +214,12 @@
       "studyProgramAbbrev": "BMI",
       "category": "study_contents",
       "section": "Studienablauf",
-      "links": [],
+      "links": [
+        {
+          "text": "BMI Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmi"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmi/studieninhalt2025"
     }
   },
@@ -220,7 +230,12 @@
       "studyProgramAbbrev": "BMI",
       "category": "study_contents",
       "section": "Studienablauf",
-      "links": [],
+      "links": [
+        {
+          "text": "BMI Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmi"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmi/studieninhalt2025"
     }
   },
@@ -359,7 +374,12 @@
       "studyProgramAbbrev": "BMI",
       "category": "practical_phase",
       "section": "Forschungssemester",
-      "links": [],
+      "links": [
+        {
+          "text": "BMI Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmi"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmi/praxis"
     }
   },
@@ -402,7 +422,12 @@
       "studyProgramAbbrev": "BMI",
       "category": "career_fields",
       "section": "Berufsfelder",
-      "links": [],
+      "links": [
+        {
+          "text": "BMI Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmi"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmi/berufsfelder"
     }
   },

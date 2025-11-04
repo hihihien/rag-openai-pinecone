@@ -22,7 +22,12 @@
       "studyProgramAbbrev": "BDAISY",
       "category": "program_overview",
       "section": "Über den Studiengang",
-      "links": [],
+      "links": [
+        {
+          "text": "BDAISY Seite",
+          "url": "https://medien.hs-duesseldorf.de/bdaisy"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/bdaisy"
     }
   },
@@ -33,7 +38,12 @@
       "studyProgramAbbrev": "BDAISY",
       "category": "program_overview",
       "section": "Zielgruppe",
-      "links": [],
+      "links": [
+        {
+          "text": "BDAISY Seite",
+          "url": "https://medien.hs-duesseldorf.de/bdaisy"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/bdaisy"
     }
   },
@@ -172,7 +182,12 @@
       "studyProgramAbbrev": "BDAISY",
       "category": "study_contents",
       "section": "Studienablauf",
-      "links": [],
+      "links": [
+        {
+          "text": "BDAISY Seite",
+          "url": "https://medien.hs-duesseldorf.de/bdaisy"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bdaisy/studieninhalt"
     }
   },
@@ -183,7 +198,12 @@
       "studyProgramAbbrev": "BDAISY",
       "category": "study_contents",
       "section": "Zielgruppe",
-      "links": [],
+      "links": [
+        {
+          "text": "BDAISY Seite",
+          "url": "https://medien.hs-duesseldorf.de/bdaisy"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bdaisy/studieninhalt"
     }
   },
@@ -318,7 +338,12 @@
       "studyProgramAbbrev": "BDAISY",
       "category": "program_governance",
       "section": "Studienbeirat",
-      "links": [],
+      "links": [
+        {
+          "text": "BDAISY Seite",
+          "url": "https://medien.hs-duesseldorf.de/bdaisy"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bdaisy/gremien"
     }
   },

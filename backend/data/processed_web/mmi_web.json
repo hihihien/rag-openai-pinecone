@@ -33,12 +33,17 @@
   },
   {
     "id": "WEB_MMI_002",
-    "text": "Der Master-Studiengang Medieninformatik (M.Sc.) ist ein dreisemestriger, anwendungsorientierter Studiengang, der die konsekutive Fortsetzung des sieben-semestrigen Bachelor-Studiengangs Medieninformatik darstellt. Für Bewerberinnen und Bewerber mit einem sechs-semestrigen Erststudium existiert eine Übergangsregelung. Der Studienbeginn ist sowohl im Winter- als auch im Sommersemester möglich.\n\nDer Studiengang bietet eine obligatorische Vertiefung in vier Kernfächern und darüber hinaus eine hohe Flexibilität bei der individuellen Fächerwahl. Studierende können zwei Projekte sowie sechs Module aus einem flexibel erweiterbaren Fächerkatalog wählen. Dieser umfasst vielfältige Themenbereiche wie Multimedia-Kommunikation, Informationssicherheit und IT-Sicherheit, Mobile Systeme, Computer Animation, VR- und AR-Systeme, Digitale Bild- und Videotechnik sowie Tonstudiotechnik und Sound Engineering. Optional können die Studierenden ein Vertiefungsprofil in „Virtuelle Umgebungen“ oder „Multimediale Systeme und Anwendungen“ belegen.",
+    "text": "​Ziel des 3-semestrigen, eher anwendungsorientierten Master-Studiengangs Medieninformatik ist die konsekutive Fortsetzung des 7-semestrigen Bachelor-Studiengangs Medieninformatik. Für Bewerber mit einem 6-semestrigen Erststudium existiert eine Übergangsregelung. Der Beginn des Studiums ist zu jedem Semester möglich.Neben einer obligatorischen Vertiefung in vier Kernfächern bietet der Master-Studiengang eine große Flexibilität bei der Fächerwahl. Studenten können zwei Projekte sowie sechs Module aus einem flexibel erweiterbaren Fächerkatalog wählen. Dieser beinhaltet unterschiedlich ausgerichtete Fächer wie Multimedia-Kommunikation, Informationssicherheit und IT-Sicherheit, Mobile Systeme, Computer Animation, VR und AR Systeme, Digitale Bild- und Videotechnik oder Tonstudiotechnik und Sound Engineering. Es besteht die optionale Möglichkeit ein Vertiefungsprofil „Virtuelle Umgebungen“ bzw. „Multimediale Systeme und Anwendungen“ zu studieren.",
     "metadata": {
       "studyProgramAbbrev": "MMI",
       "category": "program_overview",
       "section": "Ziele und Aufbau des Studiengangs",
-      "links": [],
+      "links": [
+        {
+          "text": "MMI Seite",
+          "url": "https://medien.hs-duesseldorf.de/studium/studiengaenge/mmi"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/mmi"
     }
   },

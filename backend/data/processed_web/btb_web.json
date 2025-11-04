@@ -42,7 +42,12 @@
       "studyProgramAbbrev": "BTB",
       "category": "program_description",
       "section": "Über den Studiengang",
-      "links": [],
+      "links": [
+        {
+          "text": "BTB Seite",
+          "url": "https://medien.hs-duesseldorf.de/btub"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/btub"
     }
   },
@@ -53,7 +58,12 @@
       "studyProgramAbbrev": "BTB",
       "category": "program_description",
       "section": "Ansprechpersonen und Sprechzeiten",
-      "links": [],
+      "links": [
+        {
+          "text": "Zentrale Studienberatung",
+          "url": "https://www.hs-duesseldorf.de/studienberatung"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/btub"
     }
   },
@@ -228,7 +238,12 @@
       "studyProgramAbbrev": "BTB",
       "category": "career_fields",
       "section": "Berufsfelder",
-      "links": [],
+      "links": [
+        {
+          "text": "Berufsfelder",
+          "url": "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/berufsfelder"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/berufsfelder"
     }
   },
@@ -239,7 +254,12 @@
       "studyProgramAbbrev": "BTB",
       "category": "career_fields",
       "section": "Technische Realisation",
-      "links": [],
+      "links": [
+        {
+          "text": "Berufsfelder",
+          "url": "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/berufsfelder"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/berufsfelder"
     }
   },
@@ -250,7 +270,12 @@
       "studyProgramAbbrev": "BTB",
       "category": "career_fields",
       "section": "Tätigkeitsfelder",
-      "links": [],
+      "links": [
+        {
+          "text": "Berufsfelder",
+          "url": "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/berufsfelder"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/btub/berufsfelder"
     }
   },

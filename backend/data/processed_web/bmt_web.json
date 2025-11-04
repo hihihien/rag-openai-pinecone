@@ -42,7 +42,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "program_overview",
       "section": "Über den Studiengang",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/bmt"
     }
   },
@@ -53,7 +58,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "program_overview",
       "section": "Über den Studiengang",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/bmt"
     }
   },
@@ -184,7 +194,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "program_contact",
       "section": "Beratung & Kontakt",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/bmt"
     }
   },
@@ -211,7 +226,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "study_contents",
       "section": "Studienablauf",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/studieninhalt2025"
     }
   },
@@ -222,7 +242,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "study_contents",
       "section": "Studienablauf",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/studieninhalt2025"
     }
   },
@@ -233,7 +258,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "study_contents",
       "section": "Studienablauf",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/studieninhalt2025"
     }
   },
@@ -324,7 +354,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "career_fields",
       "section": "Das Bachelor-Studium – Medientechnik",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/berufsfelder.aspx"
     }
   },
@@ -335,7 +370,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "career_fields",
       "section": "Düsseldorf – eine Metropole für Medien-Agenturen",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/berufsfelder.aspx"
     }
   },
@@ -346,7 +386,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "career_fields",
       "section": "Positive Resonanz der Absolventen",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/berufsfelder.aspx"
     }
   },
@@ -357,7 +402,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "career_fields",
       "section": "Berufe im Bereich der Medientechnik",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/berufsfelder.aspx"
     }
   },
@@ -368,7 +418,12 @@
       "studyProgramAbbrev": "BMT",
       "category": "career_fields",
       "section": "Beispiele für technische, produktive oder wirtschaftliche Tätigkeiten",
-      "links": [],
+      "links": [
+        {
+          "text": "BMT Seite",
+          "url": "https://medien.hs-duesseldorf.de/bmt"
+        }
+      ],
       "source": "https://medien.hs-duesseldorf.de/studium/studiengaenge/bmt/Seiten/berufsfelder.aspx"
     }
   },
