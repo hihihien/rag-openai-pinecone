@@ -80,7 +80,7 @@ def upload_file(path: Path):
             print(f"  • Upserted {len(vectors)} vectors to namespace '{namespace}'")
             total_uploaded += len(vectors)
 
-    print(f"[✓] {path.name}: Uploaded {total_uploaded} vectors.\n")
+    print(f" {path.name}: Uploaded {total_uploaded} vectors.\n")
 
 # === Main script ===
 if __name__ == "__main__":
@@ -96,4 +96,4 @@ if __name__ == "__main__":
     for file in merged_files:
         upload_file(file)
 
-    print("[✓] All merged modules uploaded to Pinecone.")
+    print(" All merged modules uploaded to Pinecone.")
