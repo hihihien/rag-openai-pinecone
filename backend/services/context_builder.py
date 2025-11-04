@@ -26,6 +26,7 @@ class SourceItem(BaseModel):
     category: str = ""
     section: str = ""
     source: str = ""
+    links: list = []
 
 
 def build_context(matches) -> Tuple[str, List[SourceItem]]:
@@ -87,7 +88,8 @@ def build_context(matches) -> Tuple[str, List[SourceItem]]:
             pdfUrl=meta.get("pdf_url", ""),
             category=category,
             section=section,
-            source=source
+            source=source,
+            links=meta.get("links", [])
         ))
 
         if len(parts) >= MAX_CONTEXT_CHUNKS:

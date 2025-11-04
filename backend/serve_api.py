@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
 
-from services.loader import load_text_store, AVAILABLE_NAMESPACES, ID_TO_META
+from services.loader import load_text_store, AVAILABLE_NAMESPACES
 from services.embeddings import embed
 from services.pinecone_search import build_filter, search_all_namespaces
 from services.context_builder import build_context, SourceItem
