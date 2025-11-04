@@ -27,6 +27,7 @@ class SourceItem(BaseModel):
     section: str = ""
     source: str = ""
     links: list = []  # <- new field for link text + url pairs
+    links: list = []
 
 
 def build_context(matches) -> Tuple[str, List[SourceItem]]:
@@ -69,9 +70,26 @@ def build_context(matches) -> Tuple[str, List[SourceItem]]:
             if used[mod] > PER_MODULE_CAP:
                 continue
 
-            full_text = ID_TO_TEXT.get(rid) or m.metadata.get("snippet")
-            if not full_text:
-                continue
+        sources.append(SourceItem(
+            id=rid,
+            moduleNumber=mod,
+            moduleNameDe=meta.get("moduleNameDe", ""),
+            moduleNameEn=meta.get("moduleNameEn") or meta.get("moduleName", ""),
+            studyProgramAbbrev=study_abbr,
+            season=meta.get("season", ""),
+            credits=meta.get("credits", ""),
+            examType=meta.get("examType", ""),
+            score=m.score,
+            sourceFile=meta.get("source_file", ""),
+            pdfPageStart=meta.get("pdf_page_start", 0),
+            pdfPageEnd=meta.get("pdf_page_end", 0),
+            studyProgramUrl=meta.get("studyProgram_Url", ""),
+            pdfUrl=meta.get("pdf_url", ""),
+            category=category,
+            section=section,
+            source=source,
+            links=meta.get("links", [])
+        ))
 
             study_abbr = meta.get("studyProgramAbbrev", "")
             module_name = meta.get("moduleNameDe") or meta.get("moduleNameEn") or meta.get("moduleName", "")
