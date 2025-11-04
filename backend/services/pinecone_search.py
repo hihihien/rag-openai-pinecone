@@ -38,37 +38,24 @@ def search_all_namespaces(
     program: Optional[str] = None,
     namespaces: Optional[List[str]] = None
 ):
-    """
-    Query Pinecone across one, several, or all namespaces.
-    Optionally applies a small score bias toward the current program.
-    """
-
+    """Query across namespaces, slightly boosting local program matches."""
     all_matches = []
 
-    # Determine which namespaces to use
-    if namespaces:
-        target_namespaces = namespaces
-    elif program:
-        target_namespaces = [program]
-    else:
-        target_namespaces = AVAILABLE_NAMESPACES
+    target_namespaces = namespaces or AVAILABLE_NAMESPACES
 
     for ns in target_namespaces:
-        try:
-            res = index.query(
-                vector=vector,
-                top_k=top_k,
-                include_metadata=True,
-                namespace=ns,
-                filter=filter
-            )
-            for m in res.matches:
-                # Apply slight bias for current program
-                if program and ns.startswith(program):
-                    m.score *= 1.05
-                all_matches.append(m)
-        except Exception as e:
-            print(f"Search failed in {ns}: {e}")
+        res = index.query(
+            vector=vector,
+            top_k=top_k,
+            include_metadata=True,
+            namespace=ns,
+            filter=filter
+        )
+        for match in res.matches:
+            # Small bias boost for matches from the user's study program
+            if program and ns.startswith(program):
+                match.score *= 1.05
+            all_matches.append(match)
 
     # Sort by score and return top_k
     return sorted(all_matches, key=lambda m: m.score or 0, reverse=True)[:top_k]
