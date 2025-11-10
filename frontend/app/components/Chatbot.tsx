@@ -34,13 +34,25 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // === GREETING HANDLER ===
   useEffect(() => {
     const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
-    setMessages([{ role: 'assistant', content: greeting }]);
+
+    const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+    const greetingMessages = greetingArray.map((g) => ({
+      role: 'assistant' as const,
+      content: g,
+    }));
+
+    if (messages.length === 0) {
+      setMessages(greetingMessages);
+    }
   }, [program]);
 
+  // === LISTEN TO PROGRAM MESSAGE FROM PARENT PAGE ===
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (event.data?.program) {
@@ -54,9 +66,12 @@ export default function Chatbot() {
     return () => window.removeEventListener('message', listener);
   }, []);
 
+  // === ASK QUESTION ===
   const askQuestion = async (q?: string) => {
     const query = q || question;
     if (!query.trim()) return;
+
+    setShowSuggestions(false); // hide suggestions after first interaction
 
     const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
@@ -87,10 +102,13 @@ export default function Chatbot() {
     }
   };
 
-  const { greeting, suggestions } = chatbotContexts[program] || chatbotContexts['default'];
+  const { suggestions } = chatbotContexts[program] || chatbotContexts['default'];
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm text-shadow-sm" data-theme="HSD-Medien">
+    <div
+      className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm text-shadow-sm"
+      data-theme="HSD-Medien"
+    >
       {/* Header with Close Icon */}
       <div className="p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
@@ -107,7 +125,7 @@ export default function Chatbot() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 min-h-[300px] p-4 overflow-y-auto space-y-4 text-sm">
+      <div className="flex-1 min-h-[300px] p-3 overflow-y-auto">
         {messages.map((m, i) => (
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
@@ -139,26 +157,25 @@ export default function Chatbot() {
                 )}
               </div>
             </div>
-
-            {/* Suggested questions after greeting */}
-            {/* Suggested questions after greeting */}
-            {i === 0 && m.role === 'assistant' && (
-              <div className="space-y-2 mt-2">
-                {suggestions.map((s, idx) => (
-                  <div className="chat chat-end" key={idx}>
-                    <button
-                      onClick={() => askQuestion(s)}
-                      className="chat-bubble chat-bubble-secondary text-xs cursor-pointer hover:opacity-80 transition"
-                      title="Beispielfrage auswählen"
-                    >
-                      {s}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         ))}
+
+        {/* Suggested questions shown only once after greetings */}
+        {showSuggestions && (
+          <div className="">
+            {suggestions.map((s, idx) => (
+              <div className="chat chat-end" key={idx}>
+                <button
+                  onClick={() => askQuestion(s)}
+                  className="chat-bubble chat-bubble-secondary cursor-pointer hover:opacity-80 transition"
+                  title="Beispielfrage auswählen"
+                >
+                  {s}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
         {loading && (
           <div className="chat chat-start">
