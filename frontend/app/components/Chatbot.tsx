@@ -37,7 +37,12 @@ export default function Chatbot() {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // === GREETING HANDLER ===
+  // Auto scroll when messages update
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // greeting handler
   useEffect(() => {
     const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
 
@@ -52,7 +57,7 @@ export default function Chatbot() {
     }
   }, [program]);
 
-  // === LISTEN TO PROGRAM MESSAGE FROM PARENT PAGE ===
+  // LISTEN TO PROGRAM MESSAGE FROM PARENT PAGE
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (event.data?.program) {
@@ -106,11 +111,11 @@ export default function Chatbot() {
 
   return (
     <div
-      className="w-full min-h-screen flex flex-col bg-white m-0 p-0 text-sm text-shadow-sm"
+      className="w-full min-h-screen flex flex-col bg-base-200 text-sm text-shadow-sm relative"
       data-theme="HSD-Medien"
     >
-      {/* Header with Close Icon */}
-      <div className="p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
+      {/* === Fixed Header === */}
+      <div className="fixed top-0 left-0 right-0 z-50 p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
           <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
@@ -124,15 +129,15 @@ export default function Chatbot() {
         </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 min-h-[300px] p-3 overflow-y-auto">
+      {/* === Scrollable Messages === */}
+      <div className="flex-1 overflow-y-auto p-3 mt-[70px] mb-[80px]">
         {messages.map((m, i) => (
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
               <div
                 className={`chat-bubble ${
                   m.role === 'assistant'
-                    ? 'chat-bubble-neutral'
+                    ? 'chat-bubble-primary'
                     : 'chat-bubble-secondary'
                 }`}
               >
@@ -145,7 +150,7 @@ export default function Chatbot() {
                           {...props}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white hover:text-cyan-200 hover:underline italic transition-colors duration-150 text-shadow-lg"
+                          className="text-black hover:text-gray-500 hover:underline italic transition-colors duration-150 text-shadow-lg"
                         />
                       ),
                     }}
@@ -162,7 +167,7 @@ export default function Chatbot() {
 
         {/* Suggested questions shown only once after greetings */}
         {showSuggestions && (
-          <div className="">
+          <div>
             {suggestions.map((s, idx) => (
               <div className="chat chat-end" key={idx}>
                 <button
@@ -179,7 +184,7 @@ export default function Chatbot() {
 
         {loading && (
           <div className="chat chat-start">
-            <div className="chat-bubble chat-bubble-neutral">
+            <div className="chat-bubble chat-bubble-primary">
               <span className="loading loading-dots loading-sm"></span>
             </div>
           </div>
@@ -187,14 +192,14 @@ export default function Chatbot() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="p-3 border-t flex flex-col sm:flex-row gap-2">
+      {/* === Fixed Input Bar === */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-base-300 bg-base-200 p-3 flex flex-col sm:flex-row gap-2">
         <input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
           placeholder="Stelle eine Frage..."
-          className="w-full input input-bordered text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
+          className="w-full input input-ghost text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
         />
         <button
           onClick={() => askQuestion()}

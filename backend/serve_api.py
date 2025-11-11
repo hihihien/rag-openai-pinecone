@@ -90,7 +90,7 @@ def ask(req: QuestionRequest):
     answer = ask_openai(context, req.question, req.history or [])
 
     # === Build footer ===
-    footer_lines = ["**Quellen & weiterführende Links:**"]
+    footer_lines = ["**Quellen und weiterführende Seiten:**"]
     seen_links = set()
 
     for src in sources[:5]:

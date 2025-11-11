@@ -6,17 +6,17 @@
   prefersdark: false;
   color-scheme: "light";
   --color-base-100: oklch(98% 0.001 106.423);
-  --color-base-200: oklch(97% 0.001 106.424);
-  --color-base-300: oklch(92% 0.003 48.717);
-  --color-base-content: oklch(21% 0.006 56.043);
-  --color-primary: #00AFD7;
-  --color-primary-content: oklch(98% 0.019 200.873);
-  --color-secondary: oklch(55% 0.013 58.071);
-  --color-secondary-content: oklch(98% 0.019 200.873);
-  --color-accent: oklch(58% 0.158 241.966);
+  --color-base-200: #efefef;
+  --color-base-300: oklch(87% 0 0);
+  --color-base-content: #000000;
+  --color-primary: #ffffff;
+  --color-primary-content: #000000;
+  --color-secondary: #e9f7fb;
+  --color-secondary-content: #000000;
+  --color-accent: oklch(0.699 0.123 221.9);
   --color-accent-content: oklch(97% 0.014 254.604);
   --color-neutral: #00AFD7;
-  --color-neutral-content: oklch(98% 0.001 106.423);
+  --color-neutral-content: oklch(98% 0.003 247.858);
   --color-info: oklch(70% 0.165 254.624);
   --color-info-content: oklch(28% 0.091 267.935);
   --color-success: oklch(77% 0.152 181.912);
@@ -31,8 +31,8 @@
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
-  --noise: 1;
+  --depth: 0;
+  --noise: 0;
 }
 
 /*
@@ -83,10 +83,12 @@
 /* Optional: make footer links smaller and lighter */
 .chat-start .chat-bubble ul:last-child {
   font-size: 0.95em;
-  color: rgba(255, 255, 255, 0.9);
+  color: #000000;
 }
 
 /* Optional: improve bold heading visibility */
 .chat-start .chat-bubble strong {
   font-weight: 600;
 }
+
+
