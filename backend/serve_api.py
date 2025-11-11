@@ -89,39 +89,53 @@ def ask(req: QuestionRequest):
 
     answer = ask_openai(context, req.question, req.history or [])
 
-    # Build footer with references
-    footer_lines = ["**Referenzen:**"]
+    # === Build footer ===
+    footer_lines = ["**Quellen & weiterführende Links:**"]
     seen_links = set()
 
     for src in sources[:5]:
-        # --- PDF references (from JSONL) ---
+        # PDF references
         if src.pdfUrl and src.pdfUrl not in seen_links:
             label = f"PDF Modulhandbuch {src.studyProgramAbbrev or ''}".strip()
             footer_lines.append(f"- [{label} (Seite {src.pdfPageStart}–{src.pdfPageEnd})]({src.pdfUrl})")
             seen_links.add(src.pdfUrl)
 
-        # --- Study program URL (from JSONL) ---
+        # Study program URL
         if src.studyProgramUrl and src.studyProgramUrl not in seen_links:
-            label = f"{src.studyProgramAbbrev or 'Studiengang'} Seite"
+            label = (
+                f"{src.studyProgramAbbrev} Studiengangsseite"
+                if src.studyProgramAbbrev else
+                "Fachbereich Medien Seite"
+            )
             footer_lines.append(f"- [{label}]({src.studyProgramUrl})")
             seen_links.add(src.studyProgramUrl)
 
-        # --- Web links (from _WEB metadata now stored in SourceItem.links) ---
+        # Web links
         if src.links:
             for link in src.links:
-                link_label = link.get("text", "Quelle")
+                link_label = link.get("text", "").strip()
                 link_url = link.get("url", src.source)
+
+                # Skip if no label or URL
+                if not link_label or not link_url:
+                    continue
+
                 if link_url not in seen_links:
-                    footer_lines.append(f"- [{link_label} Seite]({link_url})")
+                    footer_lines.append(f"- [{link_label}]({link_url})")
                     seen_links.add(link_url)
+
         elif src.source and src.source not in seen_links:
-            label = f"{src.studyProgramAbbrev or 'FBM'} Quelle"
+            label = (
+                f"{src.studyProgramAbbrev} Studiengangsseite"
+                if src.studyProgramAbbrev else
+                "Fachbereich Medien Seite"
+            )
             footer_lines.append(f"- [{label}]({src.source})")
             seen_links.add(src.source)
 
-    footer = "\n".join(footer_lines)
+    footer = "\n".join(footer_lines) if len(footer_lines) > 1 else ""
+    final_answer = f"{answer.strip()}\n\n{footer}" if footer else answer.strip()
 
-    final_answer = answer.strip() + "\n\n" + footer
     save_log(req.question, final_answer, sources)
     return AnswerResponse(answer=final_answer, sources=sources)
 
