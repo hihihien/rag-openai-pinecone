@@ -4,7 +4,7 @@ import { chatbotContexts } from '../utils/chatbotContext';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { X } from 'lucide-react';
+import { X, Minus, RefreshCw } from 'lucide-react';
 
 // Detect program from referrer
 function detectProgramFromReferrer(): string {
@@ -120,14 +120,47 @@ export default function Chatbot() {
           <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
-        <button
-          onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
-          className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-          title="Chat schließen"
-        >
-          <X size={20} className="text-white" />
-        </button>
+
+        <div className="flex items-center gap-2">
+          {/* New Chat button */}
+          <button
+            onClick={() => {
+              setMessages([]); // clear chat
+              setShowSuggestions(true);
+              const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
+              const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+              const greetingMessages = greetingArray.map((g) => ({
+                role: 'assistant' as const,
+                content: g,
+              }));
+              setMessages(greetingMessages);
+            }}
+            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+            title="Neuen Chat starten"
+          >
+            <RefreshCw size={18} className="text-white" />
+          </button>
+
+          {/* Minimize button */}
+          <button
+            onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
+            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+            title="Chat minimieren"
+          >
+            <Minus size={18} className="text-white" />
+          </button>
+
+          {/* Close button */}
+          <button
+            onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
+            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+            title="Chat schließen"
+          >
+            <X size={18} className="text-white" />
+          </button>
+        </div>
       </div>
+
 
       {/* === Scrollable Messages === */}
       <div className="flex-1 overflow-y-auto p-3 mt-[70px] mb-[80px]">
@@ -192,24 +225,91 @@ export default function Chatbot() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* === Fixed Input Bar === */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-base-300 bg-base-200 p-3 flex flex-col sm:flex-row gap-2">
-        <input
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
-          placeholder="Stelle eine Frage..."
-          className="w-full input input-ghost text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
-        />
-        <button
-          onClick={() => askQuestion()}
-          disabled={loading}
-          className="btn btn-neutral w-full sm:w-auto text-sm"
-          title="Frage senden"
-        >
-          Senden
-        </button>
-      </div>
+        {/* === Fixed Bottom Section (Input + Collapsible Disclaimer) === */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-base-300 bg-base-200">
+          {/* Input Bar */}
+          <div className="pt-3 px-3 flex flex-col sm:flex-row gap-2">
+            <input
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
+              placeholder="Stelle eine Frage..."
+              className="w-full input input-ghost text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
+            />
+            <button
+              onClick={() => askQuestion()}
+              disabled={loading}
+              className="btn btn-neutral w-full sm:w-auto text-sm"
+              title="Frage senden"
+            >
+              Senden
+            </button>
+          </div>
+
+          {/* Collapsible AI Disclaimer */}
+          <div className="bg-base-200">
+            <div className="collapse collapse-arrow bg-base-200 rounded-none">
+              <input type="checkbox" className="peer" placeholder='disclaimer' />
+              <div className="collapse-title text-x font-semibold text-gray-700 peer-checked:text-neutral">
+                AI-Disclaimer
+              </div>
+              <div className="collapse-content text-xs leading-relaxed">
+                <p>
+                  Die Antworten werden durch eine künstliche Intelligenz generiert. Sie
+                  entstehen auf der Grundlage von Informationen aus verschiedenen
+                  Originalquellen des Fachbereichs Medien (wie Modulhandbuch,
+                  Fachbereichsseite). Die KI bemüht sich, präzise Informationen
+                  bereitzustellen. Ungenauigkeiten oder Unvollständigkeiten können jedoch
+                  nicht ausgeschlossen werden.
+                </p>
+
+                <p className="mt-2">
+                  Durch KI erstellte Antworten dienen einer ersten Orientierung und
+                  sollten nicht die alleinige Grundlage für Entscheidungen der
+                  Nutzer*innen sein. Für umfassende Informationen zum Fachbereich und
+                  Studium konsultieren Sie bitte auch die offiziellen Seiten des{' '}
+                  <a
+                    href="https://medien.hs-duesseldorf.de/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral hover:underline"
+                  >
+                    Fachbereichs Medien
+                  </a>
+                  , der{' '}
+                  <a
+                    href="https://fachschaftmedien.de/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral hover:underline"
+                  >
+                    Fachschaft
+                  </a>{' '}
+                  oder des{' '}
+                  <a
+                    href="https://medien.hs-duesseldorf.de/studium/pruefungen/Seiten/default.aspx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral hover:underline"
+                  >
+                    Studienbüros
+                  </a>
+                  . Weitere Informationen zur{' '}
+                  <a
+                    href="https://medien.hs-duesseldorf.de/studium/beratung-im-studium"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral hover:underline"
+                  >
+                    Beratung im Studium
+                  </a>{' '}
+                  finden Sie ebenfalls auf den offiziellen Seiten.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
     </div>
   );
 }
