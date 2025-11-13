@@ -36,4 +36,4 @@ with OUT_PATH.open("w", encoding="utf-8") as f:
     for rec in merged_records:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
-print(f"[✓] Processed {len(merged_records)} MAR records → {OUT_PATH}")
+print(f"Processed {len(merged_records)} MAR records → {OUT_PATH}")
