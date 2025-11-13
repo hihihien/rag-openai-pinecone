@@ -4,7 +4,7 @@ import { chatbotContexts } from '../utils/chatbotContext';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { X, Minus, RefreshCw } from 'lucide-react';
+import { X, Minus, RefreshCw, Send } from 'lucide-react';
 
 // Detect program from referrer
 function detectProgramFromReferrer(): string {
@@ -37,6 +37,21 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [bottomPadding, setBottomPadding] = useState(120);
+
+  useEffect(() => {
+    const el = bottomRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        setBottomPadding(entry.contentRect.height);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
 
   // Auto scroll when messages update
   useEffect(() => {
@@ -178,7 +193,7 @@ export default function Chatbot() {
 
 
       {/* === Scrollable Messages === */}
-      <div className="flex-1 overflow-y-auto p-3 mt-[70px] mb-[80px]">
+      <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16 }}>
         {messages.map((m, i) => (
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
@@ -240,90 +255,96 @@ export default function Chatbot() {
         <div ref={messagesEndRef} />
       </div>
 
-        {/* === Fixed Bottom Section (Input + Collapsible Disclaimer) === */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-base-300 bg-base-200">
-          {/* Input Bar */}
-          <div className="pt-3 px-3 flex flex-col sm:flex-row gap-2">
+      {/* === Fixed Bottom Section (Input + Collapsible Disclaimer) === */}
+      <div ref={bottomRef} className="fixed bottom-0 left-0 right-0 z-50 border-t border-base-300 bg-base-200">
+        {/* Input Bar with icon inside input */}
+        <form
+          onSubmit={(e) => { e.preventDefault(); askQuestion(); }}
+          className="p-3 pb-0 border-base-300"
+        >
+          <div className="relative w-full">
             <input
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
               placeholder="Stelle eine Frage..."
-              className="w-full input input-ghost text-sm bg-gray-50 text-gray-700 placeholder-gray-400"
+              className="w-full input input-ghost text-sm bg-gray-50 text-gray-700 placeholder-gray-400 pr-12"
             />
             <button
-              onClick={() => askQuestion()}
+              type="submit"
               disabled={loading}
-              className="btn btn-neutral w-full sm:w-auto text-sm"
-              title="Frage senden"
+              aria-label="Senden"
+              title="Senden"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-base-200 disabled:opacity-50 z-10"
             >
-              Senden
+              <Send size={18} className="text-gray-700" />
             </button>
           </div>
+        </form>
 
-          {/* Collapsible AI Disclaimer */}
-          <div className="bg-base-200">
-            <div className="collapse collapse-arrow bg-base-200 rounded-none">
-              <input type="checkbox" className="peer" placeholder='disclaimer' />
-              <div className="collapse-title text-x font-semibold text-gray-700 peer-checked:text-neutral">
-                AI-Disclaimer
-              </div>
-              <div className="collapse-content text-xs leading-relaxed">
-                <p>
-                  Die Antworten werden durch eine künstliche Intelligenz generiert. Sie
-                  entstehen auf der Grundlage von Informationen aus verschiedenen
-                  Originalquellen des Fachbereichs Medien (wie Modulhandbuch,
-                  Fachbereichsseite). Die KI bemüht sich, präzise Informationen
-                  bereitzustellen. Ungenauigkeiten oder Unvollständigkeiten können jedoch
-                  nicht ausgeschlossen werden.
-                </p>
 
-                <p className="mt-2">
-                  Durch KI erstellte Antworten dienen einer ersten Orientierung und
-                  sollten nicht die alleinige Grundlage für Entscheidungen der
-                  Nutzer*innen sein. Für umfassende Informationen zum Fachbereich und
-                  Studium konsultieren Sie bitte auch die offiziellen Seiten des{' '}
-                  <a
-                    href="https://medien.hs-duesseldorf.de/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral hover:underline"
-                  >
-                    Fachbereichs Medien
-                  </a>
-                  , der{' '}
-                  <a
-                    href="https://fachschaftmedien.de/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral hover:underline"
-                  >
-                    Fachschaft
-                  </a>{' '}
-                  oder des{' '}
-                  <a
-                    href="https://medien.hs-duesseldorf.de/studium/pruefungen/Seiten/default.aspx"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral hover:underline"
-                  >
-                    Studienbüros
-                  </a>
-                  . Weitere Informationen zur{' '}
-                  <a
-                    href="https://medien.hs-duesseldorf.de/studium/beratung-im-studium"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral hover:underline"
-                  >
-                    Beratung im Studium
-                  </a>{' '}
-                  finden Sie ebenfalls auf den offiziellen Seiten.
-                </p>
-              </div>
+        {/* Collapsible AI Disclaimer*/}
+        <div className="bg-base-200">
+          <div className="collapse collapse-arrow bg-base-200 rounded-none">
+            <input type="checkbox" className="peer border-none" placeholder="disclaimer" />
+            <div className="collapse-title text-x font-semibold text-gray-700 peer-checked:text-neutral">
+              AI-Disclaimer
+            </div>
+            <div className="collapse-content text-xs leading-relaxed">
+              <p>
+                Die Antworten werden durch eine künstliche Intelligenz generiert. Sie entstehen
+                auf der Grundlage von Informationen aus verschiedenen Originalquellen des
+                Fachbereichs Medien (wie Modulhandbuch, Fachbereichsseite). Die KI bemüht sich,
+                präzise Informationen bereitzustellen. Ungenauigkeiten oder Unvollständigkeiten
+                können jedoch nicht ausgeschlossen werden.
+              </p>
+
+              <p className="mt-2">
+                Durch KI erstellte Antworten dienen einer ersten Orientierung und sollten nicht
+                die alleinige Grundlage für Entscheidungen der Nutzer*innen sein. Für
+                umfassende Informationen zum Fachbereich und Studium konsultieren Sie bitte
+                auch die offiziellen Seiten des{' '}
+                <a
+                  href="https://medien.hs-duesseldorf.de/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral hover:underline"
+                >
+                  Fachbereichs Medien
+                </a>
+                , der{' '}
+                <a
+                  href="https://fachschaftmedien.de/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral hover:underline"
+                >
+                  Fachschaft
+                </a>{' '}
+                oder des{' '}
+                <a
+                  href="https://medien.hs-duesseldorf.de/studium/pruefungen/Seiten/default.aspx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral hover:underline"
+                >
+                  Studienbüros
+                </a>
+                . Weitere Informationen zur{' '}
+                <a
+                  href="https://medien.hs-duesseldorf.de/studium/beratung-im-studium"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral hover:underline"
+                >
+                  Beratung im Studium
+                </a>{' '}
+                finden Sie ebenfalls auf den offiziellen Seiten.
+              </p>
             </div>
           </div>
         </div>
+      </div>
+
 
     </div>
   );
