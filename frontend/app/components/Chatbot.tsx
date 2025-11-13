@@ -210,17 +210,29 @@ export default function Chatbot() {
               >
                 {m.role === 'assistant' ? (
                   <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      a: ({ node, ...props }) => (
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    a: ({ node, ...props }) => {
+                      const href = String(props.href || '');
+                      // slugs use in chatbotContext
+                      const programSlugs = new Set(['/bmi','/bmt','/btb','/bdaisy','/bcsim','/mmi','/mar']);
+                      const isProgramLink = programSlugs.has(href);
+                      // where these pages live on site
+                      const BASE = '/webredaktion/chatbot-test';
+                      const ORIGIN = 'https://medien.hs-duesseldorf.de';
+                      const finalHref = isProgramLink ? `${ORIGIN}${BASE}${href}` : href;
+                      const target = '_blank';
+                      return (
                         <a
                           {...props}
-                          target="_blank"
+                          href={finalHref}
+                          target={target}
                           rel="noopener noreferrer"
                           className="hover:text-shadow-sm italic transition-colors duration-150"
                         />
-                      ),
-                    }}
+                    );
+                   },
+                }}
                   >
                     {m.content}
                   </ReactMarkdown>
