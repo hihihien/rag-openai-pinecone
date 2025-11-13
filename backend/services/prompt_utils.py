@@ -25,9 +25,9 @@ def ask_openai(context: str, question: str, history: List[Dict[str, str]]) -> st
 
     # Convert conversation history into messages (keep only recent turns)
     messages = [{"role": "system", "content": system_msg[lang]}]
-    MAX_TURNS = 3
+    MAX_TURNS = 8
     if history:
-        trimmed_history = history[-(MAX_TURNS * 2):]  # last 3 turns (Q&A)
+        trimmed_history = history[-(MAX_TURNS * 2):]  # last 8 turns (Q&A)
         for h in trimmed_history:
             messages.append({"role": h["role"], "content": h["content"]})
 
