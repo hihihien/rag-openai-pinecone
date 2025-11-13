@@ -30,6 +30,7 @@ type Message = {
 };
 
 export default function Chatbot() {
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [program, setProgram] = useState(detectProgramFromReferrer());
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
@@ -58,25 +59,39 @@ export default function Chatbot() {
   }, [program]);
 
   // LISTEN TO PROGRAM MESSAGE FROM PARENT PAGE
+  // when parent sends program, update program and refresh greetings
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (event.data?.program) {
         const normalized = event.data.program.toUpperCase();
         if (chatbotContexts[normalized]) {
           setProgram(normalized);
+
+          // If user hasn't interacted yet, replace greetings immediately
+          if (!hasInteracted) {
+            const { greeting } = chatbotContexts[normalized] || chatbotContexts['default'];
+            const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+            const greetingMessages = greetingArray.map((g) => ({
+              role: 'assistant' as const,
+              content: g,
+            }));
+            setMessages(greetingMessages);
+            setShowSuggestions(true);
+          }
         }
       }
     };
     window.addEventListener('message', listener);
     return () => window.removeEventListener('message', listener);
-  }, []);
+  }, [hasInteracted]); //depend on hasInteracted
 
   // === ASK QUESTION ===
   const askQuestion = async (q?: string) => {
     const query = q || question;
     if (!query.trim()) return;
 
-    setShowSuggestions(false); // hide suggestions after first interaction
+    setHasInteracted(true);
+    setShowSuggestions(false); 
 
     const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
