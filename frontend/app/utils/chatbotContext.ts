@@ -20,7 +20,7 @@ Ich bin eine künstliche Intelligenz, die entwickelt wurde, um häufige Fragen z
     ],
     suggestions: [
       'Welche Bachelorstudiengänge gibt es?',
-      'Wie kann ich mich für ein Studium bewerben?',
+      'Wo kann ich Erstsemesterinfos finden?',
       'Wo finde ich den Kontakt zum Studienbüro?',
     ],
   },
@@ -35,7 +35,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Ton und Bild (BTB)](/btb)
 - [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
 - [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
-- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Welche Vertiefungen gibt es im MMI?',
@@ -54,7 +55,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
 - [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
 - [Master Medieninformatik (MMI)](/mmi)
-- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Welche Module sollen im 1. Semester BMI belegt werden?',
@@ -73,7 +75,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
 - [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
 - [Master Medieninformatik (MMI)](/mmi)
-- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Was sind die technischen Schwerpunkte im BTB?',
@@ -92,7 +95,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
 - [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
 - [Master Medieninformatik (MMI)](/mmi)
-- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Was sind die Grundlagen des Studiengangs BMT?',
@@ -111,7 +115,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Ton und Bild (BTB)](/btb)
 - [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
 - [Master Medieninformatik (MMI)](/mmi)
-- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Welche Module decken Machine Learning ab?',
@@ -130,7 +135,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Ton und Bild (BTB)](/btb)
 - [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
 - [Master Medieninformatik (MMI)](/mmi)
-- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Was ist das Ziel des BCSIM Studiengangs?',
@@ -149,7 +155,8 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 - [Bachelor Ton und Bild (BTB)](/btb)
 - [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
 - [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
-- [Master Medieninformatik (MMI)](/mmi)`
+- [Master Medieninformatik (MMI)](/mmi)`,
+  `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://medien.hs-duesseldorf.de/webredaktion/chatbot-test)**.`
     ],
     suggestions: [
       'Welche Voraussetzungen gelten für den MAR Studiengang?',
