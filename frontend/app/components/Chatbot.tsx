@@ -111,7 +111,7 @@ export default function Chatbot() {
 
   return (
     <div
-      className="w-full min-h-screen flex flex-col bg-base-200 text-sm text-shadow-sm relative"
+      className="w-full min-h-screen flex flex-col bg-base-200 text-sm relative"
       data-theme="HSD-Medien"
     >
       {/* === Fixed Header === */}
@@ -183,7 +183,7 @@ export default function Chatbot() {
                           {...props}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-black hover:text-gray-500 hover:underline italic transition-colors duration-150 text-shadow-lg"
+                          className="hover:text-shadow-sm italic transition-colors duration-150"
                         />
                       ),
                     }}
