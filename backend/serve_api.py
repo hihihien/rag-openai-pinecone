@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 from services.loader import load_text_store, AVAILABLE_NAMESPACES
-from services.embeddings import embed
+from services.embeddings import embed, detect_lang 
 from services.pinecone_search import build_filter, search_all_namespaces
 from services.context_builder import build_context, SourceItem
 from services.prompt_utils import ask_openai
@@ -54,11 +54,18 @@ def ask(req: QuestionRequest):
 
     # Select namespaces to search
     if req.program:
-        # strictly limit to the current study program
-        namespaces = [req.program, f"{req.program}_WEB"]
+        prog = (req.program or "").upper()
+        # Only use program scoping if at least one of the namespaces exists
+        candidate = [prog, f"{prog}_WEB"]
+        existing = [ns for ns in candidate if ns in AVAILABLE_NAMESPACES]
+        if existing:
+            namespaces = existing
+        else:
+            # fallback to global search if "program" isn't a known namespace
+            namespaces = ["FBM_WEB", *AVAILABLE_NAMESPACES]
     else:
-        # homepage generic: search everything (incl. FBM_WEB)
-       namespaces = ["FBM_WEB", *AVAILABLE_NAMESPACES]
+        # when in homepage search everything
+        namespaces = ["FBM_WEB", *AVAILABLE_NAMESPACES]
 
     flt = build_filter(
         season=req.season,
@@ -79,13 +86,14 @@ def ask(req: QuestionRequest):
     context, sources = build_context(matches)
 
     if not context:
-        msg = (
-            "Ich konnte dazu nichts im Modulhandbuch finden."
-            if req.question.lower().startswith("wie")
-            else "I couldn't find anything relevant in the module handbook."
-        )
-        save_log(req.question, msg, [])
-        return AnswerResponse(answer=msg, sources=[])
+      lang = detect_lang(req.question)
+      msg = (
+        "Ich konnte dazu nichts in den Daten dieses Chatbots finden."
+        if lang == "de"
+        else "I couldn't find anything relevant in the chatbot's data."
+      )
+      save_log(req.question, msg, [])
+      return AnswerResponse(answer=msg, sources=[])
 
     answer = ask_openai(context, req.question, req.history or [])
 

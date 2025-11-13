@@ -114,14 +114,17 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
+      const payload: any = {
+        question: query,
+        history: messages.map((m) => ({ role: m.role, content: m.content })),
+      };
+      if (program && program !== 'default') {
+        payload.program = program;
+      }
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: query,
-          history: messages.map((m) => ({ role: m.role, content: m.content })),
-          program,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
