@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from services.loader import ID_TO_TEXT, ID_TO_META
 from pydantic import BaseModel
 
@@ -26,79 +26,75 @@ class SourceItem(BaseModel):
     category: str = ""
     section: str = ""
     source: str = ""
-    links: list = []  # <- new field for link text + url pairs
-    links: list = []
+    # Avoid mutable default list
+    links: Optional[List[dict]] = None
 
 
 def build_context(matches) -> Tuple[str, List[SourceItem]]:
-    """Builds a context string with WEB data first, then module content."""
+    """
+    Builds a context string with WEB data first, then module content.
+    Applies SCORE_THRESHOLD, PER_MODULE_CAP, MAX_CONTEXT_CHUNKS (per section),
+    and trims to MAX_CONTEXT_CHARS.
+    """
+    used_per_module = {}
+    parts: List[str] = []
+    sources: List[SourceItem] = []
 
-    used = {}
-    parts = []
-    sources = []
-
-    # Split matches into two groups
-    web_matches = []
-    module_matches = []
+    # Split matches into WEB vs MODULE using metadata
+    web_matches: List = []
+    module_matches: List = []
 
     for m in matches:
-        if m.score < SCORE_THRESHOLD:
+        if (m.score or 0) < SCORE_THRESHOLD:
             continue
 
-        meta = ID_TO_META.get(m.id, {})
-        study_abbr = meta.get("studyProgramAbbrev", "")
-        category = meta.get("category", "")
-        section = meta.get("section", "")
-        source = meta.get("source", "")
+        meta = ID_TO_META.get(m.id, {}) or {}
+        study_abbr = meta.get("studyProgramAbbrev", "") or ""
+        category = meta.get("category", "") or ""
+        section = meta.get("section", "") or ""
+        source = meta.get("source", "") or ""
 
-        # Classify
-        if "WEB" in study_abbr or category or section or source.endswith(".de/"):
+        is_web = ("WEB" in study_abbr) or bool(category) or bool(section) or bool(source)
+        if is_web:
             web_matches.append(m)
         else:
             module_matches.append(m)
 
-    # Helper to build context from a list of matches
-    def build_section(match_list, section_label):
-        section_parts = []
+    def build_section(match_list: List, section_label: str) -> List[str]:
+        """Return a list of formatted blocks for this section, capped by MAX_CONTEXT_CHUNKS."""
+        section_parts: List[str] = []
+
         for m in match_list:
             rid = m.id
-            meta = ID_TO_META.get(rid, {})
-            mod = meta.get("moduleNumber", "UNK")
+            meta = ID_TO_META.get(rid, {}) or {}
 
-            # prevent repeating same module too often
-            used[mod] = used.get(mod, 0) + 1
-            if used[mod] > PER_MODULE_CAP:
+            mod = meta.get("moduleNumber", "UNK")
+            used_per_module[mod] = used_per_module.get(mod, 0) + 1
+            if used_per_module[mod] > PER_MODULE_CAP:
                 continue
 
-        sources.append(SourceItem(
-            id=rid,
-            moduleNumber=mod,
-            moduleNameDe=meta.get("moduleNameDe", ""),
-            moduleNameEn=meta.get("moduleNameEn") or meta.get("moduleName", ""),
-            studyProgramAbbrev=study_abbr,
-            season=meta.get("season", ""),
-            credits=meta.get("credits", ""),
-            examType=meta.get("examType", ""),
-            score=m.score,
-            sourceFile=meta.get("source_file", ""),
-            pdfPageStart=meta.get("pdf_page_start", 0),
-            pdfPageEnd=meta.get("pdf_page_end", 0),
-            studyProgramUrl=meta.get("studyProgram_Url", ""),
-            pdfUrl=meta.get("pdf_url", ""),
-            category=category,
-            section=section,
-            source=source,
-            links=meta.get("links", [])
-        ))
+            # Prefer full text from in-memory store; fall back to Pinecone snippet
+            full_text = ID_TO_TEXT.get(rid)
+            if not full_text:
+                # m.metadata may be a dict-like; guard safely
+                snippet = getattr(m, "metadata", {}) or {}
+                full_text = snippet.get("snippet", "")
+            if not full_text:
+                continue
 
-            study_abbr = meta.get("studyProgramAbbrev", "")
-            module_name = meta.get("moduleNameDe") or meta.get("moduleNameEn") or meta.get("moduleName", "")
-            category = meta.get("category", "")
-            section = meta.get("section", "")
-            source = meta.get("source", "")
-            links = meta.get("links", [])
+            study_abbr = meta.get("studyProgramAbbrev", "") or ""
+            module_name = (
+                meta.get("moduleNameDe")
+                or meta.get("moduleNameEn")
+                or meta.get("moduleName", "")
+                or ""
+            )
+            category = meta.get("category", "") or ""
+            section = meta.get("section", "") or ""
+            source = meta.get("source", "") or ""
+            links = meta.get("links", []) or []
 
-            # Choose a clear header
+            # Header line
             if section_label == "WEB":
                 header = f"[{study_abbr or 'FBM_WEB'}] {category or section or 'Website Information'}"
             else:
@@ -106,39 +102,40 @@ def build_context(matches) -> Tuple[str, List[SourceItem]]:
 
             section_parts.append(f"{header}\n{'-' * len(header)}\n{full_text}")
 
-            # Add source info
-            sources.append(SourceItem(
-                id=rid,
-                moduleNumber=mod,
-                moduleNameDe=meta.get("moduleNameDe", ""),
-                moduleNameEn=meta.get("moduleNameEn") or meta.get("moduleName", ""),
-                studyProgramAbbrev=study_abbr,
-                season=meta.get("season", ""),
-                credits=meta.get("credits", ""),
-                examType=meta.get("examType", ""),
-                score=m.score,
-                sourceFile=meta.get("source_file", ""),
-                pdfPageStart=meta.get("pdf_page_start", 0),
-                pdfPageEnd=meta.get("pdf_page_end", 0),
-                studyProgramUrl=meta.get("studyProgram_Url", ""),
-                pdfUrl=meta.get("pdf_url", ""),
-                category=category,
-                section=section,
-                source=source,
-                links=links,
-            ))
+            # Record source item
+            sources.append(
+                SourceItem(
+                    id=rid,
+                    moduleNumber=mod,
+                    moduleNameDe=meta.get("moduleNameDe", "") or "",
+                    moduleNameEn=meta.get("moduleNameEn") or meta.get("moduleName", "") or "",
+                    studyProgramAbbrev=study_abbr,
+                    season=meta.get("season", "") or "",
+                    credits=meta.get("credits", "") or "",
+                    examType=meta.get("examType", "") or "",
+                    score=float(m.score or 0),
+                    sourceFile=meta.get("source_file", "") or "",
+                    pdfPageStart=int(meta.get("pdf_page_start", 0) or 0),
+                    pdfPageEnd=int(meta.get("pdf_page_end", 0) or 0),
+                    studyProgramUrl=meta.get("studyProgram_Url", "") or "",
+                    pdfUrl=meta.get("pdf_url", "") or "",
+                    category=category,
+                    section=section,
+                    source=source,
+                    links=links,
+                )
+            )
 
             if len(section_parts) >= MAX_CONTEXT_CHUNKS:
                 break
 
-        if section_parts:
-            label = "Website Information" if section_label == "WEB" else "Modulhandbuch-Inhalte"
-            return [f"\n### {label}\n"] + section_parts
-        return []
+        if not section_parts:
+            return []
+        label = "Website Information" if section_label == "WEB" else "Modulhandbuch-Inhalte"
+        return [f"\n### {label}\n"] + section_parts
 
-    # Build sections: WEB first, modules second
+    # Assemble: WEB first, then MODULE
     ordered_parts = build_section(web_matches, "WEB") + build_section(module_matches, "MODULE")
 
-    # Merge everything
     context = "\n\n".join(ordered_parts)
     return context[:MAX_CONTEXT_CHARS], sources

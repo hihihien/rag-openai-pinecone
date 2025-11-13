@@ -23,8 +23,44 @@ def embed_batch(texts: List[str]) -> List[List[float]]:
         return [[] for _ in texts]
 
 def detect_lang(text: str) -> str:
-    """Heuristically detect whether text is German or English."""
-    t = text.lower()
-    german_markers = ["wie", "modul", "studierende", "prüfung", "ects", "vorlesung", "cp", "sws"]
-    return "de" if any(word in t for word in german_markers) else "en"
+    """detect whether text is German or English."""
+    t = (text or "").lower()
+
+    # strong hint: German umlauts/ß
+    if any(ch in t for ch in ("ä", "ö", "ü", "ß")):
+        return "de"
+
+    german_markers = [
+        # Question / helpers (German forms)
+        "wie", "was", "wer", "wo", "warum", "wieso", "weshalb",
+        "welche", "welcher", "welches", "gibt es", "kann ich", "ist", "sind",
+
+        # Uni / admin (German-only words)
+        "hochschule", "fachbereich", "studium", "studierende", "studierenden",
+        "studiengang", "studiengänge", "studienbüro", "erstsemester",
+        "bewerbung", "zulassung", "einschreibung", "immatrikulation",
+        "rückmeldung", "exmatrikulation",
+
+        # Semester / timing
+        "wintersemester", "sommersemester", "vorlesungszeit", "vorlesungsfreie zeit", "semesterferien",
+
+        # Modules / exams (German forms)
+        "modul", "modulhandbuch", "modulbeschreibung",
+        "prüf", "prüfungsordnung", "klausur", "mündliche prüfung", "schriftliche prüfung",
+        "hausarbeit", "leistungspunkte", "sws",
+
+        # Teaching formats (German)
+        "vorlesung", "übung", "veranstaltungsverzeichnis",
+
+        # Study plan / requirements
+        "studienordnung", "studienverlaufsplan", "wahlbereich", "wahlpflicht", "pflichtmodul", "schwerpunkt",
+
+        # Theses / docs (German forms)
+        "bachelorarbeit", "masterarbeit", "zeugnis",
+
+        # Roles / misc
+        "dozent", "dozentin", "praxissemester", "formular", "richtlinie",
+    ]
+
+    return "de" if any(m in t for m in german_markers) else "en"
 
