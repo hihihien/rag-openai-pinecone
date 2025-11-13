@@ -53,12 +53,12 @@ def ask(req: QuestionRequest):
     qvec = embed(req.question)
 
     # Select namespaces to search
-    namespaces = ["FBM_WEB"]
     if req.program:
-        namespaces.append(req.program)
-        namespaces.append(f"{req.program}_WEB")
+        # strictly limit to the current study program
+        namespaces = [req.program, f"{req.program}_WEB"]
     else:
-        namespaces.extend(AVAILABLE_NAMESPACES)
+        # homepage generic: search everything (incl. FBM_WEB)
+       namespaces = ["FBM_WEB", *AVAILABLE_NAMESPACES]
 
     flt = build_filter(
         season=req.season,

@@ -120,6 +120,7 @@ export default function Chatbot() {
         body: JSON.stringify({
           question: query,
           history: messages.map((m) => ({ role: m.role, content: m.content })),
+          program,
         }),
       });
 
