@@ -1,23 +1,42 @@
 type ChatbotContext = {
-  greeting: string;
+  greeting: string[];
   suggestions: string[];
 };
 
 export const chatbotContexts: Record<string, ChatbotContext> = {
   default: {
-    greeting: `👋 Hallo! Ich bin **MeDi**, dein KI-Assistent der **Fachbereich Medien** an der Hochschule Düsseldorf.
+    greeting: [
+      `👋 Hallo! Ich bin **MeDi**, dein KI-Assistent im **Fachbereich Medien**.
 
-Frag mich alles rund ums Studium, Studiengänge, Bewerbungen oder Module.`,
+Ich bin eine künstliche Intelligenz, die entwickelt wurde, um häufige Fragen zu beantworten. Von dieser Startseite aus kannst du allgemeine Informationen zu allen Studiengängen des Fachbereichs Medien erhalten.`,
+      `Wenn du Informationen zu einem bestimmten Studiengang suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Medieninformatik (MMI)](/mmi)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
       'Welche Bachelorstudiengänge gibt es?',
       'Wie kann ich mich für ein Studium bewerben?',
-      'Wo finde ich den Modulhandbuch-Link?',
+      'Wo finde ich den Kontakt zum Studienbüro?',
     ],
   },
   MMI: {
-    greeting: `👋 Willkommen! Du befindest dich auf der Seite des **Masterstudiengangs Medieninformatik (MMI)**.
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Masterstudiengangs Medieninformatik (MMI)**.
 
-Ich helfe dir gern bei Fragen zu Modulen, Projekten oder dem Ablauf des Studiums.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang MMI.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
       'Welche Vertiefungen gibt es im MMI?',
       'Wie lange dauert der Master Medieninformatik?',
@@ -25,61 +44,115 @@ Ich helfe dir gern bei Fragen zu Modulen, Projekten oder dem Ablauf des Studiums
     ],
   },
   BMI: {
-    greeting: `👋 Willkommen im **Bachelorstudiengang Medieninformatik (BMI)**!
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Bachelorstudiengangs Medieninformatik (BMI)**.
 
-Ich beantworte dir Fragen zu Modulen, Prüfungen, Praktika und mehr.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BMI.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Medieninformatik (MMI)](/mmi)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
-      'Welche Module sind im 1. Semester BMI?',
+      'Welche Module sollen im 1. Semester BMI belegt werden?',
       'Wer betreut die Bachelorarbeit im BMI?',
-      'Wie viele CP hat das Modul "Database Systems 1"?',
+      'Wie sieht der Studienverlaufsplan aus?',
     ],
   },
   BTB: {
-    greeting: `👋 Willkommen im **Bachelorstudiengang Ton und Bild (BTB)**!
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Bachelorstudiengangs Ton und Bild (BTB)**.
 
-Frag mich gerne zu Studiotechnik, Modulen oder Praxisprojekten.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BTB.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Medieninformatik (MMI)](/mmi)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
       'Was sind die technischen Schwerpunkte im BTB?',
       'Wie läuft das Praxissemester im BTB ab?',
-      'Wer unterrichtet im Modul "Audio Produktion"?',
+      'Wie sieht der Studienverlaufsplan aus?',
     ],
   },
   BMT: {
-    greeting: `👋 Willkommen im **Bachelorstudiengang Medientechnik (BMT)**!
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Bachelorstudiengangs Medientechnik (BMT)**.
 
-Ich kann dir bei Fragen zu den Modulinhalten, Praktika und Studienablauf helfen.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BMT.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Medieninformatik (MMI)](/mmi)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
-      'Wie viele CP hat das Modul "Video Technology"?',
-      'Welche Wahlfächer gibt es im BMT?',
-      'Wie sieht das 3. Semester aus?',
+      'Was sind die Grundlagen des Studiengangs BMT?',
+      'Welche Module soll ich im 3. Semester belegen?',
+      'Wie sieht der Studienverlaufsplan aus?',
     ],
   },
   BDAISY: {
-    greeting: `👋 Willkommen im **Bachelorstudiengang Data Science, AI und Intelligente Systeme (BDAISY)**!
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Bachelorstudiengangs Data Science, AI und Intelligente Systeme (BDAISY)**.
 
-Frag mich zu KI-Methoden, Data Engineering oder Modulen im Studium.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BDAISY.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Medieninformatik (MMI)](/mmi)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
       'Welche Module decken Machine Learning ab?',
-      'Wie funktioniert die Eignungsprüfung bei BDAISY?',
-      'Gibt es Praxisprojekte im Studium?',
+      'Wie sieht der Studienverlauf aus?',
+      'Gibt es Praxisprojekte im Studium BDAISY?',
     ],
   },
   BCSIM: {
-    greeting: `👋 Willkommen im **Bachelorstudiengang Creative, Synthetic and Interactive Media (BCSIM)**!
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Bachelorstudiengangs Creative, Synthetic and Interactive Media (BCSIM)**.
 
-Ich helfe dir mit Infos über Inhalte, Ablauf und Zugangsvoraussetzungen.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BCSIM.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Master Medieninformatik (MMI)](/mmi)
+- [Master Applied Research in Digital Media Technologies (MAR)](/mar)`
+    ],
     suggestions: [
-      'Was ist das Ziel des BCSIM-Studiengangs?',
+      'Was ist das Ziel des BCSIM Studiengangs?',
       'Welche Module werden im BCSIM angeboten?',
-      'Wie kreativ ist das Studium?',
+      'Wie kreativ ist das Studium BCSIM?',
     ],
   },
   MAR: {
-    greeting: `👋 Willkommen im **Masterstudiengang Applied Research in Digital Media Technologies (MAR)**!
+    greeting: [
+      `👋 Willkommen! Du befindest dich auf der Seite des **Masterstudiengangs Applied Research in Digital Media Technologies (MAR)**.
 
-Ich unterstütze dich bei Fragen zu Forschungsschwerpunkten und Studienablauf.`,
+Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang MAR.`,
+      `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
+- [Bachelor Medieninformatik (BMI)](/bmi)
+- [Bachelor Medientechnik (BMT)](/bmt)
+- [Bachelor Ton und Bild (BTB)](/btb)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/bdaisy)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/bcsim)
+- [Master Medieninformatik (MMI)](/mmi)`
+    ],
     suggestions: [
-      'Welche Voraussetzungen gelten für den MAR Master?',
+      'Welche Voraussetzungen gelten für den MAR Studiengang?',
       'Welche Themen kann man erforschen?',
       'Wann startet der MAR-Studiengang?',
     ],

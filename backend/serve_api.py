@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 from services.loader import load_text_store, AVAILABLE_NAMESPACES
-from services.embeddings import embed
+from services.embeddings import embed, detect_lang 
 from services.pinecone_search import build_filter, search_all_namespaces
 from services.context_builder import build_context, SourceItem
 from services.prompt_utils import ask_openai
@@ -53,12 +53,19 @@ def ask(req: QuestionRequest):
     qvec = embed(req.question)
 
     # Select namespaces to search
-    namespaces = ["FBM_WEB"]
     if req.program:
-        namespaces.append(req.program)
-        namespaces.append(f"{req.program}_WEB")
+        prog = (req.program or "").upper()
+        # Only use program scoping if at least one of the namespaces exists
+        candidate = [prog, f"{prog}_WEB"]
+        existing = [ns for ns in candidate if ns in AVAILABLE_NAMESPACES]
+        if existing:
+            namespaces = existing
+        else:
+            # fallback to global search if "program" isn't a known namespace
+            namespaces = ["FBM_WEB", *AVAILABLE_NAMESPACES]
     else:
-        namespaces.extend(AVAILABLE_NAMESPACES)
+        # when in homepage search everything
+        namespaces = ["FBM_WEB", *AVAILABLE_NAMESPACES]
 
     flt = build_filter(
         season=req.season,
@@ -79,49 +86,64 @@ def ask(req: QuestionRequest):
     context, sources = build_context(matches)
 
     if not context:
-        msg = (
-            "Ich konnte dazu nichts im Modulhandbuch finden."
-            if req.question.lower().startswith("wie")
-            else "I couldn't find anything relevant in the module handbook."
-        )
-        save_log(req.question, msg, [])
-        return AnswerResponse(answer=msg, sources=[])
+      lang = detect_lang(req.question)
+      msg = (
+        "Ich konnte dazu nichts in den Daten dieses Chatbots finden."
+        if lang == "de"
+        else "I couldn't find anything relevant in the chatbot's data."
+      )
+      save_log(req.question, msg, [])
+      return AnswerResponse(answer=msg, sources=[])
 
     answer = ask_openai(context, req.question, req.history or [])
 
-    # Build footer with references
-    footer_lines = ["**Referenzen:**"]
+    # === Build footer ===
+    footer_lines = ["**Quellen und weiterführende Seiten:**"]
     seen_links = set()
 
     for src in sources[:5]:
-        # --- PDF references (from JSONL) ---
+        # PDF references
         if src.pdfUrl and src.pdfUrl not in seen_links:
             label = f"PDF Modulhandbuch {src.studyProgramAbbrev or ''}".strip()
             footer_lines.append(f"- [{label} (Seite {src.pdfPageStart}–{src.pdfPageEnd})]({src.pdfUrl})")
             seen_links.add(src.pdfUrl)
 
-        # --- Study program URL (from JSONL) ---
+        # Study program URL
         if src.studyProgramUrl and src.studyProgramUrl not in seen_links:
-            label = f"{src.studyProgramAbbrev or 'Studiengang'} Seite"
+            label = (
+                f"{src.studyProgramAbbrev} Studiengangsseite"
+                if src.studyProgramAbbrev else
+                "Fachbereich Medien Seite"
+            )
             footer_lines.append(f"- [{label}]({src.studyProgramUrl})")
             seen_links.add(src.studyProgramUrl)
 
-        # --- Web links (from _WEB metadata now stored in SourceItem.links) ---
+        # Web links
         if src.links:
             for link in src.links:
-                link_label = link.get("text", "Quelle")
+                link_label = link.get("text", "").strip()
                 link_url = link.get("url", src.source)
+
+                # Skip if no label or URL
+                if not link_label or not link_url:
+                    continue
+
                 if link_url not in seen_links:
-                    footer_lines.append(f"- [{link_label} Seite]({link_url})")
+                    footer_lines.append(f"- [{link_label}]({link_url})")
                     seen_links.add(link_url)
+
         elif src.source and src.source not in seen_links:
-            label = f"{src.studyProgramAbbrev or 'FBM'} Quelle"
+            label = (
+                f"{src.studyProgramAbbrev} Studiengangsseite"
+                if src.studyProgramAbbrev else
+                "Fachbereich Medien Seite"
+            )
             footer_lines.append(f"- [{label}]({src.source})")
             seen_links.add(src.source)
 
-    footer = "\n".join(footer_lines)
+    footer = "\n".join(footer_lines) if len(footer_lines) > 1 else ""
+    final_answer = f"{answer.strip()}\n\n{footer}" if footer else answer.strip()
 
-    final_answer = answer.strip() + "\n\n" + footer
     save_log(req.question, final_answer, sources)
     return AnswerResponse(answer=final_answer, sources=sources)
 

@@ -32,7 +32,7 @@
   },
   {
     "id": "WEB_FBM_002",
-    "text": "Der Fachbereich Medien bietet fünf Bachelorstudiengänge und zwei Masterstudiengänge an. Interessierte können sich über die einzelnen Programme auf den jeweiligen Seiten informieren:\n\n5 Bachelor-Studiengänge sind:\nB. Eng. Ton und Bild (https://medien.hs-duesseldorf.de/btub),\nB. Eng. Medientechnik (https://medien.hs-duesseldorf.de/bmt),\nB. A. CSIM (https://medien.hs-duesseldorf.de/bcsim),\nB. Sc. Medieninformatik (https://medien.hs-duesseldorf.de/bmi),\nB. Sc. DAISY (https://medien.hs-duesseldorf.de/bdaisy)\n\n2 Master-Studiengänge sind:\nM. Sc. Medieninformatik (https://medien.hs-duesseldorf.de/mmi),\nM. Sc. Applied Research (https://medien.hs-duesseldorf.de/mar)",
+    "text": "Der Fachbereich Medien bietet fünf Bachelorstudiengänge und zwei Masterstudiengänge an. Interessierte können sich über die einzelnen Programme auf den jeweiligen Seiten informieren:\n\n5 Bachelor-Studiengänge sind:\nB. Eng. Ton und Bild (BTB),\nB. Eng. Medientechnik (BMT),\nB. A. Creative, Synthetic and Interactive Media (BCSIM),\nB. Sc. Medieninformatik (BMI),\nB. Sc. Data Science, AI und Intelligente Systeme (BDAISY)\n\n2 Master-Studiengänge sind:\nM. Sc. Medieninformatik (MMI),\nM. Sc. Applied Research in Digital Media Technologies (MAR)",
     "metadata": {
       "category": "fbm_study_programs",
       "section": "studienangebot",
@@ -203,5 +203,200 @@
       ],
       "source": "https://medien.hs-duesseldorf.de/"
     }
+  },
+  {
+    "id": "WEB_FBM_008",
+    "text": "Beratung vor dem Studium – Inhaltliche Studienfachberatung. Hier können Sie alle Ihre Fragen zum Studienverlauf und Studieninhalten stellen.\n\n1. Für Ton und Bild (B.Eng.): Allgemeine Fragen zum Studium und Modulen an der Hochschule Düsseldorf: Dipl.-Ing. Christian Epe – btub.medien@hs-duesseldorf.de. Fragen zum Bewerbungsverfahren und Modulen an der Robert-Schumann-Hochschule: imm.studienberatung@rsh-duesseldorf.de.\n\n2. Für Medientechnik (B.Eng.): Dipl.-Soz.-Päd. Thomas Zipf. Kontaktdaten: https://medien.hs-duesseldorf.de/zipf oder via Email bmt.medien@hs-duesseldorf.de.\n\n3. Für Medieninformatik (B.Sc.): Dipl.-Ing. Jens Lambert. Kontaktdaten: https://medien.hs-duesseldorf.de/personen/lambert/Seiten/default.aspx oder via Email bmi.medien@hs-duesseldorf.de.\n\n4. Für DAISY (B.Sc.): Prof. Dr. Florian Huber. Kontaktdaten: https://medien.hs-duesseldorf.de/personen/huber.\n\n5. Medieninformatik (M.Sc.): Prof. Dr. Thomas Franz. Kontaktdaten: https://medien.hs-duesseldorf.de/franz oder via Email mmi.medien@hs-duesseldorf.de.\n\nAllgemeine Informationen zur Bewerbung und Zulassung: Informationen zum Bewerbungsverfahren, zentrale Studienberatung, allgemeine Themen für Studieninteressierte sowie Zugangsverfahren für ausländische Bewerber.",
+    "metadata": {
+      "category": "fbm_general",
+      "section": "beratung_vor_dem_studium",
+      "links": [
+        {
+          "text": "Kontaktdaten Thomas Zipf",
+          "url": "https://medien.hs-duesseldorf.de/zipf"
+        },
+        {
+          "text": "Kontaktdaten Jens Lambert",
+          "url": "https://medien.hs-duesseldorf.de/personen/lambert/Seiten/default.aspx"
+        },
+        {
+          "text": "Kontaktdaten Florian Huber",
+          "url": "https://medien.hs-duesseldorf.de/personen/huber"
+        },
+        {
+          "text": "Kontaktdaten Thomas Franz",
+          "url": "https://medien.hs-duesseldorf.de/franz"
+        },
+        {
+          "text": "Bewerbungsverfahren",
+          "url": "https://www.hs-duesseldorf.de/studium/studieninteressierte/bewerbungsablauf"
+        },
+        {
+          "text": "Zentrale Studienberatung",
+          "url": "https://www.hs-duesseldorf.de/zsb"
+        },
+        {
+          "text": "Allgemeine Informationen für Studieninteressierte",
+          "url": "https://www.hs-duesseldorf.de/studieninteressierte"
+        },
+        {
+          "text": "Zugangsverfahren für ausländische Bewerber",
+          "url": "https://www.hs-duesseldorf.de/studium/internationales/studierende/internationaleStudieninteressierte/Seiten/default.aspx"
+        }
+      ],
+      "source": "https://medien.hs-duesseldorf.de/"
+    }
+  },
+  {
+    "id": "WEB_FBM_009",
+    "text": "Beratung im Studium.\n\n1. B.Eng. Ton und Bild: Prof. Dr.-Ing. Jochen Steffens (Raum 05.E.061, Tel. +49 211 4351-3636). Weitere Unterstützung durch Tutoren der Robert-Schumann-Hochschule.\n\n2. B.Eng. Medientechnik: Studiengangskoordinatoren 2025: Dipl.-Ing. Christian Epe und Dr. Siegbert Versümer, M.Sc. Studiengangskoordinatoren 2018: Prof. Dr.-Ing. Thomas Bonse und Prof. Dr. Eng. / Univ. of Tsukuba Jens Herder.\n\n3. B.Sc. DAISY: Prof. Dr. Florian Huber (Raum 04.009, Tel. +49 211 4351-3176).\n\n4. B.Sc. Medieninformatik: Prof. Dr.-Ing. M.Sc. Markus Dahm (Raum 04.2.010, Tel. +49 211 4351-3260).\n\n5. M.Sc. Medieninformatik: Prof. Dr. Thomas Franz (Raum 04.2.040, Tel. +49 211 4351-3804).",
+    "metadata": {
+      "category": "fbm_general",
+      "section": "beratung_im_studium",
+      "links": [
+        {
+          "text": "Personenseite Jochen Steffens",
+          "url": "https://medien.hs-duesseldorf.de/personen/steffens"
+        },
+        {
+          "text": "Tutoren RSH Düsseldorf",
+          "url": "https://www.rsh-duesseldorf.de/campus/beratung-und-service/studienstart/tutoren-w/m"
+        },
+        {
+          "text": "Christian Epe",
+          "url": "https://medien.hs-duesseldorf.de/epe"
+        },
+        {
+          "text": "Siegbert Versümer",
+          "url": "https://medien.hs-duesseldorf.de/versuemer"
+        },
+        {
+          "text": "Thomas Bonse",
+          "url": "https://medien.hs-duesseldorf.de/bonse"
+        },
+        {
+          "text": "Jens Herder",
+          "url": "https://medien.hs-duesseldorf.de/herder"
+        },
+        {
+          "text": "Personenseite Florian Huber",
+          "url": "https://medien.hs-duesseldorf.de/huber"
+        },
+        {
+          "text": "Personenseite Markus Dahm",
+          "url": "https://medien.hs-duesseldorf.de/dahm"
+        },
+        {
+          "text": "Personenseite Thomas Franz",
+          "url": "https://medien.hs-duesseldorf.de/franz"
+        }
+      ],
+      "source": "https://medien.hs-duesseldorf.de/studium/beratung-im-studium"
+    }
+  },
+  {
+    "id": "WEB_FBM_010",
+    "text": "BAföG – Leistungsbescheinigungen gemäß § 48 BAföG. Studierende, die Ausbildungsunterstützung nach BAföG erhalten, müssen im Verlauf ihres Studiums dem BAföG-Amt eine Bescheinigung über den geordneten Verlauf der Ausbildung vorlegen. Dies wird in der Regel während des vierten Semesters relevant. Weitere Informationen zum Ablauf im Fachbereich Medien finden Sie im verlinkten Dokument.",
+    "metadata": {
+      "category": "fbm_general",
+      "section": "bafoeg",
+      "links": [
+        {
+          "text": "BAföG Informationen für Studierende",
+          "url": "https://medien.hs-duesseldorf.de/studium/beratung-im-studium/Documents/BAfoeG_InfoStudierende.pdf"
+        },
+        {
+          "text": "BAföG Allgemeine Informationen",
+          "url": "https://medien.hs-duesseldorf.de/studium/beratung-im-studium/bafoeg"
+        },
+      ],
+      "source": "https://medien.hs-duesseldorf.de/"
+    }
+  },
+  {
+    "id": "WEB_FBM_011",
+    "text": "Fachschaft. Der Fachschaftsrat Medien besteht aus neun studentischen Vertretern. Er setzt sich für die Anliegen der Studierenden ein und ist bei Fragen und Problemen eine der ersten Anlaufstellen. Die Fachschaft betreibt verschiedene Informationskanäle wie WhatsApp, Instagram und eine Website, um Studierende über alles Wichtige zu informieren. Außerdem gibt es einen Fachschaftskiosk im Fachschaftsraum, in dem Snacks und Getränke erhältlich sind. Der Fachschaftsrat Medien wird jährlich von den Studierenden des Fachbereichs gewählt.\n\nKontakt: Raum 04.2.029, Tel. +49 (211) 4351-2512, Mail: info@fachschaftmedien.de.\n\nMitglieder der Fachschaft Medien (Stand Mai 2025): Joshua Bohnhorst, Jule Naßenstein, Samy Heide, Cristoph Kern, Maik Sohn, Oliver Dick, Valeria Geier, Janne Helms, Taylan Ergün.\n\nFachschaften Referate (Stand Mai 2025): Yeray Andres, Elias van Gemmeren, Manuela Striebich, Till Rogoll, Miriam Agrawala, Jonas Kampshoff, Jakob Noweck, Till Klasen, Sebastian Holthausen.",
+    "metadata": {
+      "category": "fbm_general",
+      "section": "fachschaft",
+      "links": [
+        {
+          "text": "Fachschaft Medien – Über uns",
+          "url": "https://fachschaftmedien.de/ueber-uns/"
+        },
+        {
+          "text": "Fachschaft Medien – Website",
+          "url": "https://fachschaftmedien.de/"
+        },
+        {
+          "text": "Fachschaft Medien – Gremien",
+          "url": "https://medien.hs-duesseldorf.de/gremien/fachschaft#"
+        }
+      ],
+      "source": "https://medien.hs-duesseldorf.de/gremien/fachschaft#"
+    }
+  },
+  {
+    "id": "WEB_FBM_012",
+    "text": "Prüfungsausschuss. \n\nPrüfungsausschuss für B.Eng. Medientechnik, B.Sc. Medieninformatik, M.Sc. Medieninformatik: Prof. Dr.-Ing. Stefanie Dederichs (Vorsitzende), Prof. Dr. Thomas Franz, Prof. Dr.-Ing. Sina Mostafawy, Prof. Gabi Schwab-Trapp, Prof. Dr.-Ing. Jörg Becker-Schweitzer (Stellvertreter), Prof. Dr. Florian Huber (Stellvertreterin), B.Eng. Patrick Blättermann, Jennifer Rose (Stellvertreterin), Sebastian Holthausen (Stud.), Alexander Bergmann (Stud.), Jakob Noweck (Stud., Stellvertreter), Lucas Schmitz (Stud., Stellvertreter). Stand Januar 2023.\n\nPrüfungsausschuss für B.Eng. Ton und Bild: Prof. Dr.-Ing. Stefanie Dederichs (Vorsitzende), Prof. Dr.-Ing. Jörg Becker-Schweitzer, Dipl.-Ing. Christian Epe, M.Sc., Johannes Hennig (Stud.). Stand Januar 2023.\n\nGemeinsamer Prüfungsausschuss für B.Sc. DAISY (ZDD): Prof. Dr.-Ing. Stefanie Dederichs (Vorsitzende), Prof. Dr. Florian Huber, Prof. Dr.-Ing. André Stuhlsatz, B.Eng. Patrick Blättermann, Miriam Agrawala (Stud.). Stand Januar 2023.\n\nGemeinsamer Prüfungsausschuss für Master TRADY (ZDD): Prof. Dr. Florian Huber. Stand Oktober 2022.",
+    "metadata": {
+      "category": "fbm_general",
+      "section": "pruefungsausschuss",
+      "links": [
+        {
+          "text": "Prüfungs­aus­schuss",
+          "url": "https://medien.hs-duesseldorf.de/gremien/pruefungsausschuss"
+        },
+        {
+          "text": "Prof. Stefanie Dederichs",
+          "url": "https://medien.hs-duesseldorf.de/dederichs"
+        },
+        {
+          "text": "Prof. Thomas Franz",
+          "url": "https://medien.hs-duesseldorf.de/franz"
+        },
+        {
+          "text": "Prof. Sina Mostafawy",
+          "url": "https://medien.hs-duesseldorf.de/mostafawy"
+        },
+        {
+          "text": "Prof. Gabi Schwab-Trapp",
+          "url": "https://medien.hs-duesseldorf.de/schwab-trapp"
+        },
+        {
+          "text": "Prof. Jörg Becker-Schweitzer",
+          "url": "https://medien.hs-duesseldorf.de/becker-schweitzer"
+        },
+        {
+          "text": "Prof. Florian Huber",
+          "url": "https://medien.hs-duesseldorf.de/huber"
+        },
+        {
+          "text": "Patrick Blättermann",
+          "url": "https://medien.hs-duesseldorf.de/blaettermann"
+        },
+        {
+          "text": "Jennifer Rose",
+          "url": "https://medien.hs-duesseldorf.de/personen/rose"
+        },
+        {
+          "text": "Sebastian Holthausen",
+          "url": "https://cit.hs-duesseldorf.de/personen/holthausen"
+        },
+        {
+          "text": "Christian Epe",
+          "url": "https://medien.hs-duesseldorf.de/epe"
+        },
+        {
+          "text": "Prof. André Stuhlsatz",
+          "url": "https://mv.hs-duesseldorf.de/personen/andre-stuhlsatz"
+        }
+      ],
+      "source": "https://medien.hs-duesseldorf.de/"
+    }
   }
+
+
+
+
 ]

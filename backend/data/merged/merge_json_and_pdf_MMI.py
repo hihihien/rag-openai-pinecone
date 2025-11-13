@@ -102,4 +102,4 @@ with OUT_PATH.open("w", encoding="utf-8") as f:
     for rec in merged_records:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
-print(f" Merged {len(merged_records)} MMI records → {OUT_PATH}")
+print(f"Merged {len(merged_records)} MMI records → {OUT_PATH}")
