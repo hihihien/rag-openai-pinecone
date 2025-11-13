@@ -141,13 +141,13 @@ export default function Chatbot() {
 
   return (
     <div
-      className="w-full min-h-screen flex flex-col bg-base-200 text-sm relative"
+      className="w-full min-h-screen flex flex-col bg-base-200 text-xs relative"
       data-theme="HSD-Medien"
     >
       {/* === Fixed Header === */}
       <div className="fixed top-0 left-0 right-0 z-50 p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="font-bold text-sm">MeDi, Dein KI-Assistent</span>
+          <span className="font-bold text-x">MeDi, Dein KI-Assistent</span>
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
 
@@ -255,9 +255,8 @@ export default function Chatbot() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* === Fixed Bottom Section (Input + Collapsible Disclaimer) === */}
+      {/* Fixed bottom (Input + Disclaimer) */}
       <div ref={bottomRef} className="fixed bottom-0 left-0 right-0 z-50 border-t border-base-300 bg-base-200">
-        {/* Input Bar with icon inside input */}
         <form
           onSubmit={(e) => { e.preventDefault(); askQuestion(); }}
           className="p-3 pb-0 border-base-300"
@@ -267,7 +266,7 @@ export default function Chatbot() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="Stelle eine Frage..."
-              className="w-full input input-ghost text-sm bg-gray-50 text-gray-700 placeholder-gray-400 pr-12"
+              className="w-full input input-ghost text-xs bg-gray-50 text-gray-700 placeholder-gray-400 pr-12"
             />
             <button
               type="submit"
@@ -286,7 +285,7 @@ export default function Chatbot() {
         <div className="bg-base-200">
           <div className="collapse collapse-arrow bg-base-200 rounded-none">
             <input type="checkbox" className="peer border-none" placeholder="disclaimer" />
-            <div className="collapse-title text-x font-semibold text-gray-700 peer-checked:text-neutral">
+            <div className="collapse-title text-xs font-semibold text-gray-700 peer-checked:text-neutral">
               AI-Disclaimer
             </div>
             <div className="collapse-content text-xs leading-relaxed">
