@@ -18,7 +18,7 @@ def load_text_store():
 
     # 1. Load merged module JSONL data
     for jf in MERGED_PATH.rglob("*.jsonl"):
-        namespace = jf.stem.split("_")[0]  # e.g. BMI_merged → BMI
+        namespace = jf.stem.split("_")[0]  # e.g. BMI_merged as BMI
         seen_namespaces.add(namespace)
 
         with jf.open("r", encoding="utf-8") as f:
@@ -49,7 +49,7 @@ def load_text_store():
                     "pdf_url": meta.get("pdf_url", "")
                 }
 
-    # 2. Load processed_web JSON data (for _WEB namespaces)
+    # Load processed_web JSON data (for _WEB namespaces)
     if WEB_PATH.exists():
         for wf in WEB_PATH.glob("*_web.json"):
             try:

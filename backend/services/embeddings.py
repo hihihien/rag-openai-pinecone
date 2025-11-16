@@ -32,8 +32,13 @@ def detect_lang(text: str) -> str:
 
     german_markers = [
         # Question / helpers (German forms)
-        "wie", "was", "wer", "wo", "warum", "wieso", "weshalb",
-        "welche", "welcher", "welches", "gibt es", "kann ich", "ist", "sind",
+        "wie", "was", "wer", "wo", "warum", "wieso", "weshalb", "wann", "wem", "wen", "wohin", "woher", "wozu",
+        "werde", "werden", "bin", "bist", "sind", "seid", "sind",
+        "welche", "welcher", "welches", "gibt es", "kann ich", "ist",
+        "helfen", "hilfe", "informationen", "kontakt",
+        "finden", "suche", "suchen", "erklären", "erkläre", "erklärt",
+        "bedeuten", "bedeutet", "bedeutung",
+        "unterscheiden", "unterschied", "unterschiede",
 
         # Uni / admin (German-only words)
         "hochschule", "fachbereich", "studium", "studierende", "studierenden",
