@@ -4,7 +4,7 @@ import { chatbotContexts } from '../utils/chatbotContext';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { X, Minus, RefreshCw, Send } from 'lucide-react';
+import { X, Minus, RefreshCw, Send, Menu } from 'lucide-react';
 
 // Detect program from referrer
 function detectProgramFromReferrer(): string {
@@ -39,8 +39,9 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [bottomPadding, setBottomPadding] = useState(120);
-  const messagesWrapRef = useRef<HTMLDivElement | null>(null);
-  
+
+  // compact header toggled via overlay width from host
+  const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
     const el = bottomRef.current;
@@ -54,17 +55,10 @@ export default function Chatbot() {
     return () => ro.disconnect();
   }, []);
 
-  // Auto scroll only after the user has interacted (not on initial greetings)
+  // Auto scroll only after the user has interacted not on initial greetings
   useEffect(() => {
     if (!hasInteracted) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, hasInteracted]);
-
-  // Keep the greeting at the very top until the user interacts
-  useEffect(() => {
-    if (hasInteracted) return;
-    // stay at top
-    messagesWrapRef.current?.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [messages, hasInteracted]);
 
   // greeting handler
@@ -82,12 +76,13 @@ export default function Chatbot() {
     }
   }, [program]);
 
-  // LISTEN TO PROGRAM MESSAGE FROM PARENT PAGE
   // when parent sends program, update program and refresh greetings
   useEffect(() => {
     const listener = (event: MessageEvent) => {
-      if (event.data?.program) {
-        const normalized = event.data.program.toUpperCase();
+      const data = event.data || {};
+
+      if (data?.program) {
+        const normalized = data.program.toUpperCase();
         if (chatbotContexts[normalized]) {
           setProgram(normalized);
 
@@ -104,18 +99,25 @@ export default function Chatbot() {
           }
         }
       }
+
+      // receive overlay width from host page to toggle burger menu
+      if (data?.type === 'overlay-size' && typeof data.width === 'number') {
+        const w = data.width;
+        setIsCompact(w >= 210 && w <= 295);
+      }
     };
+
     window.addEventListener('message', listener);
     return () => window.removeEventListener('message', listener);
-  }, [hasInteracted]); //depend on hasInteracted
+  }, [hasInteracted]);
 
-  // === ASK QUESTION ===
+  // ASK QUESTION
   const askQuestion = async (q?: string) => {
     const query = q || question;
     if (!query.trim()) return;
 
     setHasInteracted(true);
-    setShowSuggestions(false); 
+    setShowSuggestions(false);
 
     const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
@@ -164,55 +166,116 @@ export default function Chatbot() {
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
 
+        {/* Right controls: either burger or separate icons */}
         <div className="flex items-center gap-2">
-          {/* New Chat button */}
-          <button
-            onClick={() => {
-              setMessages([]); // clear chat
-              setShowSuggestions(true);
-              const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
-              const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
-              const greetingMessages = greetingArray.map((g) => ({
-                role: 'assistant' as const,
-                content: g,
-              }));
-              setMessages(greetingMessages);
-              setHasInteracted(false);
+          {isCompact ? (
+            // Burger menu when overlay is narrow
+            <div className="dropdown dropdown-end">
+              <button
+                tabIndex={0}
+                className="btn btn-ghost btn-circle"
+                aria-label="Menü öffnen"
+                title="Menü"
+              >
+                <Menu size={20} className="text-white" />
+              </button>
+              <ul
+                tabIndex={0}
+                className="menu dropdown-content bg-base-100 text-base-content rounded-box shadow mt-3 w-56"
+              >
+                <li>
+                  <button
+                    onClick={() => {
+                      setMessages([]);
+                      setShowSuggestions(true);
+                      const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
+                      const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+                      const greetingMessages = greetingArray.map((g) => ({
+                        role: 'assistant' as const,
+                        content: g,
+                      }));
+                      setMessages(greetingMessages);
+                      setHasInteracted(false);
+                    }}
+                    aria-label="Neuen Chat starten"
+                    title="Neuen Chat starten"
+                  >
+                    <RefreshCw size={16} />
+                    Neuer Chat
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
+                    aria-label="Chat minimieren"
+                    title="Chat minimieren"
+                  >
+                    <Minus size={16} />
+                    Minimieren
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
+                    aria-label="Chat schließen"
+                    title="Chat schließen"
+                  >
+                    <X size={16} />
+                    Schließen
+                  </button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            // Separate icons when overlay is wide enough
+            <div className="flex items-center gap-2">
+              {/* New Chat */}
+              <button
+                onClick={() => {
+                  setMessages([]);
+                  setShowSuggestions(true);
+                  const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
+                  const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+                  const greetingMessages = greetingArray.map((g) => ({
+                    role: 'assistant' as const,
+                    content: g,
+                  }));
+                  setMessages(greetingMessages);
+                  setHasInteracted(false);
+                }}
+                className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+                title="Neuen Chat starten"
+                aria-label="Neuen Chat starten"
+              >
+                <RefreshCw size={18} className="text-white" />
+              </button>
 
-              // force scroll to very top after DOM updates
-              requestAnimationFrame(() => {
-                messagesWrapRef.current?.scrollTo({ top: 0, behavior: 'auto' });
-              });
-            }}
-            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-            title="Neuen Chat starten"
-          >
-            <RefreshCw size={18} className="text-white" />
-          </button>
+              {/* Minimize */}
+              <button
+                onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
+                className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+                title="Chat minimieren"
+                aria-label="Chat minimieren"
+              >
+                <Minus size={18} className="text-white" />
+              </button>
 
-          {/* Minimize button */}
-          <button
-            onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
-            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-            title="Chat minimieren"
-          >
-            <Minus size={18} className="text-white" />
-          </button>
-
-          {/* Close button */}
-          <button
-            onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
-            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-            title="Chat schließen"
-          >
-            <X size={18} className="text-white" />
-          </button>
+              {/* Close */}
+              <button
+                onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
+                className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+                title="Chat schließen"
+                aria-label="Chat schließen"
+              >
+                <X size={18} className="text-white" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-
       {/* === Scrollable Messages === */}
-      <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16, overflowAnchor: 'none' as any }}>
+      <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16 }}>
         {messages.map((m, i) => (
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
@@ -225,29 +288,29 @@ export default function Chatbot() {
               >
                 {m.role === 'assistant' ? (
                   <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    a: ({ node, ...props }) => {
-                      const href = String(props.href || '');
-                      // slugs use in chatbotContext
-                      const programSlugs = new Set(['/bmi','/bmt','/btb','/bdaisy','/bcsim','/mmi','/mar']);
-                      const isProgramLink = programSlugs.has(href);
-                      // where these pages live on site
-                      const BASE = '/webredaktion/chatbot-test';
-                      const ORIGIN = 'https://medien.hs-duesseldorf.de';
-                      const finalHref = isProgramLink ? `${ORIGIN}${BASE}${href}` : href;
-                      const target = '_blank';
-                      return (
-                        <a
-                          {...props}
-                          href={finalHref}
-                          target={target}
-                          rel="noopener noreferrer"
-                          className="hover:text-shadow-sm italic transition-colors duration-150"
-                        />
-                    );
-                   },
-                }}
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      a: ({ node, ...props }) => {
+                        const href = String(props.href || '');
+                        // slugs use in chatbotContext
+                        const programSlugs = new Set(['/bmi','/bmt','/btb','/bdaisy','/bcsim','/mmi','/mar']);
+                        const isProgramLink = programSlugs.has(href);
+                        // where these pages live on site
+                        const BASE = '/webredaktion/chatbot-test';
+                        const ORIGIN = 'https://medien.hs-duesseldorf.de';
+                        const finalHref = isProgramLink ? `${ORIGIN}${BASE}${href}` : href;
+                        const target = '_blank';
+                        return (
+                          <a
+                            {...props}
+                            href={finalHref}
+                            target={target}
+                            rel="noopener noreferrer"
+                            className="hover:text-shadow-sm italic transition-colors duration-150"
+                          />
+                        );
+                      },
+                    }}
                   >
                     {m.content}
                   </ReactMarkdown>
@@ -297,7 +360,6 @@ export default function Chatbot() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="Stelle eine Frage..."
-              autoFocus={false}
               className="w-full input input-ghost text-xs bg-gray-50 text-gray-700 placeholder-gray-400 pr-12"
             />
             <button
@@ -311,7 +373,6 @@ export default function Chatbot() {
             </button>
           </div>
         </form>
-
 
         {/* Collapsible AI Disclaimer*/}
         <div className="bg-base-200">
@@ -375,7 +436,6 @@ export default function Chatbot() {
           </div>
         </div>
       </div>
-
 
     </div>
   );
