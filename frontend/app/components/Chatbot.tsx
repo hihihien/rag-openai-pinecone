@@ -39,6 +39,7 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [bottomPadding, setBottomPadding] = useState(120);
+  const messagesWrapRef = useRef<HTMLDivElement | null>(null);
   
 
   useEffect(() => {
@@ -59,6 +60,12 @@ export default function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, hasInteracted]);
 
+  // Keep the greeting at the very top until the user interacts
+  useEffect(() => {
+    if (hasInteracted) return;
+    // stay at top
+    messagesWrapRef.current?.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }, [messages, hasInteracted]);
 
   // greeting handler
   useEffect(() => {
@@ -171,6 +178,11 @@ export default function Chatbot() {
               }));
               setMessages(greetingMessages);
               setHasInteracted(false);
+
+              // force scroll to very top after DOM updates
+              requestAnimationFrame(() => {
+                messagesWrapRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+              });
             }}
             className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
             title="Neuen Chat starten"
@@ -200,7 +212,7 @@ export default function Chatbot() {
 
 
       {/* === Scrollable Messages === */}
-      <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16 }}>
+      <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16, overflowAnchor: 'none' as any }}>
         {messages.map((m, i) => (
           <div key={i}>
             <div className={`chat ${m.role === 'user' ? 'chat-end' : 'chat-start'}`}>
@@ -285,6 +297,7 @@ export default function Chatbot() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="Stelle eine Frage..."
+              autoFocus={false}
               className="w-full input input-ghost text-xs bg-gray-50 text-gray-700 placeholder-gray-400 pr-12"
             />
             <button
