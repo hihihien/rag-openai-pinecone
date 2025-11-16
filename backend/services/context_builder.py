@@ -2,7 +2,7 @@ from typing import List, Tuple, Optional
 from services.loader import ID_TO_TEXT, ID_TO_META
 from pydantic import BaseModel
 
-SCORE_THRESHOLD = 0.2
+SCORE_THRESHOLD = 0.15
 PER_MODULE_CAP = 2
 MAX_CONTEXT_CHUNKS = 6
 MAX_CONTEXT_CHARS = 9000
