@@ -39,6 +39,7 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [bottomPadding, setBottomPadding] = useState(120);
+  
 
   useEffect(() => {
     const el = bottomRef.current;
@@ -52,11 +53,12 @@ export default function Chatbot() {
     return () => ro.disconnect();
   }, []);
 
-
-  // Auto scroll when messages update
+  // Auto scroll only after the user has interacted (not on initial greetings)
   useEffect(() => {
+    if (!hasInteracted) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, hasInteracted]);
+
 
   // greeting handler
   useEffect(() => {
@@ -168,6 +170,7 @@ export default function Chatbot() {
                 content: g,
               }));
               setMessages(greetingMessages);
+              setHasInteracted(false);
             }}
             className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
             title="Neuen Chat starten"
