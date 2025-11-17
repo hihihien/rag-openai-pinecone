@@ -1,4 +1,3 @@
-# backend/services/logger.py
 import json
 import requests
 from datetime import datetime
