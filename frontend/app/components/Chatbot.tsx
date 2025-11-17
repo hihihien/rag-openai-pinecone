@@ -4,7 +4,7 @@ import { chatbotContexts } from '../utils/chatbotContext';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { X, Minus, RefreshCw, Send, Menu } from 'lucide-react';
+import { X, Minus, RefreshCw, Send } from 'lucide-react';
 
 // Detect program from referrer
 function detectProgramFromReferrer(): string {
@@ -30,6 +30,7 @@ type Message = {
 };
 
 export default function Chatbot() {
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [program, setProgram] = useState(detectProgramFromReferrer());
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
@@ -38,6 +39,7 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [bottomPadding, setBottomPadding] = useState(120);
+  
 
   useEffect(() => {
     const el = bottomRef.current;
@@ -50,6 +52,13 @@ export default function Chatbot() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Auto scroll only after the user has interacted (not on initial greetings)
+  useEffect(() => {
+    if (!hasInteracted) return;
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, hasInteracted]);
+
 
   // greeting handler
   useEffect(() => {
@@ -71,31 +80,35 @@ export default function Chatbot() {
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (event.data?.program) {
-        const normalized = String(event.data.program).toUpperCase();
+        const normalized = event.data.program.toUpperCase();
         if (chatbotContexts[normalized]) {
           setProgram(normalized);
 
-          const { greeting } = chatbotContexts[normalized] || chatbotContexts['default'];
-          const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
-          const greetingMessages = greetingArray.map((g) => ({
-            role: 'assistant' as const,
-            content: g,
-          }));
-          setMessages(greetingMessages);
-          setShowSuggestions(true);
+          // If user hasn't interacted yet, replace greetings immediately
+          if (!hasInteracted) {
+            const { greeting } = chatbotContexts[normalized] || chatbotContexts['default'];
+            const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+            const greetingMessages = greetingArray.map((g) => ({
+              role: 'assistant' as const,
+              content: g,
+            }));
+            setMessages(greetingMessages);
+            setShowSuggestions(true);
+          }
         }
       }
     };
     window.addEventListener('message', listener);
     return () => window.removeEventListener('message', listener);
-  }, []);
+  }, [hasInteracted]); //depend on hasInteracted
 
   // === ASK QUESTION ===
   const askQuestion = async (q?: string) => {
     const query = q || question;
     if (!query.trim()) return;
 
-    setShowSuggestions(false);
+    setHasInteracted(true);
+    setShowSuggestions(false); 
 
     const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
@@ -144,112 +157,45 @@ export default function Chatbot() {
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
 
-        {/* Right controls: icons (sm & lg+), burger (md..lg-) */}
         <div className="flex items-center gap-2">
-          {/* Separate icons: visible on <md and ≥lg */}
-          <div className="flex items-center gap-2 md:hidden lg:flex">
-            {/* New Chat */}
-            <button
-              onClick={() => {
-                setMessages([]);
-                setShowSuggestions(true);
-                const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
-                const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
-                const greetingMessages = greetingArray.map((g) => ({
-                  role: 'assistant' as const,
-                  content: g,
-                }));
-                setMessages(greetingMessages);
-              }}
-              className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-              title="Neuen Chat starten"
-              aria-label="Neuen Chat starten"
-            >
-              <RefreshCw size={18} className="text-white" />
-            </button>
+          {/* New Chat button */}
+          <button
+            onClick={() => {
+              setMessages([]); // clear chat
+              setShowSuggestions(true);
+              const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
+              const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+              const greetingMessages = greetingArray.map((g) => ({
+                role: 'assistant' as const,
+                content: g,
+              }));
+              setMessages(greetingMessages);
+              setHasInteracted(false);
+            }}
+            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+            title="Neuen Chat starten"
+          >
+            <RefreshCw size={18} className="text-white" />
+          </button>
 
-            {/* Minimize */}
-            <button
-              onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
-              className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-              title="Chat minimieren"
-              aria-label="Chat minimieren"
-            >
-              <Minus size={18} className="text-white" />
-            </button>
+          {/* Minimize button */}
+          <button
+            onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
+            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+            title="Chat minimieren"
+          >
+            <Minus size={18} className="text-white" />
+          </button>
 
-            {/* Close */}
-            <button
-              onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
-              className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-              title="Chat schließen"
-              aria-label="Chat schließen"
-            >
-              <X size={18} className="text-white" />
-            </button>
-          </div>
-
-          {/* Burger menu: visible only on md..lg- */}
-          <div className="hidden md:block lg:hidden">
-            <div className="dropdown dropdown-end">
-              <button
-                tabIndex={0}
-                className="btn btn-ghost btn-circle"
-                aria-label="Menü öffnen"
-                title="Menü"
-              >
-                <Menu size={20} className="text-white" />
-              </button>
-              <ul
-                tabIndex={0}
-                className="menu dropdown-content bg-base-100 text-base-content rounded-box shadow mt-3 w-56"
-              >
-                <li>
-                  <button
-                    onClick={() => {
-                      setMessages([]);
-                      setShowSuggestions(true);
-                      const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
-                      const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
-                      const greetingMessages = greetingArray.map((g) => ({
-                        role: 'assistant' as const,
-                        content: g,
-                      }));
-                      setMessages(greetingMessages);
-                    }}
-                    aria-label="Neuen Chat starten"
-                    title="Neuen Chat starten"
-                  >
-                    <RefreshCw size={16} />
-                    Neuer Chat
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
-                    aria-label="Chat minimieren"
-                    title="Chat minimieren"
-                  >
-                    <Minus size={16} />
-                    Minimieren
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
-                    aria-label="Chat schließen"
-                    title="Chat schließen"
-                  >
-                    <X size={16} />
-                    Schließen
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {/* Close button */}
+          <button
+            onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
+            className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+            title="Chat schließen"
+          >
+            <X size={18} className="text-white" />
+          </button>
         </div>
-
-
       </div>
 
 
@@ -352,6 +298,7 @@ export default function Chatbot() {
             </button>
           </div>
         </form>
+
 
         {/* Collapsible AI Disclaimer*/}
         <div className="bg-base-200">
