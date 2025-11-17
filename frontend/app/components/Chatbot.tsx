@@ -30,12 +30,6 @@ type Message = {
 };
 
 export default function Chatbot() {
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const hasInteractedRef = useRef(false);
-  useEffect(() => {
-    hasInteractedRef.current = hasInteracted;
-  }, [hasInteracted]);
-
   const [program, setProgram] = useState(detectProgramFromReferrer());
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
@@ -44,7 +38,7 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [bottomPadding, setBottomPadding] = useState(120);
-  
+
   useEffect(() => {
     const el = bottomRef.current;
     if (!el) return;
@@ -56,12 +50,6 @@ export default function Chatbot() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-
-  // Auto scroll only after the user has interacted (not on initial greetings)
-  useEffect(() => {
-    if (!hasInteracted) return;
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, hasInteracted]);
 
   // greeting handler
   useEffect(() => {
@@ -78,7 +66,7 @@ export default function Chatbot() {
     }
   }, [program]);
 
-  // listen for messages from parent site
+  // LISTEN TO PROGRAM MESSAGE FROM PARENT PAGE
   // when parent sends program, update program and refresh greetings
   useEffect(() => {
     const listener = (event: MessageEvent) => {
@@ -87,16 +75,14 @@ export default function Chatbot() {
         if (chatbotContexts[normalized]) {
           setProgram(normalized);
 
-          if (!hasInteractedRef.current) {
-            const { greeting } = chatbotContexts[normalized] || chatbotContexts['default'];
-            const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
-            const greetingMessages = greetingArray.map((g) => ({
-              role: 'assistant' as const,
-              content: g,
-            }));
-            setMessages(greetingMessages);
-            setShowSuggestions(true);
-          }
+          const { greeting } = chatbotContexts[normalized] || chatbotContexts['default'];
+          const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+          const greetingMessages = greetingArray.map((g) => ({
+            role: 'assistant' as const,
+            content: g,
+          }));
+          setMessages(greetingMessages);
+          setShowSuggestions(true);
         }
       }
     };
@@ -109,8 +95,7 @@ export default function Chatbot() {
     const query = q || question;
     if (!query.trim()) return;
 
-    setHasInteracted(true);
-    setShowSuggestions(false); 
+    setShowSuggestions(false);
 
     const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
@@ -175,7 +160,6 @@ export default function Chatbot() {
                   content: g,
                 }));
                 setMessages(greetingMessages);
-                setHasInteracted(false);
               }}
               className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
               title="Neuen Chat starten"
@@ -232,7 +216,6 @@ export default function Chatbot() {
                         content: g,
                       }));
                       setMessages(greetingMessages);
-                      setHasInteracted(false);
                     }}
                     aria-label="Neuen Chat starten"
                     title="Neuen Chat starten"
@@ -369,7 +352,6 @@ export default function Chatbot() {
             </button>
           </div>
         </form>
-
 
         {/* Collapsible AI Disclaimer*/}
         <div className="bg-base-200">
