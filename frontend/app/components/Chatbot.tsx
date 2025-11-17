@@ -31,6 +31,11 @@ type Message = {
 
 export default function Chatbot() {
   const [hasInteracted, setHasInteracted] = useState(false);
+  const hasInteractedRef = useRef(false);
+  useEffect(() => {
+    hasInteractedRef.current = hasInteracted;
+  }, [hasInteracted]);
+
   const [program, setProgram] = useState(detectProgramFromReferrer());
   const [messages, setMessages] = useState<Message[]>([]);
   const [question, setQuestion] = useState('');
@@ -39,10 +44,7 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [bottomPadding, setBottomPadding] = useState(120);
-
-  // compact header toggled via overlay width from host
-  const [isCompact, setIsCompact] = useState(false);
-
+  
   useEffect(() => {
     const el = bottomRef.current;
     if (!el) return;
@@ -55,7 +57,7 @@ export default function Chatbot() {
     return () => ro.disconnect();
   }, []);
 
-  // Auto scroll only after the user has interacted not on initial greetings
+  // Auto scroll only after the user has interacted (not on initial greetings)
   useEffect(() => {
     if (!hasInteracted) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -76,18 +78,16 @@ export default function Chatbot() {
     }
   }, [program]);
 
+  // listen for messages from parent site
   // when parent sends program, update program and refresh greetings
   useEffect(() => {
     const listener = (event: MessageEvent) => {
-      const data = event.data || {};
-
-      if (data?.program) {
-        const normalized = data.program.toUpperCase();
+      if (event.data?.program) {
+        const normalized = String(event.data.program).toUpperCase();
         if (chatbotContexts[normalized]) {
           setProgram(normalized);
 
-          // If user hasn't interacted yet, replace greetings immediately
-          if (!hasInteracted) {
+          if (!hasInteractedRef.current) {
             const { greeting } = chatbotContexts[normalized] || chatbotContexts['default'];
             const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
             const greetingMessages = greetingArray.map((g) => ({
@@ -99,25 +99,18 @@ export default function Chatbot() {
           }
         }
       }
-
-      // receive overlay width from host page to toggle burger menu
-      if (data?.type === 'overlay-size' && typeof data.width === 'number') {
-        const w = data.width;
-        setIsCompact(w >= 210 && w <= 295);
-      }
     };
-
     window.addEventListener('message', listener);
     return () => window.removeEventListener('message', listener);
-  }, [hasInteracted]);
+  }, []);
 
-  // ASK QUESTION
+  // === ASK QUESTION ===
   const askQuestion = async (q?: string) => {
     const query = q || question;
     if (!query.trim()) return;
 
     setHasInteracted(true);
-    setShowSuggestions(false);
+    setShowSuggestions(false); 
 
     const newMessages: Message[] = [...messages, { role: 'user', content: query }];
     setMessages(newMessages);
@@ -166,10 +159,54 @@ export default function Chatbot() {
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
 
-        {/* Right controls: either burger or separate icons */}
+        {/* Right controls: icons (sm & lg+), burger (md..lg-) */}
         <div className="flex items-center gap-2">
-          {isCompact ? (
-            // Burger menu when overlay is narrow
+          {/* Separate icons: visible on <md and ≥lg */}
+          <div className="flex items-center gap-2 md:hidden lg:flex">
+            {/* New Chat */}
+            <button
+              onClick={() => {
+                setMessages([]);
+                setShowSuggestions(true);
+                const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
+                const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
+                const greetingMessages = greetingArray.map((g) => ({
+                  role: 'assistant' as const,
+                  content: g,
+                }));
+                setMessages(greetingMessages);
+                setHasInteracted(false);
+              }}
+              className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+              title="Neuen Chat starten"
+              aria-label="Neuen Chat starten"
+            >
+              <RefreshCw size={18} className="text-white" />
+            </button>
+
+            {/* Minimize */}
+            <button
+              onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
+              className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+              title="Chat minimieren"
+              aria-label="Chat minimieren"
+            >
+              <Minus size={18} className="text-white" />
+            </button>
+
+            {/* Close */}
+            <button
+              onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
+              className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+              title="Chat schließen"
+              aria-label="Chat schließen"
+            >
+              <X size={18} className="text-white" />
+            </button>
+          </div>
+
+          {/* Burger menu: visible only on md..lg- */}
+          <div className="hidden md:block lg:hidden">
             <div className="dropdown dropdown-end">
               <button
                 tabIndex={0}
@@ -226,53 +263,12 @@ export default function Chatbot() {
                 </li>
               </ul>
             </div>
-          ) : (
-            // Separate icons when overlay is wide enough
-            <div className="flex items-center gap-2">
-              {/* New Chat */}
-              <button
-                onClick={() => {
-                  setMessages([]);
-                  setShowSuggestions(true);
-                  const { greeting } = chatbotContexts[program] || chatbotContexts['default'];
-                  const greetingArray = Array.isArray(greeting) ? greeting : [greeting];
-                  const greetingMessages = greetingArray.map((g) => ({
-                    role: 'assistant' as const,
-                    content: g,
-                  }));
-                  setMessages(greetingMessages);
-                  setHasInteracted(false);
-                }}
-                className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-                title="Neuen Chat starten"
-                aria-label="Neuen Chat starten"
-              >
-                <RefreshCw size={18} className="text-white" />
-              </button>
-
-              {/* Minimize */}
-              <button
-                onClick={() => window.parent.postMessage({ type: 'minimize' }, '*')}
-                className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-                title="Chat minimieren"
-                aria-label="Chat minimieren"
-              >
-                <Minus size={18} className="text-white" />
-              </button>
-
-              {/* Close */}
-              <button
-                onClick={() => window.parent.postMessage({ type: 'close' }, '*')}
-                className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
-                title="Chat schließen"
-                aria-label="Chat schließen"
-              >
-                <X size={18} className="text-white" />
-              </button>
-            </div>
-          )}
+          </div>
         </div>
+
+
       </div>
+
 
       {/* === Scrollable Messages === */}
       <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16 }}>
@@ -288,29 +284,29 @@ export default function Chatbot() {
               >
                 {m.role === 'assistant' ? (
                   <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      a: ({ node, ...props }) => {
-                        const href = String(props.href || '');
-                        // slugs use in chatbotContext
-                        const programSlugs = new Set(['/bmi','/bmt','/btb','/bdaisy','/bcsim','/mmi','/mar']);
-                        const isProgramLink = programSlugs.has(href);
-                        // where these pages live on site
-                        const BASE = '/webredaktion/chatbot-test';
-                        const ORIGIN = 'https://medien.hs-duesseldorf.de';
-                        const finalHref = isProgramLink ? `${ORIGIN}${BASE}${href}` : href;
-                        const target = '_blank';
-                        return (
-                          <a
-                            {...props}
-                            href={finalHref}
-                            target={target}
-                            rel="noopener noreferrer"
-                            className="hover:text-shadow-sm italic transition-colors duration-150"
-                          />
-                        );
-                      },
-                    }}
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    a: ({ node, ...props }) => {
+                      const href = String(props.href || '');
+                      // slugs use in chatbotContext
+                      const programSlugs = new Set(['/bmi','/bmt','/btb','/bdaisy','/bcsim','/mmi','/mar']);
+                      const isProgramLink = programSlugs.has(href);
+                      // where these pages live on site
+                      const BASE = '/webredaktion/chatbot-test';
+                      const ORIGIN = 'https://medien.hs-duesseldorf.de';
+                      const finalHref = isProgramLink ? `${ORIGIN}${BASE}${href}` : href;
+                      const target = '_blank';
+                      return (
+                        <a
+                          {...props}
+                          href={finalHref}
+                          target={target}
+                          rel="noopener noreferrer"
+                          className="hover:text-shadow-sm italic transition-colors duration-150"
+                        />
+                    );
+                   },
+                }}
                   >
                     {m.content}
                   </ReactMarkdown>
@@ -374,6 +370,7 @@ export default function Chatbot() {
           </div>
         </form>
 
+
         {/* Collapsible AI Disclaimer*/}
         <div className="bg-base-200">
           <div className="collapse collapse-arrow bg-base-200 rounded-none">
@@ -436,6 +433,7 @@ export default function Chatbot() {
           </div>
         </div>
       </div>
+
 
     </div>
   );
