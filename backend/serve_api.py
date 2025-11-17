@@ -151,7 +151,7 @@ def ask(req: QuestionRequest):
             else "I couldn't find anything relevant in the chatbot's data."
         )
         save_log(req.question, msg, [])
-        return AnswerResponse(answer=msg, sources=[])
+        return AnswerResponse(answer=msg, sources=[], program=(req.program or "").upper())
 
     answer = ask_openai(context, req.question, req.history or [])
 
@@ -202,7 +202,7 @@ def ask(req: QuestionRequest):
     footer = "\n".join(footer_lines) if len(footer_lines) > 1 else ""
     final_answer = f"{answer.strip()}\n\n{footer}" if footer else answer.strip()
 
-    save_log(req.question, final_answer, sources)
+    save_log(req.question, final_answer, sources, program=(req.program or "").upper())
     return AnswerResponse(answer=final_answer, sources=sources)
 
 
