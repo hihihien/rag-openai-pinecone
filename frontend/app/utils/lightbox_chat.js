@@ -167,7 +167,7 @@ function openLightbox(url) {
 }
 
 function defaultOpenHandler() {
-  openLightbox('https://marmann.hosting.medien.hs-duesseldorf.de/archiv/2026-MMI-KI-Chatbot/');
+  openLightbox('https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
