@@ -26,32 +26,32 @@ def format_module_text(module_offer):
 
     # Build formatted string
     text = f"""
-Title: {title}
-Module Number: {module_number}
-Credits: {credits} CP
-Semester: {semester}
-Offered In: {season}
-Language: {language}
-Exam Type: {exam_type}
-Instructor: {lecturer}
+    Title: {title}
+    Module Number: {module_number}
+    Credits: {credits} CP
+    Semester: {semester}
+    Offered In: {season}
+    Language: {language}
+    Exam Type: {exam_type}
+    Instructor: {lecturer}
 
---- Goals (EN) ---
-{goals_en.strip()}
+    --- Goals (EN) ---
+    {goals_en.strip()}
 
---- Goals (DE) ---
-{goals_de.strip()}
+    --- Goals (DE) ---
+    {goals_de.strip()}
 
---- Contents (EN) ---
-{content_en.strip()}
+    --- Contents (EN) ---
+    {content_en.strip()}
 
---- Contents (DE) ---
-{content_de.strip()}
+    --- Contents (DE) ---
+    {content_de.strip()}
 
---- Literature (EN) ---
-{literature_en.strip()}
+    --- Literature (EN) ---
+    {literature_en.strip()}
 
---- Literature (DE) ---
-{literature_de.strip()}
-"""
+    --- Literature (DE) ---
+    {literature_de.strip()}
+    """
 
     return text.strip()
