@@ -1,9 +1,20 @@
 def format_module_text(module_offer):
     mod = module_offer.get("module", {})
 
-    # Defensive check for nested revisers
+    # Get ALL revisers
     revisers = mod.get("revisers", [])
-    reviser = revisers[0].get("user", {}) if revisers and isinstance(revisers[0], dict) else {}
+
+    # Combine all reviser names safely
+    reviser_names = []
+    for r in revisers:
+        if isinstance(r, dict):
+            user = r.get("user", {})
+            name = f"{user.get('title', '')} {user.get('firstName', '')} {user.get('lastName', '')}".strip()
+            if name:
+                reviser_names.append(name)
+
+    # Final instructor string (joined with "; ")
+    lecturer = "; ".join(reviser_names) if reviser_names else "N/A"
 
     # Extract fields safely
     title = mod.get("nameEnglish") or mod.get("nameGerman") or "N/A"
@@ -13,7 +24,6 @@ def format_module_text(module_offer):
     season = module_offer.get("offeredInSeason", "N/A")
     language = mod.get("heldInLanguage", "N/A")
     exam_type = mod.get("examType", "N/A")
-    lecturer = f"{reviser.get('title', '')} {reviser.get('firstName', '')} {reviser.get('lastName', '')}".strip()
 
     # English and German content blocks
     goals_en = (mod.get("goalsOfLectureEnglish") or "").strip()
@@ -36,22 +46,22 @@ def format_module_text(module_offer):
     Instructor: {lecturer}
 
     --- Goals (EN) ---
-    {goals_en.strip()}
+    {goals_en}
 
     --- Goals (DE) ---
-    {goals_de.strip()}
+    {goals_de}
 
     --- Contents (EN) ---
-    {content_en.strip()}
+    {content_en}
 
     --- Contents (DE) ---
-    {content_de.strip()}
+    {content_de}
 
     --- Literature (EN) ---
-    {literature_en.strip()}
+    {literature_en}
 
     --- Literature (DE) ---
-    {literature_de.strip()}
+    {literature_de}
     """
 
     return text.strip()
