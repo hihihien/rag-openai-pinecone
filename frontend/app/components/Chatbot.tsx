@@ -11,13 +11,20 @@ function detectProgramFromReferrer(): string {
   if (typeof document === 'undefined') return 'default';
   try {
     const ref = document.referrer.toLowerCase();
-    if (ref.includes('/btb')) return 'BTB';
-    if (ref.includes('/bmt')) return 'BMT';
-    if (ref.includes('/mmi')) return 'MMI';
-    if (ref.includes('/bdaisy')) return 'BDAISY';
-    if (ref.includes('/bcsim')) return 'BCSIM';
-    if (ref.includes('/mar')) return 'MAR';
-    if (ref.includes('/bmi')) return 'BMI';
+
+    const patterns: Record<string, RegExp> = {
+      BTB: /\/btb(\/|\.html|$)/,
+      BMT: /\/bmt(\/|\.html|$)/,
+      MMI: /\/mmi(\/|\.html|$)/,
+      BDAISY: /\/bdaisy(\/|\.html|$)/,
+      BCSIM: /\/bcsim(\/|\.html|$)/,
+      MAR: /\/mar(\/|\.html|$)/,
+      BMI: /\/bmi(\/|\.html|$)/,
+    };
+
+    for (const key in patterns) {
+      if (patterns[key].test(ref)) return key;
+    }
     return 'default';
   } catch {
     return 'default';
@@ -284,7 +291,7 @@ export default function Chatbot() {
             <input
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Stelle eine Frage..."
+              placeholder="Stelle deine Frage..."
               className="w-full input input-ghost text-xs bg-gray-50 text-gray-700 placeholder-gray-400 pr-12"
             />
             <button
@@ -305,7 +312,7 @@ export default function Chatbot() {
           <div className="collapse collapse-arrow bg-base-200 rounded-none">
             <input type="checkbox" className="peer border-none" placeholder="disclaimer" />
             <div className="collapse-title text-xs font-semibold text-gray-700 peer-checked:text-neutral">
-              AI-Disclaimer
+              KI-Disclaimer
             </div>
             <div className="collapse-content text-xs leading-relaxed">
               <p>
@@ -329,16 +336,7 @@ export default function Chatbot() {
                 >
                   Fachbereichs Medien
                 </a>
-                , der{' '}
-                <a
-                  href="https://fachschaftmedien.de/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-neutral hover:underline"
-                >
-                  Fachschaft
-                </a>{' '}
-                oder des{' '}
+                , des{' '}
                 <a
                   href="https://medien.hs-duesseldorf.de/studium/pruefungen/Seiten/default.aspx"
                   target="_blank"
@@ -346,6 +344,15 @@ export default function Chatbot() {
                   className="text-neutral hover:underline"
                 >
                   Studienbüros
+                </a>{' '}
+                oder der{' '}
+                <a
+                  href="https://fachschaftmedien.de/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral hover:underline"
+                >
+                  Fachschaft Medien
                 </a>
                 . Weitere Informationen zur{' '}
                 <a
