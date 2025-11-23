@@ -20,25 +20,35 @@ print(f"Loaded {len(modules)} module records")
 formatted_records = []
 
 for m in modules:
-    mod_num = m.get("moduleNumber", "unknown")
-    print(f"→ Processing {mod_num}")
-
     try:
         text = format_module_text(m)
         if not text.strip():
-            print(f"  Skipped (empty text)")
             continue
-    except Exception as e:
-        print(f"Failed to format text: {e}")
-        continue
 
-    try:
+        mod_num = m.get("moduleNumber", "unknown")
+        mod_id = f"BMT__{mod_num.replace(' ', '_')}"
+
         mod = m.get("module", {})
-        revisers = mod.get("revisers")
-        if isinstance(revisers, list) and revisers and isinstance(revisers[0], dict):
-            reviser = revisers[0].get("user", {}) or {}
-        else:
-            reviser = {}
+        revisers = mod.get("revisers", [])
+
+        # --- Combine reviser names ---
+        reviser_names = []
+        reviser_emails = []
+
+        for r in revisers:
+            if isinstance(r, dict):
+                user = r.get("user", {})
+                name = f"{user.get('title', '')} {user.get('firstName', '')} {user.get('lastName', '')}".strip()
+                email = user.get("email")
+
+                if name:
+                    reviser_names.append(name)
+                if email:
+                    reviser_emails.append(email)
+
+        # Final metadata strings
+        reviser_name_str = "; ".join(reviser_names) if reviser_names else "N/A"
+        reviser_email_str = "; ".join(reviser_emails) if reviser_emails else "N/A"
 
         metadata = {
             "moduleNumber": mod_num,
@@ -48,20 +58,21 @@ for m in modules:
             "offeredInSeason": m.get("offeredInSeason"),
             "examType": mod.get("examType"),
             "heldInLanguage": mod.get("heldInLanguage"),
-            "reviserName": f"{reviser.get('title', '')} {reviser.get('firstName', '')} {reviser.get('lastName', '')}".strip(),
-            "reviserEmail": reviser.get("email"),
+            "reviserName": reviser_name_str,
+            "reviserEmail": reviser_email_str,
             "studyProgramId": m.get("studyProgramId"),
             "source_type": "json"
         }
 
         formatted_records.append({
-            "id": f"BMT__{mod_num.replace(' ', '_')}",
+            "id": mod_id,
             "text": text,
             "metadata": metadata
         })
 
     except Exception as e:
-        print(f"Failed to build metadata: {e}")
+        print(f"Failed to process module: {m.get('moduleNumber', '???')}")
+        print(e)
 
 print(f"Prepared {len(formatted_records)} records for export")
 

@@ -29,7 +29,26 @@ for m in modules:
         mod_id = f"BMI__{mod_num.replace(' ', '_')}"
 
         mod = m.get("module", {})
-        reviser = mod.get("revisers", [{}])[0].get("user", {})
+        revisers = mod.get("revisers", [])
+
+        # --- Combine reviser names ---
+        reviser_names = []
+        reviser_emails = []
+
+        for r in revisers:
+            if isinstance(r, dict):
+                user = r.get("user", {})
+                name = f"{user.get('title', '')} {user.get('firstName', '')} {user.get('lastName', '')}".strip()
+                email = user.get("email")
+
+                if name:
+                    reviser_names.append(name)
+                if email:
+                    reviser_emails.append(email)
+
+        # Final metadata strings
+        reviser_name_str = "; ".join(reviser_names) if reviser_names else "N/A"
+        reviser_email_str = "; ".join(reviser_emails) if reviser_emails else "N/A"
 
         metadata = {
             "moduleNumber": mod_num,
@@ -39,8 +58,8 @@ for m in modules:
             "offeredInSeason": m.get("offeredInSeason"),
             "examType": mod.get("examType"),
             "heldInLanguage": mod.get("heldInLanguage"),
-            "reviserName": f"{reviser.get('title', '')} {reviser.get('firstName', '')} {reviser.get('lastName', '')}".strip(),
-            "reviserEmail": reviser.get("email"),
+            "reviserName": reviser_name_str,
+            "reviserEmail": reviser_email_str,
             "studyProgramId": m.get("studyProgramId"),
             "source_type": "json"
         }
