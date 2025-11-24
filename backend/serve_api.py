@@ -135,7 +135,7 @@ def ask(req: QuestionRequest):
     # perform vector search across namespaces
     matches = search_all_namespaces(
         vector=qvec,
-        top_k=req.top_k or 8,
+        top_k=req.top_k or 32,
         filter=flt,
         program=primary,
         namespaces=namespaces
