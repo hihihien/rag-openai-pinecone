@@ -160,7 +160,7 @@ export default function Chatbot() {
       {/* === Fixed Header === */}
       <div className="fixed top-0 left-0 right-0 z-50 p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="font-bold text-x">MeDi, Dein KI-Assistent</span>
+          <span className="font-bold text-x">KIM, Dein KI-Assistent</span>
           <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
         </div>
 
@@ -222,27 +222,20 @@ export default function Chatbot() {
                   <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   components={{
-                    a: ({ node, ...props }) => {
+                      a: ({ node, ...props }) => {
                       const href = String(props.href || '');
-                      // slugs use in chatbotContext
-                      const programSlugs = new Set(['/bmi','/bmt','/btb','/bdaisy','/bcsim','/mmi','/mar']);
-                      const isProgramLink = programSlugs.has(href);
-                      // where these pages live on site
-                      const BASE = '/webredaktion/chatbot-test';
-                      const ORIGIN = 'https://medien.hs-duesseldorf.de';
-                      const finalHref = isProgramLink ? `${ORIGIN}${BASE}${href}` : href;
-                      const target = '_blank';
+
                       return (
                         <a
                           {...props}
-                          href={finalHref}
-                          target={target}
+                          href={href}
+                          target={'_blank'}
                           rel="noopener noreferrer"
                           className="hover:text-shadow-sm italic transition-colors duration-150"
                         />
-                    );
-                   },
-                }}
+                      );
+                    },
+                  }}
                   >
                     {m.content}
                   </ReactMarkdown>

@@ -10,13 +10,13 @@ export const chatbotContexts: Record<string, ChatbotContext> = {
 
 Ich bin eine künstliche Intelligenz, die entwickelt wurde, um deine Fragen zu beantworten. Von dieser Startseite aus kannst du allgemeine Informationen zu allen Studiengängen des Fachbereichs Medien erhalten.`,
       `Wenn du Informationen zu einem bestimmten Studiengang suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`
     ],
     suggestions: [
       'Welche Bachelorstudiengänge gibt es?',
@@ -30,12 +30,12 @@ Ich bin eine künstliche Intelligenz, die entwickelt wurde, um deine Fragen zu b
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang MMI.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`,
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
@@ -50,12 +50,12 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BMI.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`,
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
@@ -70,12 +70,12 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BTB.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`,
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
@@ -90,12 +90,12 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BMT.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`,
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
@@ -110,12 +110,12 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BDAISY.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`,
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
@@ -130,12 +130,12 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang BCSIM.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)
-- [Master Applied Research in Digital Media Technologies (MAR)](/navigation/mar.html)`,
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)
+- [Master Applied Research in Digital Media Technologies (MAR)](/2026-FBM-Web-KI-Chatbot/navigation/mar.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
@@ -150,12 +150,12 @@ Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgem
 
 Von dieser Seite helfe ich dir gern bei Fragen zu Modulen, Projekten oder allgemeine Informationen zum Studiengang MAR.`,
       `Wenn du Informationen zu anderen Studiengängen suchst, besuche bitte die jeweilige Studiengangsseite:
-- [Bachelor Ton und Bild (BTB)](/navigation/btb.html)
-- [Bachelor Medientechnik (BMT)](/navigation/bmt.html)
-- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/navigation/bcsim.html)
-- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/navigation/bdaisy.html)
-- [Bachelor Medieninformatik (BMI)](/navigation/bmi.html)
-- [Master Medieninformatik (MMI)](/navigation/mmi.html)`,
+- [Bachelor Ton und Bild (BTB)](/2026-FBM-Web-KI-Chatbot/navigation/btb.html)
+- [Bachelor Medientechnik (BMT)](/2026-FBM-Web-KI-Chatbot/navigation/bmt.html)
+- [Bachelor Creative, Synthetic and Interactive Media (BCSIM)](/2026-FBM-Web-KI-Chatbot/navigation/bcsim.html)
+- [Bachelor Data Science, AI und Intelligente Systeme (BDAISY)](/2026-FBM-Web-KI-Chatbot/navigation/bdaisy.html)
+- [Bachelor Medieninformatik (BMI)](/2026-FBM-Web-KI-Chatbot/navigation/bmi.html)
+- [Master Medieninformatik (MMI)](/2026-FBM-Web-KI-Chatbot/navigation/mmi.html)`,
   `Für allgemeine Informationen zum Fachbereich Medien besuche die **[Hauptseite des Fachbereichs Medien](https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/)**.`
     ],
     suggestions: [
