@@ -60,13 +60,15 @@ function createDockButton(onClick) {
 
 function programFromPath() {
   const path = window.location.pathname.toLowerCase();
-  if (path.includes('/btb')) return 'BTB';
-  if (path.includes('/bmt')) return 'BMT';
-  if (path.includes('/mmi')) return 'MMI';
-  if (path.includes('/bdaisy')) return 'BDAISY';
-  if (path.includes('/bcsim')) return 'BCSIM';
-  if (path.includes('/mar')) return 'MAR';
-  if (path.includes('/bmi')) return 'BMI';
+
+  if (path.endsWith('/btb') || path.endsWith('btb.html')) return 'BTB';
+  if (path.endsWith('/bmt') || path.endsWith('bmt.html')) return 'BMT';
+  if (path.endsWith('/mmi') || path.endsWith('mmi.html')) return 'MMI';
+  if (path.endsWith('/bdaisy') || path.endsWith('bdaisy.html')) return 'BDAISY';
+  if (path.endsWith('/bcsim') || path.endsWith('bcsim.html')) return 'BCSIM';
+  if (path.endsWith('/mar') || path.endsWith('mar.html')) return 'MAR';
+  if (path.endsWith('/bmi') || path.endsWith('bmi.html')) return 'BMI';
+
   return 'default';
 }
 
@@ -167,7 +169,7 @@ function openLightbox(url) {
 }
 
 function defaultOpenHandler() {
-  openLightbox('https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/');
+  openLightbox('https://marmann.hosting.medien.hs-duesseldorf.de/2026-FBM-Web-KI-Chatbot/chatbot.html');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
