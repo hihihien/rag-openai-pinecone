@@ -109,7 +109,7 @@ export default function Chatbot() {
     return () => window.removeEventListener('message', listener);
   }, [hasInteracted]); //depend on hasInteracted
 
-  // === ASK QUESTION ===
+  //ask question handler
   const askQuestion = async (q?: string) => {
     const query = q || question;
     if (!query.trim()) return;
@@ -157,7 +157,7 @@ export default function Chatbot() {
       className="w-full min-h-screen flex flex-col bg-base-200 text-xs relative"
       data-theme="HSD-Medien"
     >
-      {/* === Fixed Header === */}
+      {/* fixed header */}
       <div className="fixed top-0 left-0 right-0 z-50 p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
           <span className="font-bold text-x">KIM, Dein KI-Assistent</span>
@@ -206,7 +206,7 @@ export default function Chatbot() {
       </div>
 
 
-      {/* === Scrollable Messages === */}
+      {/* scrollable messages */}
       <div className="flex-1 overflow-y-auto p-3 mt-[70px]" style={{ paddingBottom: bottomPadding + 16 }}>
         {messages.map((m, i) => (
           <div key={i}>
@@ -247,7 +247,7 @@ export default function Chatbot() {
           </div>
         ))}
 
-        {/* Suggested questions shown only once after greetings */}
+        {/* suggested questions shown only once after greetings */}
         {showSuggestions && (
           <div>
             {suggestions.map((s, idx) => (
@@ -300,7 +300,7 @@ export default function Chatbot() {
         </form>
 
 
-        {/* Collapsible AI Disclaimer*/}
+        {/* collapsible AI disclaimer */}
         <div className="bg-base-200">
           <div className="collapse collapse-arrow bg-base-200 rounded-none">
             <input type="checkbox" className="peer border-none" placeholder="disclaimer" />
