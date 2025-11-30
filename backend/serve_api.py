@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Depends, HTTPException, status
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
@@ -9,6 +10,23 @@ from services.pinecone_search import build_filter, search_all_namespaces
 from services.context_builder import build_context, SourceItem
 from services.prompt_utils import ask_openai
 from services.logger import save_log
+import secrets, os
+
+security = HTTPBasic()
+
+def verify_basic_auth(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_username = os.getenv("BASIC_AUTH_USER", "")
+    correct_password = os.getenv("BASIC_AUTH_PASS", "")
+
+    username_match = secrets.compare_digest(credentials.username, correct_username)
+    password_match = secrets.compare_digest(credentials.password, correct_password)
+
+    if not (username_match and password_match):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Basic"},
+        )
 
 # === Simple program inference (substring style) ===
 def infer_programs_simple(text: str) -> List[str]:
@@ -90,7 +108,7 @@ class AnswerResponse(BaseModel):
 
 
 @app.post("/ask", response_model=AnswerResponse)
-def ask(req: QuestionRequest):
+def ask(req: QuestionRequest, credentials: HTTPBasicCredentials = Depends(verify_basic_auth)):
     # decide target programs for each request only
     if req.program:
         prog = (req.program or "").upper()
@@ -207,5 +225,5 @@ def ask(req: QuestionRequest):
 
 
 @app.post("/ask-simple", response_model=AnswerResponse)
-def ask_simple(question: str = Body(..., media_type="text/plain")):
+def ask_simple(question: str = Body(..., media_type="text/plain"), credentials: HTTPBasicCredentials = Depends(verify_basic_auth)):
     return ask(QuestionRequest(question=question))

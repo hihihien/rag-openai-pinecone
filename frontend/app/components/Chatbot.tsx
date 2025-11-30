@@ -7,6 +7,13 @@ import remarkGfm from 'remark-gfm';
 import { X, Minus, RefreshCw, Send } from 'lucide-react';
 
 // Detect program from referrer
+function createBasicAuthHeader() {
+  const username = process.env.NEXT_PUBLIC_BASIC_AUTH_USER || '';
+  const password = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS || '';
+  const token = typeof window !== "undefined" ? btoa(`${username}:${password}`) : "";
+  return `Basic ${token}`;
+}
+
 function detectProgramFromReferrer(): string {
   if (typeof document === 'undefined') return 'default';
   try {
@@ -132,7 +139,9 @@ export default function Chatbot() {
       }
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ask`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': createBasicAuthHeader(), },
         body: JSON.stringify(payload),
       });
 
