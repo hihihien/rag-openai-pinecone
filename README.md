@@ -1,6 +1,6 @@
 # MMI-Hien-2025
 
-# KIM – Backend Deployment Guide (FastAPI + Docker)
+# KIM Backend Deployment Guide (FastAPI + Docker)
 
 This document explains how to build and deploy the backend for the KIM RAG-Chatbot on the university server.  
 The frontend is static and hosted separately; only the backend runs in Docker.
@@ -38,7 +38,7 @@ Notes:
 
 ## 5. Start the Backend (Production)
 
-Run: docker compose up --build -d
+Run: `docker compose up --build -d`
 
 
 This will:
@@ -52,7 +52,7 @@ Verify the backend:
 http://localhost:8000/docs
 
 
-The public endpoint via reverse proxy:
+The public endpoint via reverse proxy (given by Pogscheba Patrick):
 
 https://api.kim.app.medien.hs-duesseldorf.de/
 
@@ -61,9 +61,8 @@ https://api.kim.app.medien.hs-duesseldorf.de/
 The `/ask` endpoint is protected using HTTP Basic Auth.
 
 The backend reads credentials from:
-BASIC_AUTH_USER
-BASIC_AUTH_PASS
-
+`BASIC_AUTH_USER`
+`BASIC_AUTH_PASS`
 
 The static frontend sends the correct `Authorization: Basic ...` header automatically.
 
@@ -71,41 +70,45 @@ The static frontend sends the correct `Authorization: Basic ...` header automati
 
 Local logs are saved to: backend/logs/chat_log.jsonl
 
-With Supabase credentials configured, the backend also uploads logs to the `chat_logs` table.  
+With Supabase credentials configured from `.env`, the backend also uploads logs to the `chat_logs` table.  
 Without Supabase configuration, logs are stored locally only.
 
 ## 8. Updating the Backend
 
 Pull updates and rebuild:
+
+```
 git pull
 docker compose build backend
 docker compose up -d
-
+```
 
 Or rebuild everything completely:
+```
 docker compose down
 docker compose up --build -d
-
+```
 
 ## 9. Troubleshooting
 
 ### “next: not found”
 This is from the old frontend Docker setup.  
-The frontend is no longer deployed via Docker, so this message is irrelevant.
+The frontend is not deployed via Docker, so this message is not relevant, can be ignored.
 
 ### 401 Unauthorized (Basic Auth)
 Check and correct credentials in `.env`:
+```
 BASIC_AUTH_USER
 BASIC_AUTH_PASS
-
-
+```
 ### OpenAI or Pinecone errors
-Ensure all required API keys are present in `.env`.
 
-## 10. Summary for University Developer
+Ensure all required API keys are present in `.env`. Contact me if any doubts for keys.
+
+## 10. Summary for backend deployment 
 
 1. Place project on the server  
-2. Create `.env` containing all required variables  
+2. Create `.env` containing all required variables based on `.env.example`  
 3. Run `docker compose up --build -d`  
 4. Confirm backend runs internally on port 8000  
 5. Ensure reverse proxy forwards HTTPS traffic to the backend  
