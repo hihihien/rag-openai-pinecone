@@ -10,12 +10,12 @@ from services.context_builder import build_context, SourceItem
 from services.prompt_utils import ask_openai
 from services.logger import save_log
 
-# === Simple program inference (substring style) ===
+# Simple program inference 
 def infer_programs_simple(text: str) -> List[str]:
     t = (text or "").lower()
     hits: List[str] = []
 
-    # Abbreviations first (cheap and helpful)
+    # Abbreviations first 
     if "btb" in t: hits.append("BTB")
     if "bmt" in t: hits.append("BMT")
     if "bmi" in t: hits.append("BMI")
@@ -24,13 +24,13 @@ def infer_programs_simple(text: str) -> List[str]:
     if "bdaisy" in t or "daisy" in t: hits.append("BDAISY")
     if "mar" in t: hits.append("MAR")
 
-    # German/English names → abbrev (your exact style)
+    # German/English names for abbrev 
     if "ton und bild" in t:
         hits.append("BTB")
     if "medientechnik" in t:
         hits.append("BMT")
 
-    # Medieninformatik → BMI vs MMI (master cues)
+    # Medieninformatik unterschied zws BMI vs MMI 
     if "medieninformatik" in t:
         if ("master" in t) or ("msc" in t) or ("m.sc" in t):
             hits.append("MMI")
@@ -46,7 +46,7 @@ def infer_programs_simple(text: str) -> List[str]:
     if "applied research in digital media technologies" in t:
         hits.append("MAR")
 
-    # de-dup while preserving order
+    # dedup while preserving order
     seen = set()
     return [p for p in hits if not (p in seen or seen.add(p))]
 
@@ -64,14 +64,12 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
 @app.get("/")
 def root():
     return {
         "message": "RAG Chatbot API is running",
         "namespaces": AVAILABLE_NAMESPACES
     }
-
 
 class QuestionRequest(BaseModel):
     question: str

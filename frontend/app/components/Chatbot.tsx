@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { X, Minus, RefreshCw, Send } from 'lucide-react';
 
-// Detect program from referrer
+
 function detectProgramFromReferrer(): string {
   if (typeof document === 'undefined') return 'default';
   try {
@@ -132,7 +132,7 @@ export default function Chatbot() {
       }
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ask`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
       });
 
