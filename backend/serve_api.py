@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Body, Depends, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
@@ -10,30 +9,13 @@ from services.pinecone_search import build_filter, search_all_namespaces
 from services.context_builder import build_context, SourceItem
 from services.prompt_utils import ask_openai
 from services.logger import save_log
-import secrets, os
 
-security = HTTPBasic()
-
-def verify_basic_auth(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_username = os.getenv("BASIC_AUTH_USER", "")
-    correct_password = os.getenv("BASIC_AUTH_PASS", "")
-
-    username_match = secrets.compare_digest(credentials.username, correct_username)
-    password_match = secrets.compare_digest(credentials.password, correct_password)
-
-    if not (username_match and password_match):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-
-# === Simple program inference (substring style) ===
+# Simple program inference 
 def infer_programs_simple(text: str) -> List[str]:
     t = (text or "").lower()
     hits: List[str] = []
 
-    # Abbreviations first (cheap and helpful)
+    # Abbreviations first 
     if "btb" in t: hits.append("BTB")
     if "bmt" in t: hits.append("BMT")
     if "bmi" in t: hits.append("BMI")
@@ -42,13 +24,13 @@ def infer_programs_simple(text: str) -> List[str]:
     if "bdaisy" in t or "daisy" in t: hits.append("BDAISY")
     if "mar" in t: hits.append("MAR")
 
-    # German/English names → abbrev (your exact style)
+    # German/English names for abbrev 
     if "ton und bild" in t:
         hits.append("BTB")
     if "medientechnik" in t:
         hits.append("BMT")
 
-    # Medieninformatik → BMI vs MMI (master cues)
+    # Medieninformatik unterschied zws BMI vs MMI 
     if "medieninformatik" in t:
         if ("master" in t) or ("msc" in t) or ("m.sc" in t):
             hits.append("MMI")
@@ -64,7 +46,7 @@ def infer_programs_simple(text: str) -> List[str]:
     if "applied research in digital media technologies" in t:
         hits.append("MAR")
 
-    # de-dup while preserving order
+    # dedup while preserving order
     seen = set()
     return [p for p in hits if not (p in seen or seen.add(p))]
 
@@ -82,14 +64,12 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
 @app.get("/")
 def root():
     return {
         "message": "RAG Chatbot API is running",
         "namespaces": AVAILABLE_NAMESPACES
     }
-
 
 class QuestionRequest(BaseModel):
     question: str
@@ -108,7 +88,7 @@ class AnswerResponse(BaseModel):
 
 
 @app.post("/ask", response_model=AnswerResponse)
-def ask(req: QuestionRequest, credentials: HTTPBasicCredentials = Depends(verify_basic_auth)):
+def ask(req: QuestionRequest):
     # decide target programs for each request only
     if req.program:
         prog = (req.program or "").upper()
@@ -225,5 +205,5 @@ def ask(req: QuestionRequest, credentials: HTTPBasicCredentials = Depends(verify
 
 
 @app.post("/ask-simple", response_model=AnswerResponse)
-def ask_simple(question: str = Body(..., media_type="text/plain"), credentials: HTTPBasicCredentials = Depends(verify_basic_auth)):
+def ask_simple(question: str = Body(..., media_type="text/plain")):
     return ask(QuestionRequest(question=question))
