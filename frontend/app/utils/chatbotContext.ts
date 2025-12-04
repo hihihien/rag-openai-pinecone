@@ -6,7 +6,7 @@ type ChatbotContext = {
 export const chatbotContexts: Record<string, ChatbotContext> = {
   default: {
     greeting: [
-      `👋 Hallo! Ich bin **MeDi**, dein KI-Assistent im **Fachbereich Medien**.
+      `👋 Hallo! Ich bin **KIM**, dein KI-Assistent im **Fachbereich Medien**.
 
 Ich bin eine künstliche Intelligenz, die entwickelt wurde, um deine Fragen zu beantworten. Von dieser Startseite aus kannst du allgemeine Informationen zu allen Studiengängen des Fachbereichs Medien erhalten.`,
       `Wenn du Informationen zu einem bestimmten Studiengang suchst, besuche bitte die jeweilige Studiengangsseite:
