@@ -2,7 +2,7 @@ import openai
 from typing import List, Dict
 from services.embeddings import detect_lang
 
-CHAT_MODEL = "gpt-4o-mini"
+CHAT_MODEL = "gpt-4.1-mini"
 
 def ask_openai(context: str, question: str, history: List[Dict[str, str]]) -> str:
     lang = detect_lang(question)
@@ -43,7 +43,7 @@ def ask_openai(context: str, question: str, history: List[Dict[str, str]]) -> st
         response = openai.chat.completions.create(
             model=CHAT_MODEL,
             messages=messages,
-            temperature=0.2
+            temperature=1.0
         )
         return response.choices[0].message.content
     except Exception as e:
