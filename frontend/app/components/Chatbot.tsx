@@ -160,8 +160,8 @@ export default function Chatbot() {
       {/* fixed header */}
       <div className="fixed top-0 left-0 right-0 z-50 p-4 sm:p-4 border-b bg-neutral text-white flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="font-bold text-x">KIM, Dein KI-Assistent</span>
-          <span className="text-xs opacity-80">Fachbereich Medien HSD</span>
+          <span className="font-bold text-x">KIM - Dein KI-Assistent</span>
+          <span className="text-xs opacity-80">Fachbereich Medien an der HSD</span>
         </div>
 
         <div className="flex items-center gap-2">
