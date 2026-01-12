@@ -2,12 +2,12 @@ import json
 from pathlib import Path
 from typing import Dict, Any
 
-# Global in-memory stores
+# Global inmemory stores
 ID_TO_TEXT: Dict[str, str] = {}
 ID_TO_META: Dict[str, Dict[str, Any]] = {}
 AVAILABLE_NAMESPACES = []
 
-# === Paths ===
+#  Paths 
 MERGED_PATH = Path(__file__).resolve().parent.parent / "data" / "merged"
 WEB_PATH = Path(__file__).resolve().parent.parent / "data" / "processed_web"
 
@@ -16,7 +16,7 @@ def load_text_store():
     global AVAILABLE_NAMESPACES
     seen_namespaces = set()
 
-    # 1. Load merged module JSONL data
+    # Load merged module JSONL data
     for jf in MERGED_PATH.rglob("*.jsonl"):
         namespace = jf.stem.split("_")[0]  # e.g. BMI_merged as BMI
         seen_namespaces.add(namespace)

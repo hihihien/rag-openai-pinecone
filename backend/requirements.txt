@@ -8,7 +8,6 @@ langchain-pinecone
 langchain-openai
 langchain-community
 pinecone
-ollama
 pandas
 numpy
 python-dotenv

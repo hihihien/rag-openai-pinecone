@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from pinecone import Pinecone
 import openai
 
-# ========== Setup ==========
+# Setup
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
@@ -23,7 +23,7 @@ ROOTS = [
     Path("backend/data/MHB_Alle_Studiengaenge")          # scattered PDFs and PO jsonl chunks
 ]
 
-# ========== Helpers ==========
+# Helpers
 def find_jsonl_files(roots: List[Path]) -> List[Path]:
     files = []
     for root in roots:
@@ -39,7 +39,7 @@ def embed_batch(texts: List[str]) -> List[List[float]]:
     res = openai.embeddings.create(model=EMBED_MODEL, input=texts)
     return [d.embedding for d in res.data]
 
-# ========== Upload ==========
+# Upload
 def upload_file(path: Path):
     print(f"[upload] File: {path.name}")
     total = 0
@@ -82,7 +82,7 @@ def upload_file(path: Path):
 
     print(f"{path.name}: {total} vectors uploaded\n")
 
-# ========== Main ==========
+# Main
 if __name__ == "__main__":
     all_files = find_jsonl_files(ROOTS)
     print(f"[scan] Found {len(all_files)} .jsonl files")

@@ -7,7 +7,7 @@ import json, json5, glob, re
 from pathlib import Path
 from datetime import date
 
-# ---------- Path setup ----------
+# Path setup
 HERE = Path(__file__).resolve()
 BACKEND_DIR = HERE.parents[1]
 RAW_DIR = BACKEND_DIR / "data" / "MHB_Alle_Studiengaenge"
@@ -21,7 +21,7 @@ PROGRAM_PATTERNS = [
 
 TODAY = str(date.today())
 
-# ---------- Helpers ----------
+# Helpers
 
 def find_program_files() -> list[Path]:
     files = []
@@ -29,7 +29,7 @@ def find_program_files() -> list[Path]:
         files.extend(glob.glob(pat, recursive=True))
     return [Path(f) for f in files]
 
-# Helper to read program JSON/JS files
+#  to read program JSON/JS files
 def read_program_objs(path: Path):
     """Load .js/.json into one or more program dicts."""
     raw = path.read_text(encoding="utf-8").strip()
@@ -45,7 +45,7 @@ def read_program_objs(path: Path):
     else:
         raise ValueError(f"Unsupported top-level type in {path}: {type(data)}")
 
-# Helper to normalize season strings
+#  to normalize season strings
 def norm_season(s: str):
     if not s: return None
     s = s.lower()
@@ -55,7 +55,7 @@ def norm_season(s: str):
     if "to_be_announced" in s: return "tba"
     return s
 
-# Helper to normalize language strings
+# normalize language strings
 def norm_language(s: str):
     if not s: return None
     s = s.lower()
@@ -65,18 +65,18 @@ def norm_language(s: str):
     if "mixed" in s: return "mixed"
     return s
 
-# Helper to parse float values
+#  to parse float values
 def parse_float(v):
     try:
         return float(v)
     except Exception:
         return None
 
-# Helper to join text parts
+#  to join text parts
 def join(parts):
     return "\n".join([p for p in parts if p and str(p).strip()])
 
-# ---------- Build one record ----------
+# Build one record
 
 def build_record(program, offer):
     mod = offer.get("module", {})
@@ -84,7 +84,7 @@ def build_record(program, offer):
     module_number = offer.get("moduleNumber") or mod.get("id")
     rid = f"{abbr}-{module_number}"
 
-    # --- Program metadata ---
+    #  Program metadata 
     prog_meta = {
         "studyProgramId": program.get("id"),
         "studyProgramName": program.get("name"),
@@ -99,7 +99,7 @@ def build_record(program, offer):
         "coordinators": program.get("coordinators", []),
     }
 
-    # --- Offer metadata ---
+    #  Offer metadata 
     offer_meta = {
         "offerId": offer.get("id"),
         "moduleNumber": module_number,
@@ -117,7 +117,7 @@ def build_record(program, offer):
         "contentPrereqEn": offer.get("contentRequirementsEnglish"),
     }
 
-    # --- Module metadata ---
+    #  Module metadata 
     sws = {
         "lecture": mod.get("swsLecture"),
         "practice": mod.get("swsPractice"),
@@ -166,7 +166,7 @@ def build_record(program, offer):
         "rightSideRelations": mod.get("rightSideRelations", []),
     }
 
-    # --- Other fields ---
+    #  Other fields 
     cross_apps = offer.get("studyProgramSpecificValues", [])
 
     lang_tags = []
@@ -175,7 +175,7 @@ def build_record(program, offer):
     if module_meta["contentsEn"] or module_meta["goalsEn"]:
         lang_tags.append("en")
 
-    # --- Build retrieval texts ---
+    #  Build retrieval texts 
     text_de = join([
         f"{module_meta['moduleNameDe']} ({module_meta['moduleAbbrevDe']})",
         module_meta["contentsDe"],
@@ -195,7 +195,7 @@ def build_record(program, offer):
         f"Exam type: {module_meta['examType']}",
     ])
 
-    # --- Final record ---
+    #  Final record 
     return {
         "id": rid,
         "namespace": abbr,
@@ -213,7 +213,7 @@ def build_record(program, offer):
         "lastUpdated": TODAY,
     }
 
-# ---------- Main ----------
+# Main
 
 def main():
     files = find_program_files()

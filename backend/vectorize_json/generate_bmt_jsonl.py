@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from format_module_text import format_module_text
 
-# ---------- Step 1: Load BMT Modules ----------
+# Load BMT Modules 
 JSON_PATH = Path("backend/data/MHB_Alle_Studiengaenge/json/Studiengang_BMT_2025.json")
 
 with open(JSON_PATH, "r", encoding="utf-8") as f:
@@ -16,7 +16,7 @@ for entry in data:
 
 print(f"Loaded {len(modules)} module records")
 
-# ---------- Step 2: Format Each Module ----------
+# Format Each Module 
 formatted_records = []
 
 for m in modules:
@@ -76,7 +76,7 @@ for m in modules:
 
 print(f"Prepared {len(formatted_records)} records for export")
 
-# ---------- Step 3: Save to .jsonl ----------
+# Save to .jsonl 
 output_path = Path("backend/data/processed_json/BMT.jsonl")
 output_path.parent.mkdir(parents=True, exist_ok=True)
 

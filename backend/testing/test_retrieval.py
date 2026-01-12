@@ -8,16 +8,16 @@ from services.loader import ID_TO_TEXT, ID_TO_META, load_text_store
 load_dotenv()
 load_text_store()
 
-# === Example question (change this) ===
+# Example question
 QUESTION = "Welche Module gibt es im Studiengang BMT?"
 
-# 1. Embed the question
+# Embed the question
 qvec = embed(QUESTION)
 
-# 2. Query Pinecone (top 5 matches, across all namespaces)
+# Query Pinecone (top 5 matches, across all namespaces)
 matches = search_all_namespaces(qvec, top_k=5)
 
-# 3. Print results
+# Print results
 print(f"\nQuery: {QUESTION}\n")
 for m in matches:
     rid = m.id

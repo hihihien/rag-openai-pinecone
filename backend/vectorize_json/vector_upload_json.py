@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from pinecone import Pinecone
 import openai
 
-# === CONFIG ===
+#  CONFIG 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
@@ -18,7 +18,7 @@ EMBED_MODEL = "text-embedding-3-large"
 BATCH_SIZE = 100
 MERGED_DIR = Path("backend/data/merged")
 
-# === Embedding helper ===
+#  Embedding helper 
 def embed_batch(texts: List[str]) -> List[List[float]]:
     response = openai.embeddings.create(model=EMBED_MODEL, input=texts)
     return [r.embedding for r in response.data]
@@ -37,7 +37,7 @@ def sanitize_metadata(metadata: dict) -> dict:
             clean[k] = str(v)  # fallback: convert to string
     return clean
 
-# === Upload logic ===
+#  Upload logic 
 def upload_file(path: Path):
     print(f"[upload] Processing file: {path.name}")
     namespace = path.stem.split("_")[0]  # e.g., "BMI" from "BMI_merged.jsonl"
@@ -82,7 +82,7 @@ def upload_file(path: Path):
 
     print(f" {path.name}: Uploaded {total_uploaded} vectors.\n")
 
-# === Main script ===
+#  Main script 
 if __name__ == "__main__":
     merged_files = sorted(MERGED_DIR.glob("*.jsonl"))
     if not merged_files:

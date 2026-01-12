@@ -6,7 +6,7 @@ from pinecone import Pinecone
 import openai
 from typing import List, Dict, Any
 
-# === CONFIG ===
+# CONFIG 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
@@ -16,7 +16,7 @@ DATA_DIR = Path("backend/data/processed_web")
 EMBED_MODEL = "text-embedding-3-large"
 
 
-# === Helpers ===
+# Helpers 
 def embed_text(text: str) -> List[float]:
     """Create embedding for one text."""
     res = openai.embeddings.create(model=EMBED_MODEL, input=[text])
@@ -112,7 +112,7 @@ def upload_file(path: Path):
     print(f"Finished uploading {len(records)} records to {namespace}\n")
 
 
-# === MAIN ===
+# MAIN 
 if __name__ == "__main__":
     json_files = sorted(DATA_DIR.glob("*.json"))
     if not json_files:

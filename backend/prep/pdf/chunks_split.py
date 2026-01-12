@@ -14,7 +14,7 @@ limit = 12000
 long_records = []
 short_records = []
 
-# Step 1: Load and identify long records
+# Load and identify long records
 with open(input_path, "r", encoding="utf-8") as infile:
     for line in infile:
         record = json.loads(line)
@@ -24,12 +24,12 @@ with open(input_path, "r", encoding="utf-8") as infile:
         else:
             short_records.append(record)
 
-# Step 2: Print info
+# Print info
 print(f"Found {len(long_records)} records exceeding {limit} characters.")
 for r in long_records:
     print(f"  [long] id: {r.get('id', '[no id]')} ({len(r['text'])} chars)")
 
-# Step 3: Split long records
+# Split long records
 def split_text(text, max_length):
     return [text[i:i + max_length] for i in range(0, len(text), max_length)]
 
@@ -44,7 +44,7 @@ for record in long_records:
         new_record["id"] = f"{base_id}_part{i}"
         new_records.append(new_record)
 
-# Step 4: Write everything back out
+# Write everything back out
 with open(output_path, "w", encoding="utf-8") as outfile:
     for record in short_records + new_records:
         outfile.write(json.dumps(record, ensure_ascii=False) + "\n")

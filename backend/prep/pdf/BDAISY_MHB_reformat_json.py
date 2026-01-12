@@ -1,7 +1,7 @@
 import json
 import os
 
-# === File paths ===
+#  File paths 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 input_path = os.path.join(BASE_DIR, "data/processed_pdf/DAISY_MHB_chunks.jsonl")
 output_path = os.path.join(BASE_DIR, "data/processed_pdf/BDAISY_MHB_chunks_normalized.jsonl")
@@ -19,11 +19,11 @@ def reformat_daisy_pdf_json(input_file: str, output_file: str):
 
             data = json.loads(line)
 
-            # --- Extract section info ---
+            # Extract section info
             major_section = data.get("major_section", "")
             sub_section = data.get("sub_section", "")
 
-            # --- Build contextual sentence (German) ---
+            # Build contextual sentence (German)
             context_sentence = ""
             if sub_section and major_section:
                 context_sentence = (
@@ -34,10 +34,10 @@ def reformat_daisy_pdf_json(input_file: str, output_file: str):
             elif major_section:
                 context_sentence = f"\n\nDas Modul sollte im {major_section} belegt werden."
 
-            # --- Append contextual info to the text ---
+            # Append contextual info to the text
             text = (data.get("text") or "").rstrip() + context_sentence
 
-            # --- Build metadata structure ---
+            # Build metadata structure
             metadata = {
                 "module_id": data.get("module_id"),
                 "module_name": data.get("title"),
@@ -47,7 +47,7 @@ def reformat_daisy_pdf_json(input_file: str, output_file: str):
                 "pdf_page_end": data.get("pdf_page_end"),
             }
 
-            # --- Create normalized JSON object ---
+            # Create normalized JSON object
             new_obj = {
                 "id": data.get("id"),
                 "namespace": "BDAISY_pdf",
@@ -55,7 +55,7 @@ def reformat_daisy_pdf_json(input_file: str, output_file: str):
                 "metadata": metadata,
             }
 
-            # --- Write one JSON object per line ---
+            # Write one JSON object per line
             outfile.write(json.dumps(new_obj, ensure_ascii=False) + "\n")
             count += 1
 

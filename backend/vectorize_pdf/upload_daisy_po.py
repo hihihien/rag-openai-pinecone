@@ -23,7 +23,7 @@ index_name = os.getenv("PINECONE_INDEX")
 if not index_name:
     raise RuntimeError("PINECONE_INDEX is not set in the .env file.")
 
-# --- Functions ---
+#  Functions 
 
 def load_jsonl(path: Path) -> List[dict]:
     with open(path, "r", encoding="utf-8") as f:
@@ -75,7 +75,7 @@ def upload_to_pinecone(vectors: List[dict], namespace: str, index_name: str):
         index.upsert(vectors=batch, namespace=namespace)
     print(f"Uploaded {len(vectors)} vectors to namespace '{namespace}'")
 
-# --- Main ---
+#  Main 
 print(f"\nLoading JSONL: {jsonl_path}")
 records = load_jsonl(Path(jsonl_path))
 print(f"Loaded {len(records)} records")

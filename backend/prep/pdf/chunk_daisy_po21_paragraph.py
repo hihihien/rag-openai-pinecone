@@ -3,18 +3,18 @@ import re
 import json
 from pathlib import Path
 
-# === File paths ===
+#  File paths 
 PDF_PATH = Path("backend/data/MHB_Alle_Studiengaenge/MHB_BDAISY_PO21/PO21_796.pdf")
 OUTPUT_PATH = Path("backend/data/processed")
 OUT_BASE = OUTPUT_PATH.with_name("PO21_796_paragraph_chunks")
 
-# === Patterns ===
+#  Patterns 
 SECTION_PATTERN = re.compile(r"^(I{1,3})\.\s+.+")
 PARAGRAPH_HEADER_PATTERN = re.compile(r"^§\s?(\d+[a-zA-Z]?)\s+[–-]\s+(.+)")
 SPLIT_PARAGRAPH_PATTERN = re.compile(r"^§\s?(\d+[a-zA-Z]?)$")
 SUBPARA_PATTERN = re.compile(r"^\((\d+)\)\s+(.*)")
 
-# === State ===
+#  State 
 doc = fitz.open(str(PDF_PATH))
 chunks = []
 current_section = None
@@ -142,7 +142,7 @@ if current_paragraph_number and unstructured_lines:
         "pdf_page_end": page_num
     })
 
-# === Save ===
+#  Save 
 out_json = OUT_BASE.with_suffix(".json")
 out_jsonl = OUT_BASE.with_suffix(".jsonl")
 

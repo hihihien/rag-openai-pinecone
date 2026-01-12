@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 from pinecone import Pinecone
 import openai
 
-# ---------- Config ----------
+# Config
 HERE = Path(__file__).resolve()
 BACKEND_DIR = HERE.parent
 NORM_DIR = BACKEND_DIR / "data" / "normalized"
@@ -31,7 +31,7 @@ SNIPPET_CHARS = 800  # safe size for preview without bloating metadata
 BATCH = 100
 EMBED_MODEL = "text-embedding-3-small"  # good trade-off cost/quality
 
-# ---------- Init ----------
+# Init
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -42,7 +42,7 @@ if not index_name:
 index = pc.Index(index_name)
 
 
-# ---------- Helpers ----------
+# Helpers
 def iter_jsonl(path: Path) -> Iterable[Dict[str, Any]]:
     with path.open("r", encoding="utf-8") as f:
         for line in f:
@@ -122,7 +122,7 @@ def embed_batch(texts: List[str]) -> List[List[float]]:
     return [d.embedding for d in resp.data]
 
 
-# ---------- Main ----------
+# Main
 def main():
     if not NORM_DIR.exists():
         raise RuntimeError(f"Normalized dir not found: {NORM_DIR}")

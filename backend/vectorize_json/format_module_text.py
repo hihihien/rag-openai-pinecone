@@ -1,7 +1,7 @@
 def format_module_text(module_offer):
     mod = module_offer.get("module", {})
 
-    # Get ALL revisers
+    # Get all revisers
     revisers = mod.get("revisers", [])
 
     # Combine all reviser names safely

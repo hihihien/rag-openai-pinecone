@@ -26,12 +26,12 @@ def detect_lang(text: str) -> str:
     """detect whether text is German or English."""
     t = (text or "").lower()
 
-    # strong hint: German umlauts/ß
+    # hint: German umlauts/ß as prio
     if any(ch in t for ch in ("ä", "ö", "ü", "ß")):
         return "de"
 
     german_markers = [
-        # Question / helpers (German forms)
+        # Question helpers 
         "wie", "was", "wer", "wo", "warum", "wieso", "weshalb", "wann", "wem", "wen", "wohin", "woher", "wozu",
         "werde", "werden", "bin", "bist", "sind", "seid", "sind",
         "welche", "welcher", "welches", "gibt es", "kann ich", "ist",
@@ -40,7 +40,7 @@ def detect_lang(text: str) -> str:
         "bedeuten", "bedeutet", "bedeutung",
         "unterscheiden", "unterschied", "unterschiede",
 
-        # Uni / admin (German-only words)
+        # Uni / admin (German words)
         "hochschule", "fachbereich", "studium", "studierende", "studierenden",
         "studiengang", "studiengänge", "studienbüro", "erstsemester",
         "bewerbung", "zulassung", "einschreibung", "immatrikulation",
@@ -49,18 +49,18 @@ def detect_lang(text: str) -> str:
         # Semester / timing
         "wintersemester", "sommersemester", "vorlesungszeit", "vorlesungsfreie zeit", "semesterferien",
 
-        # Modules / exams (German forms)
+        # Modules / exams 
         "modul", "modulhandbuch", "modulbeschreibung",
         "prüf", "prüfungsordnung", "klausur", "mündliche prüfung", "schriftliche prüfung",
         "hausarbeit", "leistungspunkte", "sws",
 
-        # Teaching formats (German)
+        # Teaching formats 
         "vorlesung", "übung", "veranstaltungsverzeichnis",
 
         # Study plan / requirements
         "studienordnung", "studienverlaufsplan", "wahlbereich", "wahlpflicht", "pflichtmodul", "schwerpunkt",
 
-        # Theses / docs (German forms)
+        # Theses / docs 
         "bachelorarbeit", "masterarbeit", "zeugnis",
 
         # Roles / misc

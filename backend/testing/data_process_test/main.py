@@ -19,7 +19,7 @@ Bitte beantworte die folgende Frage ausführlich und auf Deutsch:
 prompt = ChatPromptTemplate.from_template(template)
 chain = prompt | model
 
-# === Q&A Loop ===
+#  Q&A Loop 
 while True:
     print("\n\n-------------------------------")
     question = input("Ask your question (q to quit): ")
